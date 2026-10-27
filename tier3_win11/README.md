@@ -3,13 +3,13 @@
 > **Học phần:** IAM302t — Malware Analysis and Reverse Engineering (Fall 2026, RBL Model)  
 > **Đơn vị:** Đại học FPT TP. Hồ Chí Minh — Nhóm 7 (IA2007)  
 > **Phân tầng kiến trúc:** **Tier 3 — Isolated Malware Sandbox (CLIENT01)**  
-> **Thời điểm cập nhật:** 2026-10-26  
+> **Thời điểm cập nhật:** 2026-10-27  
 
 ---
 
 ## 1. Định Vị Vai Trò Của Máy Ảo Trong Kiến Trúc 3-Tier
 
-Căn cứ theo [Master Plan](file:///c:/IAM302t_Proejct/SCHR_BENCH_MASTER_PLAN_OBSIDIAN.md#L168-L207), hệ thống thực nghiệm của đồ án được phân bổ như sau:
+Căn cứ theo [Master Plan](file:///c:/IAM302t_Proejct/docs/SCHR_BENCH_MASTER_PLAN_OBSIDIAN.md), hệ thống thực nghiệm của đồ án được phân bổ như sau:
 * **Tier 1 (Máy thật MSI - WSL2 Ubuntu):** GPU NVIDIA phục vụ Ollama Server (`0.0.0.0:11434`, `llama3.1:8b`, `qwen2.5-coder:14b`).
 * **Tier 2 (Máy ảo Kali Linux 7.1.5):** Trung tâm thực thi tự động (MinGW-w64 build 80 PE, Ghidra 11.x Headless trích xuất JSON, MCP Pipeline, tính toán chỉ số SCHR, BLEU, McNemar test).
 * **Tier 3 (Máy ảo Windows 11 Pro này - CLIENT01):** 
@@ -20,17 +20,19 @@ Căn cứ theo [Master Plan](file:///c:/IAM302t_Proejct/SCHR_BENCH_MASTER_PLAN_O
 
 ---
 
-## 2. Nhật Ký Khảo Sát Hệ Thống Ban Đầu (System Diagnostics)
+## 2. Nhật Ký Khảo Sát Hệ Thống & Cài Đặt (System Diagnostics)
 
 | Hạng mục kiểm tra | Trạng thái ghi nhận | Chi tiết & Ghi chú kỹ thuật |
 | :--- | :---: | :--- |
-| **Hệ điều hành** | ✅ Đạt | Windows 11 Pro 64-bit (chạy trên nền VMware Workstation). |
+| **Hệ điều hành** | ✅ Đạt | Windows 11 Pro 64-bit (chạy trên nền VMware Workstation, hostname: `CLIENT01`). |
 | **Cấu hình Mạng** | ✅ Đạt | Card mạng NAT: `192.168.86.136`, Gateway: `192.168.86.2`. Ping máy Host (`192.168.86.1`) thông 0ms. |
-| **Kết nối Ollama (Host)** | ⚠️ Chưa mở | Kết nối TCP cổng `11434` tới `192.168.86.1` thất bại (Ollama trên Host chưa bind `0.0.0.0:11434` hoặc bị Windows Firewall chặn). |
-| **Môi trường cơ bản** | ⚠️ Máy sạch | Chưa cài Python, Git, OpenJDK/Java (trình quản lý gói `winget v1.29` đã có sẵn). |
-| **Khảo sát Thư mục Dự án** | ✅ Xác nhận | `C:\IAM302t_Proejct` chứa bộ 80 file C dataset (`SCHR_Bench_C_Functions`), các script tự động hóa từ `step0` đến `step4`. |
-| **Mẫu Gh0stRAT** | ❌ Chưa có | Không tìm thấy tệp mã độc `ea7cd59c...` trong thư mục dự án hoặc máy ảo. |
-| **Kênh chia sẻ Host - VM** | ✅ Sẵn sàng | Thư mục VMware Shared Folder sẵn sàng tại: `\\vmware-host\Shared Folders\Win11_shared`. |
+| **Môi trường Git** | ✅ Đạt | Git for Windows v2.56.0 đã cài đặt, cấu hình GCM và đồng bộ thành công với repository GitHub `phat1310/IAM302t_SCHR_Bench`. |
+| **Công cụ soạn thảo** | ✅ Đạt | Visual Studio Code đã cài đặt, tích hợp điều khiển Git và Markdown. |
+| **Quản lý tài liệu** | ✅ Đạt | Obsidian đã cài đặt phục vụ quản lý Vault đồ án RBL IAM302t. |
+| **Khảo sát Thư mục Dự án** | ✅ Chuẩn hóa | `C:\IAM302t_Proejct` đã được dọn dẹp sạch sẽ, cấu trúc chuẩn 3-Tier đồng bộ 100% với Git. |
+| **Công cụ phân tích tĩnh** | ✅ Sẵn sàng | Đã triển khai Detect It Easy v3.21 và PE-bear v0.7.2 Portable (tại `C:\Tools` và Shortcut Desktop). |
+| **Kênh chia sẻ Host - VM** | ✅ Sẵn sàng | Thư mục VMware Shared Folder sẵn sàng tại: `\\vmware-host\Shared Folders\Win11_shared` (đã có Shortcut Desktop). |
+| **Mẫu Gh0stRAT** | ⏳ Chờ nạp | Sẵn sàng tiếp nhận tệp mã độc `ea7cd59c...` qua Shared Folder để tiến hành phân tích tĩnh. |
 
 ---
 
@@ -55,16 +57,29 @@ Nhằm giữ cho máy ảo Windows 11 nhẹ nhất có thể và không can thi�
     * API Persistence: `RegOpenKeyExA`, `RegCreateKeyExA`, `RegSetValueExA`.
     * API Anti-Analysis: `IsDebuggerPresent`, `CheckRemoteDebuggerPresent`.
 
+### 3.3. Script cài đặt tự động hóa (PowerShell)
+* **Vị trí lưu trữ:** `tier3_win11/scripts/setup_pe_tools.ps1`
+* **Cách sử dụng:** Khi dựng lại máy ảo mới, chỉ cần chạy script này để tự động tải DIE và PE-bear, giải nén vào `C:\Tools` và tự tạo Desktop Shortcut.
+
 ---
 
-## 4. Danh Mục Tệp Đã Được Khởi Tạo Trên Máy
+## 4. Danh Mục Tệp Đã Được Chuẩn Hóa Trên Máy
 
 ```
 C:\IAM302t_Proejct\
-├── Win11_Pro_VMware\
-│   └── README.md                         <-- (Tệp tài liệu này)
-├── setup_pe_tools.ps1                    <-- Script PowerShell tự động tải & cấu hình DIE, PE-bear
-└── ... (Các script Pipeline và bộ Dataset C)
+├── dataset/                              <-- Bộ 80 hàm C mẫu và Ground Truth
+├── docs/                                 <-- Tài liệu Master Plan Obsidian
+├── results/                              <-- Log benchmark và bảng kết quả Springer
+├── scripts/                              <-- Pipeline tự động hóa Step 0 đến Step 4
+├── tier2_kali/                           <-- Kế hoạch và báo cáo của Tier 2 Kali Linux
+├── tier3_win11/                          <-- (Thư mục làm việc của Tier 3)
+│   ├── README.md                         <-- (Tệp tài liệu này)
+│   └── scripts/
+│       └── setup_pe_tools.ps1            <-- Script tự động tải & cấu hình DIE, PE-bear
+├── .gitignore
+├── PROJECT_STATUS.md
+├── README.md
+└── TIER_ROLES.md
 
 C:\Tools\
 ├── DIE\
@@ -74,7 +89,11 @@ C:\Tools\
 
 C:\Users\ngtp1\Desktop\
 ├── Detect It Easy.lnk                    <-- Shortcut Desktop
-└── PE-bear.lnk                           <-- Shortcut Desktop
+├── PE-bear.lnk                           <-- Shortcut Desktop
+├── Visual Studio Code.lnk                <-- Shortcut Desktop
+├── Obsidian.lnk                          <-- Shortcut Desktop
+├── IAM302t_Proejct.lnk                   <-- Shortcut dẫn vào C:\IAM302t_Proejct
+└── Share_folder.txt                      <-- Đường dẫn \\vmware-host\Shared Folders\Win11_shared
 ```
 
 ---
@@ -83,10 +102,11 @@ C:\Users\ngtp1\Desktop\
 
 1. **Tiếp nhận mẫu Gh0stRAT PE32 (`ea7cd59c...`):**
    * Đưa mẫu từ máy Host vào thư mục chia sẻ `\\vmware-host\Shared Folders\Win11_shared`.
-   * Di chuyển mẫu vào thư mục làm việc để bảo toàn mẫu an toàn.
+   * Sao chép mẫu vào môi trường Sandbox an toàn để phân tích.
 2. **Thực hiện phân tích tĩnh (Static RE) mẫu Gh0stRAT:**
-   * Mở bằng DIE: Kiểm tra entropy và nhận diện packer.
-   * Mở bằng PE-bear: Soi chi tiết IAT, định vị offset của các API liên quan đến Registry Persistence.
+   * Mở bằng DIE: Kiểm tra entropy và nhận diện packer/compiler.
+   * Mở bằng PE-bear: Soi chi tiết IAT, định vị offset của các API liên quan đến Registry Persistence (`RegSetValueExA`) và Anti-Debugging.
 3. **Thu thập Artifacts cho Paper (Section 5):**
    * Chụp ảnh màn hình bảng IAT và các chuỗi IOC quan trọng (`Software\Microsoft\Windows\CurrentVersion\Run`, tên key độc hại).
+   * Lưu ảnh minh chứng vào `tier3_win11/Image_Result/`.
    * Bàn giao kết quả bóc tách cho thành viên **Võ Hồng Phúc (SE203844)** và **Nguyễn Tấn Phát (SE173285)** để tổng hợp vào bài báo khoa học Springer.

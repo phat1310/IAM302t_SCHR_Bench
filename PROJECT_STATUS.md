@@ -26,7 +26,7 @@
 | :--- | :--- | :--- | :---: |
 | **Tier 1 (Host MSI - WSL2)** | Ubuntu (`0.0.0.0:11434`) | Phục vụ GPU Ollama Server (`llama3.1`, `qwen2.5-coder`) | 🟢 Sẵn sàng |
 | **Tier 2 (Kali Linux VM)** | Kali Linux (VMware) | Build 80 PE, Ghidra Headless, Chạy Benchmark Pipeline | 🟡 Đang chờ chạy Step 3 |
-| **Tier 3 (Win11 VM)** | Windows 11 Sandbox | Phân tích mẫu Gh0stRAT (DIE, PE-bear, IAT & Run Key) | 🟢 Tools đã cài đặt |
+| **Tier 3 (Win11 VM)** | Windows 11 Sandbox | Phân tích mẫu Gh0stRAT (DIE, PE-bear, IAT & Run Key) | 🟢 Hoàn tất môi trường & Sẵn sàng phân tích Gh0stRAT |
 
 ---
 
