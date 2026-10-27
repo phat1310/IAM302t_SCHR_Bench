@@ -16,7 +16,7 @@
   - [x] Thực thi MCP Benchmark Agent trên Ollama Server (`llama3.1:8b` & `qwen2.5-coder:14b`) toàn diện 80 binary PE ($N=80$).
   - [x] Tính toán chỉ số SCHR, Miss Rate, McNemar Test, 95% Wilson CI (`PAPER_TABLES_SPRINGER.md`).
   - [x] Đóng gói kịch bản Live Demo 1-lệnh trực quan (`scripts/live_demo.sh`).
-- [ ] **D4 (Section 5 Case Study):** Phân tích tĩnh mẫu Gh0stRAT PE32 (`ea7cd59c...`) trên Sandbox Tier 3.
+- [ ] **D4 (Section 5 Case Study):** Phân tích tĩnh mẫu Gh0stRAT PE32 (`ea7cd59c...`) trên Sandbox Tier 3 (Xem checklist chi tiết tại [PHASE2_GH0STRAT_EXECUTION_CHECKLIST.md](docs/PHASE2_GH0STRAT_EXECUTION_CHECKLIST.md)).
 - [ ] **D5 (Final Paper & Bảo vệ đồ án):** Hoàn thiện bài báo Springer LNICST (8-10 trang) nộp EAI INISCOM 2027.
 
 ---
