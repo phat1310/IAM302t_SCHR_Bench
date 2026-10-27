@@ -11,10 +11,11 @@
 - [x] **D2 (Ground Truth & Sanity Check):** 
   - Hoàn tất bộ 40 hàm C bảo mật tự viết kèm các biến thể đột biến (A, S, P, E, C).
   - Hoàn tất **Thí nghiệm E0**: 40/40 (100% PASS) kiểm định phân biệt, 160 assertions.
-- [ ] **D3 (Automated Pipeline & Live Demo):** 
+- [x] **D3 (Automated Pipeline & Live Demo):** 
   - [x] Ghidra Headless script trích xuất pseudocode & assembly JSON (`decompiled_contexts_80.json`).
-  - [ ] Thực thi MCP Benchmark Agent trên Ollama Server (`llama3.1:8b` & `qwen2.5-coder:14b`).
-  - [ ] Tính toán chỉ số SCHR, Miss Rate, McNemar Test.
+  - [x] Thực thi MCP Benchmark Agent trên Ollama Server (`llama3.1:8b` & `qwen2.5-coder:14b`) toàn diện 80 binary PE ($N=80$).
+  - [x] Tính toán chỉ số SCHR, Miss Rate, McNemar Test, 95% Wilson CI (`PAPER_TABLES_SPRINGER.md`).
+  - [x] Đóng gói kịch bản Live Demo 1-lệnh trực quan (`scripts/live_demo.sh`).
 - [ ] **D4 (Section 5 Case Study):** Phân tích tĩnh mẫu Gh0stRAT PE32 (`ea7cd59c...`) trên Sandbox Tier 3.
 - [ ] **D5 (Final Paper & Bảo vệ đồ án):** Hoàn thiện bài báo Springer LNICST (8-10 trang) nộp EAI INISCOM 2027.
 
@@ -25,7 +26,7 @@
 | Phân Tầng (Tier) | Môi Trường | Nhiệm Vụ Cốt Lõi | Trạng Thái Hoạt Động |
 | :--- | :--- | :--- | :---: |
 | **Tier 1 (Host MSI - WSL2)** | Ubuntu (`0.0.0.0:11434`) | Phục vụ GPU Ollama Server (`llama3.1`, `qwen2.5-coder`) | 🟢 Sẵn sàng |
-| **Tier 2 (Kali Linux VM)** | Kali Linux (VMware) | Build 80 PE, Ghidra Headless, Chạy Benchmark Pipeline | 🟢 Đang chạy Step 3 (Hoạt động tốt) |
+| **Tier 2 (Kali Linux VM)** | Kali Linux (VMware) | Build 80 PE, Ghidra Headless, Chạy Benchmark Pipeline | 🟢 Hoàn tất Benchmark 80 PE & Sẵn sàng Live Demo D3 |
 | **Tier 3 (Win11 VM)** | Windows 11 Sandbox | Phân tích mẫu Gh0stRAT (DIE, PE-bear, IAT & Run Key) | 🟢 Hoàn tất môi trường & Sẵn sàng phân tích Gh0stRAT |
 
 ---

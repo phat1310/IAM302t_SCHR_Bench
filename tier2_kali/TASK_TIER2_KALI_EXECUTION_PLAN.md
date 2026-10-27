@@ -44,11 +44,11 @@ tags:
 | :---: | :--- | :---: | :--- |
 | **TASK-1** | Kiểm tra Môi trường & Mạng LAN ảo (Host $\leftrightarrow$ Kali) | ✅ Hoàn thành | Ping 0ms, curl Ollama 200 OK (`llama3.1`, `qwen2.5`) |
 | **TASK-2** | Đồng bộ Dataset 40 hàm C & Chạy E0 Sanity Check | ✅ Hoàn thành | 160 assertions PASS, file `results/E0_sanity_kali.txt` |
-| **TASK-3** | Biên dịch Chéo 80 Binary PE x64 Stripped (`mingw-w64`) | 🔄 Sẵn sàng | 80 file nhị phân trong `/home/NTP/IAM302t/bin/` |
-| **TASK-4** | Vận hành Ghidra Headless bóc tách Pseudocode/Assembly | 🔄 Sẵn sàng | File CSDL hợp nhất `data_extracted/decompiled_db.json` |
-| **TASK-5** | Vận hành MCP Agent & Khảo nghiệm Đa tầng (CT1 $\rightarrow$ CT4) | 🔄 Sẵn sàng | File raw logs `results/kali_benchmark_logs.json` |
-| **TASK-6** | Chạy Động cơ Thống kê (SCHR, BLEU, McNemar, Wilson CI) | 🔄 Sẵn sàng | Báo cáo đối chiếu `results/KALI_EVALUATION_REPORT.md` |
-| **TASK-7** | Đóng gói Kịch bản & Script Live Demo Mốc D3 | 🔄 Sẵn sàng | Script biểu diễn 1-lệnh `scripts/live_demo.sh` |
+| **TASK-3** | Biên dịch Chéo 80 Binary PE x64 Stripped (`mingw-w64`) | ✅ Hoàn thành | 80 file nhị phân trong `dataset/.../build/pe_x64_O0/` |
+| **TASK-4** | Vận hành Ghidra Headless bóc tách Pseudocode/Assembly | ✅ Hoàn thành | File CSDL `results/decompiled_contexts_80.json` |
+| **TASK-5** | Vận hành MCP Agent & Khảo nghiệm Đa tầng (CT1 $\rightarrow$ CT3) | ✅ Hoàn thành | 480 queries logged trong `results/benchmark_raw_logs.json` |
+| **TASK-6** | Chạy Động cơ Thống kê (SCHR, BLEU, McNemar, Wilson CI) | ✅ Hoàn thành | Bảng Springer trong `results/PAPER_TABLES_SPRINGER.md` |
+| **TASK-7** | Đóng gói Kịch bản & Script Live Demo Mốc D3 | ✅ Hoàn thành | Script biểu diễn 1-lệnh `scripts/live_demo.sh` |
 
 ---
 
