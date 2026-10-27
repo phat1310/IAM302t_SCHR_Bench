@@ -1,0 +1,48 @@
+==============================================================================
+ SCHR-BENCH EXPERIMENT E0: GROUND-TRUTH & MUTATION DISCRIMINATION SANITY CHECK
+==============================================================================
+[PASS] A01 (debug_policy     | easy   | condition_inversion ) Vec0=(1,0,0) -> Orig=0 vs Mut=1
+[PASS] A02 (debug_policy     | easy   | condition_inversion ) Vec0=(2,0,0) -> Orig=0 vs Mut=1
+[PASS] A03 (debug_policy     | medium | relational_boundary ) Vec0=(100,100,0) -> Orig=1 vs Mut=0
+[PASS] A04 (debug_policy     | medium | boolean_operator    ) Vec0=(1,0,0) -> Orig=1 vs Mut=0
+[PASS] A05 (debug_policy     | medium | relational_boundary ) Vec0=(1,1,0) -> Orig=0 vs Mut=1
+[PASS] A06 (debug_policy     | tricky | step_omission       ) Vec0=(0,1,0) -> Orig=0 vs Mut=1
+[PASS] A07 (debug_policy     | tricky | condition_inversion ) Vec0=(1,0,0) -> Orig=0 vs Mut=1
+[PASS] A08 (debug_policy     | tricky | relational_boundary ) Vec0=(1,5,0) -> Orig=1 vs Mut=0
+[PASS] S01 (toy_decoder      | easy   | constant_change     ) Vec0=(107,0,0) -> Orig=1 vs Mut=0
+[PASS] S02 (toy_decoder      | easy   | constant_change     ) Vec0=(106,0,0) -> Orig=1 vs Mut=0
+[PASS] S03 (toy_decoder      | medium | constant_change     ) Vec0=(91,3,0) -> Orig=1 vs Mut=0
+[PASS] S04 (toy_decoder      | medium | constant_change     ) Vec0=(80,48,0) -> Orig=1 vs Mut=0
+[PASS] S05 (toy_decoder      | medium | condition_inversion ) Vec0=(85,102,0) -> Orig=1 vs Mut=0
+[PASS] S06 (toy_decoder      | tricky | constant_change     ) Vec0=(84,115,0) -> Orig=1 vs Mut=0
+[PASS] S07 (toy_decoder      | tricky | arithmetic_operator ) Vec0=(49,2,0) -> Orig=1 vs Mut=0
+[PASS] S08 (toy_decoder      | tricky | arithmetic_operator ) Vec0=(3,2,73) -> Orig=1 vs Mut=0
+[PASS] P01 (persistence_mock | easy   | api_effect_swap     ) Vec0=(0,0,0) -> Orig=1 vs Mut=0
+[PASS] P02 (persistence_mock | easy   | api_effect_swap     ) Vec0=(0,0,0) -> Orig=2 vs Mut=0
+[PASS] P03 (persistence_mock | medium | constant_change     ) Vec0=(0,0,0) -> Orig=1 vs Mut=0
+[PASS] P04 (persistence_mock | medium | api_effect_swap     ) Vec0=(0,0,0) -> Orig=1 vs Mut=0
+[PASS] P05 (persistence_mock | medium | condition_inversion ) Vec0=(0,1,0) -> Orig=4 vs Mut=0
+[PASS] P06 (persistence_mock | tricky | mock_api_swap       ) Vec0=(0,0,0) -> Orig=1 vs Mut=0
+[PASS] P07 (persistence_mock | tricky | api_effect_swap     ) Vec0=(0,1,0) -> Orig=8 vs Mut=0
+[PASS] P08 (persistence_mock | tricky | step_omission       ) Vec0=(0,1,1) -> Orig=0 vs Mut=1
+[PASS] E01 (environment_mock | easy   | condition_inversion ) Vec0=(1,0,0) -> Orig=0 vs Mut=1
+[PASS] E02 (environment_mock | easy   | relational_boundary ) Vec0=(1,1,0) -> Orig=0 vs Mut=1
+[PASS] E03 (environment_mock | medium | relational_boundary ) Vec0=(2048,0,0) -> Orig=1 vs Mut=0
+[PASS] E04 (environment_mock | medium | relational_boundary ) Vec0=(30,10,0) -> Orig=1 vs Mut=0
+[PASS] E05 (environment_mock | medium | constant_change     ) Vec0=(176,0,0) -> Orig=1 vs Mut=0
+[PASS] E06 (environment_mock | tricky | boolean_operator    ) Vec0=(7,0,0) -> Orig=0 vs Mut=1
+[PASS] E07 (environment_mock | tricky | bitwise_operator    ) Vec0=(1,1,0) -> Orig=1 vs Mut=0
+[PASS] E08 (environment_mock | tricky | condition_weakening ) Vec0=(0,1,1) -> Orig=1 vs Mut=0
+[PASS] C01 (control_flow     | easy   | relational_boundary ) Vec0=(5,5,0) -> Orig=0 vs Mut=1
+[PASS] C02 (control_flow     | easy   | condition_inversion ) Vec0=(5,5,0) -> Orig=1 vs Mut=0
+[PASS] C03 (control_flow     | medium | step_omission       ) Vec0=(3,1,1) -> Orig=4 vs Mut=5
+[PASS] C04 (control_flow     | medium | boolean_operator    ) Vec0=(0,1,0) -> Orig=2 vs Mut=1
+[PASS] C05 (control_flow     | medium | relational_boundary ) Vec0=(1,0,0) -> Orig=0 vs Mut=1
+[PASS] C06 (control_flow     | tricky | constant_change     ) Vec0=(12,0,0) -> Orig=0 vs Mut=1
+[PASS] C07 (control_flow     | tricky | boolean_precedence  ) Vec0=(0,0,1) -> Orig=0 vs Mut=1
+[PASS] C08 (control_flow     | tricky | arithmetic_operator ) Vec0=(0,1,1) -> Orig=1 vs Mut=0
+------------------------------------------------------------------------------
+Functions: 40 | Variant builds: 80 | Test assertions: 160
+Discriminating mutations: 40/40 (100.0% non-neutral)
+PASS: all hand-authored ground-truth assertions matched.
+==============================================================================

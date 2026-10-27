@@ -1,0 +1,962 @@
+[
+  {
+    "id": "A01",
+    "category": "debug_policy",
+    "difficulty": "easy",
+    "mutation_operator": "condition_inversion",
+    "tests": [
+      {
+        "a": 1,
+        "b": 0,
+        "c": 0,
+        "original": 0,
+        "mutant": 1
+      },
+      {
+        "a": 0,
+        "b": 0,
+        "c": 0,
+        "original": 1,
+        "mutant": 0
+      }
+    ],
+    "semantic_target": "simulated debugger flag decision",
+    "question": "Given a debugger flag, does policy return 1 (continue) or 0 (block)?"
+  },
+  {
+    "id": "A02",
+    "category": "debug_policy",
+    "difficulty": "easy",
+    "mutation_operator": "condition_inversion",
+    "tests": [
+      {
+        "a": 2,
+        "b": 0,
+        "c": 0,
+        "original": 0,
+        "mutant": 1
+      },
+      {
+        "a": 0,
+        "b": 0,
+        "c": 0,
+        "original": 1,
+        "mutant": 0
+      }
+    ],
+    "semantic_target": "flag bit test in toy debugger policy",
+    "question": "When input flag bit 1 is set, does function allow (1) or block (0)?"
+  },
+  {
+    "id": "A03",
+    "category": "debug_policy",
+    "difficulty": "medium",
+    "mutation_operator": "relational_boundary",
+    "tests": [
+      {
+        "a": 100,
+        "b": 100,
+        "c": 0,
+        "original": 1,
+        "mutant": 0
+      },
+      {
+        "a": 101,
+        "b": 100,
+        "c": 0,
+        "original": 0,
+        "mutant": 0
+      }
+    ],
+    "semantic_target": "simulated elapsed-time threshold policy",
+    "question": "At the boundary a=b, does policy allow (1) or block (0)?"
+  },
+  {
+    "id": "A04",
+    "category": "debug_policy",
+    "difficulty": "medium",
+    "mutation_operator": "boolean_operator",
+    "tests": [
+      {
+        "a": 1,
+        "b": 0,
+        "c": 0,
+        "original": 1,
+        "mutant": 0
+      },
+      {
+        "a": 1,
+        "b": 1,
+        "c": 0,
+        "original": 0,
+        "mutant": 0
+      }
+    ],
+    "semantic_target": "combination of two simulated detector flags",
+    "question": "Do both simulated checks have to be true to block?"
+  },
+  {
+    "id": "A05",
+    "category": "debug_policy",
+    "difficulty": "medium",
+    "mutation_operator": "relational_boundary",
+    "tests": [
+      {
+        "a": 1,
+        "b": 1,
+        "c": 0,
+        "original": 0,
+        "mutant": 1
+      },
+      {
+        "a": 1,
+        "b": 1,
+        "c": 1,
+        "original": 0,
+        "mutant": 0
+      }
+    ],
+    "semantic_target": "two-of-three toy detection threshold",
+    "question": "At exactly two positive signals, allow (1) or block (0)?"
+  },
+  {
+    "id": "A06",
+    "category": "debug_policy",
+    "difficulty": "tricky",
+    "mutation_operator": "step_omission",
+    "tests": [
+      {
+        "a": 0,
+        "b": 1,
+        "c": 0,
+        "original": 0,
+        "mutant": 1
+      },
+      {
+        "a": 1,
+        "b": 0,
+        "c": 0,
+        "original": 0,
+        "mutant": 0
+      }
+    ],
+    "semantic_target": "missing second simulated detector check",
+    "question": "Does a positive second check block when the first is false?"
+  },
+  {
+    "id": "A07",
+    "category": "debug_policy",
+    "difficulty": "tricky",
+    "mutation_operator": "condition_inversion",
+    "tests": [
+      {
+        "a": 1,
+        "b": 0,
+        "c": 0,
+        "original": 0,
+        "mutant": 1
+      },
+      {
+        "a": 0,
+        "b": 0,
+        "c": 0,
+        "original": 1,
+        "mutant": 0
+      }
+    ],
+    "semantic_target": "derived debugger-status flag with inverted test",
+    "question": "For an odd parity of simulated flags, allow or block?"
+  },
+  {
+    "id": "A08",
+    "category": "debug_policy",
+    "difficulty": "tricky",
+    "mutation_operator": "relational_boundary",
+    "tests": [
+      {
+        "a": 1,
+        "b": 5,
+        "c": 0,
+        "original": 1,
+        "mutant": 0
+      },
+      {
+        "a": 1,
+        "b": 4,
+        "c": 0,
+        "original": 0,
+        "mutant": 0
+      }
+    ],
+    "semantic_target": "nested status and timing threshold",
+    "question": "What decision occurs at exactly b=5 in state 2?"
+  },
+  {
+    "id": "S01",
+    "category": "toy_decoder",
+    "difficulty": "easy",
+    "mutation_operator": "constant_change",
+    "tests": [
+      {
+        "a": 107,
+        "b": 0,
+        "c": 0,
+        "original": 1,
+        "mutant": 0
+      },
+      {
+        "a": 0,
+        "b": 0,
+        "c": 0,
+        "original": 0,
+        "mutant": 0
+      }
+    ],
+    "semantic_target": "toy XOR decode key changes token match",
+    "question": "Does the one-byte toy decode equal 0x41?"
+  },
+  {
+    "id": "S02",
+    "category": "toy_decoder",
+    "difficulty": "easy",
+    "mutation_operator": "constant_change",
+    "tests": [
+      {
+        "a": 106,
+        "b": 0,
+        "c": 0,
+        "original": 1,
+        "mutant": 0
+      },
+      {
+        "a": 0,
+        "b": 0,
+        "c": 0,
+        "original": 0,
+        "mutant": 0
+      }
+    ],
+    "semantic_target": "single-byte transformed token validation",
+    "question": "Is transformed byte 0x30?"
+  },
+  {
+    "id": "S03",
+    "category": "toy_decoder",
+    "difficulty": "medium",
+    "mutation_operator": "constant_change",
+    "tests": [
+      {
+        "a": 91,
+        "b": 3,
+        "c": 0,
+        "original": 1,
+        "mutant": 0
+      },
+      {
+        "a": 0,
+        "b": 0,
+        "c": 0,
+        "original": 0,
+        "mutant": 0
+      }
+    ],
+    "semantic_target": "derived XOR key offset is changed",
+    "question": "Does decoded toy token match 0x51?"
+  },
+  {
+    "id": "S04",
+    "category": "toy_decoder",
+    "difficulty": "medium",
+    "mutation_operator": "constant_change",
+    "tests": [
+      {
+        "a": 80,
+        "b": 48,
+        "c": 0,
+        "original": 1,
+        "mutant": 0
+      },
+      {
+        "a": 0,
+        "b": 0,
+        "c": 0,
+        "original": 0,
+        "mutant": 0
+      }
+    ],
+    "semantic_target": "toy checksum where decode constant changes",
+    "question": "Does checksum equal 0x70?"
+  },
+  {
+    "id": "S05",
+    "category": "toy_decoder",
+    "difficulty": "medium",
+    "mutation_operator": "condition_inversion",
+    "tests": [
+      {
+        "a": 85,
+        "b": 102,
+        "c": 0,
+        "original": 1,
+        "mutant": 0
+      },
+      {
+        "a": 0,
+        "b": 0,
+        "c": 0,
+        "original": 0,
+        "mutant": 1
+      }
+    ],
+    "semantic_target": "accept/reject condition reversed for toy decoder",
+    "question": "Does the decoded byte equal expected byte?"
+  },
+  {
+    "id": "S06",
+    "category": "toy_decoder",
+    "difficulty": "tricky",
+    "mutation_operator": "constant_change",
+    "tests": [
+      {
+        "a": 84,
+        "b": 115,
+        "c": 0,
+        "original": 1,
+        "mutant": 0
+      },
+      {
+        "a": 0,
+        "b": 0,
+        "c": 0,
+        "original": 0,
+        "mutant": 0
+      }
+    ],
+    "semantic_target": "two-byte toy token validation with altered second key",
+    "question": "Do both decoded toy bytes match fixed constants?"
+  },
+  {
+    "id": "S07",
+    "category": "toy_decoder",
+    "difficulty": "tricky",
+    "mutation_operator": "arithmetic_operator",
+    "tests": [
+      {
+        "a": 49,
+        "b": 2,
+        "c": 0,
+        "original": 1,
+        "mutant": 0
+      },
+      {
+        "a": 0,
+        "b": 0,
+        "c": 0,
+        "original": 0,
+        "mutant": 0
+      }
+    ],
+    "semantic_target": "second-stage byte transform adds vs subtracts offset",
+    "question": "Does two-stage toy transform produce 0x5e?"
+  },
+  {
+    "id": "S08",
+    "category": "toy_decoder",
+    "difficulty": "tricky",
+    "mutation_operator": "arithmetic_operator",
+    "tests": [
+      {
+        "a": 3,
+        "b": 2,
+        "c": 73,
+        "original": 1,
+        "mutant": 0
+      },
+      {
+        "a": 0,
+        "b": 0,
+        "c": 0,
+        "original": 0,
+        "mutant": 0
+      }
+    ],
+    "semantic_target": "toy key derivation changes XOR to addition",
+    "question": "Does derived toy key decode c to 0x4d?"
+  },
+  {
+    "id": "P01",
+    "category": "persistence_mock",
+    "difficulty": "easy",
+    "mutation_operator": "api_effect_swap",
+    "tests": [
+      {
+        "a": 0,
+        "b": 0,
+        "c": 0,
+        "original": 1,
+        "mutant": 0
+      },
+      {
+        "a": 1,
+        "b": 0,
+        "c": 0,
+        "original": 1,
+        "mutant": 0
+      }
+    ],
+    "semantic_target": "toy autorun bit set vs cleared",
+    "question": "Does next simulated autorun state have bit 0 set?"
+  },
+  {
+    "id": "P02",
+    "category": "persistence_mock",
+    "difficulty": "easy",
+    "mutation_operator": "api_effect_swap",
+    "tests": [
+      {
+        "a": 0,
+        "b": 0,
+        "c": 0,
+        "original": 2,
+        "mutant": 0
+      },
+      {
+        "a": 2,
+        "b": 0,
+        "c": 0,
+        "original": 2,
+        "mutant": 0
+      }
+    ],
+    "semantic_target": "toy service-registered bit set vs cleared",
+    "question": "Does next simulated service state have bit 1 set?"
+  },
+  {
+    "id": "P03",
+    "category": "persistence_mock",
+    "difficulty": "medium",
+    "mutation_operator": "constant_change",
+    "tests": [
+      {
+        "a": 0,
+        "b": 0,
+        "c": 0,
+        "original": 1,
+        "mutant": 0
+      },
+      {
+        "a": 2,
+        "b": 0,
+        "c": 0,
+        "original": 2,
+        "mutant": 2
+      }
+    ],
+    "semantic_target": "simulated missing-state fallback value",
+    "question": "When no entry is present, what next state is returned?"
+  },
+  {
+    "id": "P04",
+    "category": "persistence_mock",
+    "difficulty": "medium",
+    "mutation_operator": "api_effect_swap",
+    "tests": [
+      {
+        "a": 0,
+        "b": 0,
+        "c": 0,
+        "original": 1,
+        "mutant": 0
+      },
+      {
+        "a": 1,
+        "b": 1,
+        "c": 0,
+        "original": 0,
+        "mutant": 0
+      }
+    ],
+    "semantic_target": "toy state-machine branch creates vs removes flag",
+    "question": "If command=0, is the mock autorun flag added or removed?"
+  },
+  {
+    "id": "P05",
+    "category": "persistence_mock",
+    "difficulty": "medium",
+    "mutation_operator": "condition_inversion",
+    "tests": [
+      {
+        "a": 0,
+        "b": 1,
+        "c": 0,
+        "original": 4,
+        "mutant": 0
+      },
+      {
+        "a": 0,
+        "b": 0,
+        "c": 0,
+        "original": 0,
+        "mutant": 4
+      }
+    ],
+    "semantic_target": "toy scheduled-state flag conditioned on input",
+    "question": "For b=1, is simulated schedule bit set?"
+  },
+  {
+    "id": "P06",
+    "category": "persistence_mock",
+    "difficulty": "tricky",
+    "mutation_operator": "mock_api_swap",
+    "tests": [
+      {
+        "a": 0,
+        "b": 0,
+        "c": 0,
+        "original": 1,
+        "mutant": 0
+      },
+      {
+        "a": 1,
+        "b": 0,
+        "c": 0,
+        "original": 1,
+        "mutant": 0
+      }
+    ],
+    "semantic_target": "mock API switch: set bit vs clear bit; no real OS API",
+    "question": "Does the selected local mock helper set or clear bit 0?"
+  },
+  {
+    "id": "P07",
+    "category": "persistence_mock",
+    "difficulty": "tricky",
+    "mutation_operator": "api_effect_swap",
+    "tests": [
+      {
+        "a": 0,
+        "b": 1,
+        "c": 0,
+        "original": 8,
+        "mutant": 0
+      },
+      {
+        "a": 8,
+        "b": 0,
+        "c": 0,
+        "original": 8,
+        "mutant": 8
+      }
+    ],
+    "semantic_target": "toy autorun flag set/clear inside conditional",
+    "question": "When b odd, does state bit 3 get set or cleared?"
+  },
+  {
+    "id": "P08",
+    "category": "persistence_mock",
+    "difficulty": "tricky",
+    "mutation_operator": "step_omission",
+    "tests": [
+      {
+        "a": 0,
+        "b": 1,
+        "c": 1,
+        "original": 0,
+        "mutant": 1
+      },
+      {
+        "a": 0,
+        "b": 0,
+        "c": 1,
+        "original": 0,
+        "mutant": 0
+      }
+    ],
+    "semantic_target": "final mock autorun cleanup check omitted",
+    "question": "After b=1 and c=1, is bit 0 still set?"
+  },
+  {
+    "id": "E01",
+    "category": "environment_mock",
+    "difficulty": "easy",
+    "mutation_operator": "condition_inversion",
+    "tests": [
+      {
+        "a": 1,
+        "b": 0,
+        "c": 0,
+        "original": 0,
+        "mutant": 1
+      },
+      {
+        "a": 0,
+        "b": 0,
+        "c": 0,
+        "original": 1,
+        "mutant": 0
+      }
+    ],
+    "semantic_target": "toy environment flag predicate",
+    "question": "Does simulated environment policy return allow (1) or block (0)?"
+  },
+  {
+    "id": "E02",
+    "category": "environment_mock",
+    "difficulty": "easy",
+    "mutation_operator": "relational_boundary",
+    "tests": [
+      {
+        "a": 1,
+        "b": 1,
+        "c": 0,
+        "original": 0,
+        "mutant": 1
+      },
+      {
+        "a": 1,
+        "b": 1,
+        "c": 1,
+        "original": 0,
+        "mutant": 0
+      }
+    ],
+    "semantic_target": "synthetic score policy at two-signal boundary",
+    "question": "Does score=2 block or allow?"
+  },
+  {
+    "id": "E03",
+    "category": "environment_mock",
+    "difficulty": "medium",
+    "mutation_operator": "relational_boundary",
+    "tests": [
+      {
+        "a": 2048,
+        "b": 0,
+        "c": 0,
+        "original": 1,
+        "mutant": 0
+      },
+      {
+        "a": 2049,
+        "b": 0,
+        "c": 0,
+        "original": 1,
+        "mutant": 1
+      }
+    ],
+    "semantic_target": "toy memory-size policy at exact threshold",
+    "question": "Is exact threshold 2048 accepted (1) or rejected (0)?"
+  },
+  {
+    "id": "E04",
+    "category": "environment_mock",
+    "difficulty": "medium",
+    "mutation_operator": "relational_boundary",
+    "tests": [
+      {
+        "a": 30,
+        "b": 10,
+        "c": 0,
+        "original": 1,
+        "mutant": 0
+      },
+      {
+        "a": 31,
+        "b": 10,
+        "c": 0,
+        "original": 0,
+        "mutant": 0
+      }
+    ],
+    "semantic_target": "synthetic elapsed-time difference policy",
+    "question": "At delta exactly 20, is function allow or block?"
+  },
+  {
+    "id": "E05",
+    "category": "environment_mock",
+    "difficulty": "medium",
+    "mutation_operator": "constant_change",
+    "tests": [
+      {
+        "a": 176,
+        "b": 0,
+        "c": 0,
+        "original": 1,
+        "mutant": 0
+      },
+      {
+        "a": 160,
+        "b": 0,
+        "c": 0,
+        "original": 0,
+        "mutant": 0
+      }
+    ],
+    "semantic_target": "synthetic environment tag masked comparison",
+    "question": "Does encoded tag 0xB0 get accepted or blocked?"
+  },
+  {
+    "id": "E06",
+    "category": "environment_mock",
+    "difficulty": "tricky",
+    "mutation_operator": "boolean_operator",
+    "tests": [
+      {
+        "a": 7,
+        "b": 0,
+        "c": 0,
+        "original": 0,
+        "mutant": 1
+      },
+      {
+        "a": 7,
+        "b": 7,
+        "c": 0,
+        "original": 0,
+        "mutant": 0
+      }
+    ],
+    "semantic_target": "synthetic monitored-process marker OR vs AND",
+    "question": "Does one matching marker suffice to reject?"
+  },
+  {
+    "id": "E07",
+    "category": "environment_mock",
+    "difficulty": "tricky",
+    "mutation_operator": "bitwise_operator",
+    "tests": [
+      {
+        "a": 1,
+        "b": 1,
+        "c": 0,
+        "original": 1,
+        "mutant": 0
+      },
+      {
+        "a": 1,
+        "b": 2,
+        "c": 0,
+        "original": 1,
+        "mutant": 1
+      }
+    ],
+    "semantic_target": "toy environment flag composition XOR vs OR",
+    "question": "For two identical 1-bit inputs, does policy block?"
+  },
+  {
+    "id": "E08",
+    "category": "environment_mock",
+    "difficulty": "tricky",
+    "mutation_operator": "condition_weakening",
+    "tests": [
+      {
+        "a": 0,
+        "b": 1,
+        "c": 1,
+        "original": 1,
+        "mutant": 0
+      },
+      {
+        "a": 0,
+        "b": 1,
+        "c": 0,
+        "original": 0,
+        "mutant": 0
+      }
+    ],
+    "semantic_target": "synthetic environment exception condition removed",
+    "question": "Does c=1 override second simulated rejection condition?"
+  },
+  {
+    "id": "C01",
+    "category": "control_flow",
+    "difficulty": "easy",
+    "mutation_operator": "relational_boundary",
+    "tests": [
+      {
+        "a": 5,
+        "b": 5,
+        "c": 0,
+        "original": 0,
+        "mutant": 1
+      },
+      {
+        "a": 6,
+        "b": 5,
+        "c": 0,
+        "original": 1,
+        "mutant": 1
+      }
+    ],
+    "semantic_target": "branch accepts equality after mutation",
+    "question": "At a=b, is function result true?"
+  },
+  {
+    "id": "C02",
+    "category": "control_flow",
+    "difficulty": "easy",
+    "mutation_operator": "condition_inversion",
+    "tests": [
+      {
+        "a": 5,
+        "b": 5,
+        "c": 0,
+        "original": 1,
+        "mutant": 0
+      },
+      {
+        "a": 5,
+        "b": 4,
+        "c": 0,
+        "original": 0,
+        "mutant": 1
+      }
+    ],
+    "semantic_target": "equality branch inverted",
+    "question": "Does equality produce result 1?"
+  },
+  {
+    "id": "C03",
+    "category": "control_flow",
+    "difficulty": "medium",
+    "mutation_operator": "step_omission",
+    "tests": [
+      {
+        "a": 3,
+        "b": 1,
+        "c": 1,
+        "original": 4,
+        "mutant": 5
+      },
+      {
+        "a": 3,
+        "b": 1,
+        "c": 0,
+        "original": 5,
+        "mutant": 5
+      }
+    ],
+    "semantic_target": "state update missing decrement",
+    "question": "What final state is produced with both flags on?"
+  },
+  {
+    "id": "C04",
+    "category": "control_flow",
+    "difficulty": "medium",
+    "mutation_operator": "boolean_operator",
+    "tests": [
+      {
+        "a": 0,
+        "b": 1,
+        "c": 0,
+        "original": 2,
+        "mutant": 1
+      },
+      {
+        "a": 1,
+        "b": 0,
+        "c": 0,
+        "original": 0,
+        "mutant": 0
+      }
+    ],
+    "semantic_target": "nested branch changed from a to a-or-b",
+    "question": "When a=0 and b=1, which branch is reached?"
+  },
+  {
+    "id": "C05",
+    "category": "control_flow",
+    "difficulty": "medium",
+    "mutation_operator": "relational_boundary",
+    "tests": [
+      {
+        "a": 1,
+        "b": 0,
+        "c": 0,
+        "original": 0,
+        "mutant": 1
+      },
+      {
+        "a": 2,
+        "b": 0,
+        "c": 0,
+        "original": 1,
+        "mutant": 1
+      }
+    ],
+    "semantic_target": "loop termination off-by-one",
+    "question": "At a=1, how many odd index contributions are counted?"
+  },
+  {
+    "id": "C06",
+    "category": "control_flow",
+    "difficulty": "tricky",
+    "mutation_operator": "constant_change",
+    "tests": [
+      {
+        "a": 12,
+        "b": 0,
+        "c": 0,
+        "original": 0,
+        "mutant": 1
+      },
+      {
+        "a": 8,
+        "b": 0,
+        "c": 0,
+        "original": 1,
+        "mutant": 1
+      }
+    ],
+    "semantic_target": "bitfield validation mask loosened",
+    "question": "Does bitfield 0xC pass validation?"
+  },
+  {
+    "id": "C07",
+    "category": "control_flow",
+    "difficulty": "tricky",
+    "mutation_operator": "boolean_precedence",
+    "tests": [
+      {
+        "a": 0,
+        "b": 0,
+        "c": 1,
+        "original": 0,
+        "mutant": 1
+      },
+      {
+        "a": 1,
+        "b": 1,
+        "c": 0,
+        "original": 1,
+        "mutant": 1
+      }
+    ],
+    "semantic_target": "short-circuit precedence changes fallback",
+    "question": "Can c alone make result true when a=0?"
+  },
+  {
+    "id": "C08",
+    "category": "control_flow",
+    "difficulty": "tricky",
+    "mutation_operator": "arithmetic_operator",
+    "tests": [
+      {
+        "a": 0,
+        "b": 1,
+        "c": 1,
+        "original": 1,
+        "mutant": 0
+      },
+      {
+        "a": 0,
+        "b": 0,
+        "c": 1,
+        "original": 1,
+        "mutant": 1
+      }
+    ],
+    "semantic_target": "toy state-machine transition increment vs decrement",
+    "question": "After three transitions, does state equal c?"
+  }
+]
