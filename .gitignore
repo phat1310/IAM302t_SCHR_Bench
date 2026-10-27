@@ -68,3 +68,6 @@ samples/malware/
 *.sublime-workspace
 *.sublime-project
 .obsidian/workspace.json
+
+# Nested clone
+IAM302t_SCHR_Bench/
