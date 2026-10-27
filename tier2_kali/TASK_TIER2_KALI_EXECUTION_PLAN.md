@@ -42,13 +42,13 @@ tags:
 
 | Mã Task | Tên Nhiệm vụ Trọng tâm | Trạng thái | Sản phẩm Đầu ra Mục tiêu |
 | :---: | :--- | :---: | :--- |
-| **TASK-1** | Kiểm tra Môi trường & Mạng LAN ảo (Host $\leftrightarrow$ Kali) | 🔄 Sẵn sàng | Ping 0ms, curl Ollama 200 OK (`llama3.1`, `qwen2.5`) |
-| **TASK-2** | Đồng bộ Dataset 40 hàm C & Chạy E0 Sanity Check | 🔄 Sẵn sàng | 160 assertions PASS, file `results/E0_report.txt` |
-| **TASK-3** | Biên dịch Chéo 80 Binary PE x64 Stripped (`mingw-w64`) | 🔄 Sẵn sàng | 80 file nhị phân trong `/home/NTP/IAM302t/bin/` |
-| **TASK-4** | Vận hành Ghidra Headless bóc tách Pseudocode/Assembly | 🔄 Sẵn sàng | File CSDL hợp nhất `data_extracted/decompiled_db.json` |
-| **TASK-5** | Vận hành MCP Agent & Khảo nghiệm Đa tầng (CT1 $\rightarrow$ CT4) | 🔄 Sẵn sàng | File raw logs `results/kali_benchmark_logs.json` |
-| **TASK-6** | Chạy Động cơ Thống kê (SCHR, BLEU, McNemar, Wilson CI) | 🔄 Sẵn sàng | Báo cáo đối chiếu `results/KALI_EVALUATION_REPORT.md` |
-| **TASK-7** | Đóng gói Kịch bản & Script Live Demo Mốc D3 | 🔄 Sẵn sàng | Script biểu diễn 1-lệnh `scripts/live_demo.sh` |
+| **TASK-1** | Kiểm tra Môi trường & Mạng LAN ảo (Host $\leftrightarrow$ Kali) | ✅ Hoàn thành | Ping 0ms, curl Ollama 200 OK (`llama3.1`, `qwen2.5`) |
+| **TASK-2** | Đồng bộ Dataset 40 hàm C & Chạy E0 Sanity Check | ✅ Hoàn thành | 160 assertions PASS, file `results/E0_sanity_kali.txt` |
+| **TASK-3** | Biên dịch Chéo 80 Binary PE x64 Stripped (`mingw-w64`) | ✅ Hoàn thành | 80 file nhị phân trong `dataset/.../build/pe_x64_O0/` |
+| **TASK-4** | Vận hành Ghidra Headless bóc tách Pseudocode/Assembly | ✅ Hoàn thành | File CSDL `results/decompiled_contexts_80.json` |
+| **TASK-5** | Vận hành MCP Agent & Khảo nghiệm Đa tầng (CT1 $\rightarrow$ CT3) | ✅ Hoàn thành | 480 queries logged trong `results/benchmark_raw_logs.json` |
+| **TASK-6** | Chạy Động cơ Thống kê (SCHR, BLEU, McNemar, Wilson CI) | ✅ Hoàn thành | Bảng Springer trong `results/PAPER_TABLES_SPRINGER.md` |
+| **TASK-7** | Đóng gói Kịch bản & Script Live Demo Mốc D3 | ✅ Hoàn thành | Script biểu diễn 1-lệnh `scripts/live_demo.sh` |
 
 ---
 
@@ -88,17 +88,19 @@ tags:
 ### 📦 TASK 2: ĐỒNG BỘ DATASET & KIỂM ĐỊNH E0 SANITY CHECK
 
 > [!tip] **Mục tiêu:** Xác nhận lại toàn bộ 40 cặp hàm C và 160 test vector assertions trên môi trường native Linux của Kali.
+> [!note] **Cấu trúc thư mục Dataset thực tế:**  
+> Bộ dữ liệu nằm tại: `dataset/Dataset_SCHR_Bench/SCHR_Bench_C_Functions/` (chứa `src/`, `tools/`, và `ground_truth_manifest.json`). Tất cả các lệnh dưới đây đã được cập nhật đường dẫn chuẩn xác khớp với cấu trúc thư mục này.
 
-- [x] **2.1. Kiểm tra bộ mã nguồn C trong thư mục `dataset/`:**
+- [x] **2.1. Kiểm tra bộ mã nguồn C trong thư mục Dataset:**
   ```bash
   cd /home/NTP/IAM302t/
-  ls /home/NTP/IAM302t/dataset/Dataset_SCHR_Bench/SCHR_Bench_C_Functions/src | wc -l
+  ls dataset/Dataset_SCHR_Bench/SCHR_Bench_C_Functions/src/ | wc -l
   # Phải đủ 80 file C (40 original + 40 mutant)
   ```
-- [ ] **2.2. Chạy Thí nghiệm E0 (Sanity Check):**
+- [x] **2.2. Chạy Thí nghiệm E0 (Sanity Check):**
   ```bash
-  cd /home/NTP/IAM302t/dataset/
-  python3 tools/check_suite.py | tee /home/NTP/IAM302t/results/E0_sanity_kali.txt
+  cd /home/NTP/IAM302t/
+  python3 dataset/Dataset_SCHR_Bench/SCHR_Bench_C_Functions/tools/check_suite.py | tee /home/NTP/IAM302t/results/E0_sanity_kali.txt
   ```
   *Yêu cầu kết quả:*  
   `Functions: 40 | Variant builds: 80 | Test assertions: 160`  
@@ -114,12 +116,12 @@ tags:
 - [ ] **3.1. Chạy script biên dịch chéo tự động:**
   ```bash
   cd /home/NTP/IAM302t/
-  python3 dataset/tools/build_pe.py --arch x64 --opt 0
+  python3 dataset/Dataset_SCHR_Bench/SCHR_Bench_C_Functions/tools/build_pe.py --arch x64 --opt 0
   ```
 - [ ] **3.2. Sao chép các tệp nhị phân đã build vào thư mục `bin/` của Kali:**
   ```bash
   mkdir -p /home/NTP/IAM302t/bin/
-  cp dataset/build/pe_x64_O0/*.exe /home/NTP/IAM302t/bin/
+  cp dataset/Dataset_SCHR_Bench/SCHR_Bench_C_Functions/build/pe_x64_O0/*.exe /home/NTP/IAM302t/bin/
   ls -la /home/NTP/IAM302t/bin/ | wc -l
   # Đảm bảo đủ 80 file binary
   ```
@@ -217,7 +219,7 @@ tags:
   echo "=================================================================="
   echo ""
   echo "[+] Bước 1: Kiểm định Ground Truth E0 (160 Assertions)..."
-  python3 /home/NTP/IAM302t/dataset/tools/check_suite.py
+  python3 /home/NTP/IAM302t/dataset/Dataset_SCHR_Bench/SCHR_Bench_C_Functions/tools/check_suite.py
   echo ""
   read -p "Nhấn [Enter] để chuyển sang Bước 2: Demo Bắt quả tang Ảo giác CT1..."
   echo ""
@@ -253,7 +255,7 @@ cd /home/NTP/IAM302t/
 curl -s http://192.168.86.1:11434/api/tags | jq .
 
 # 3. Chạy E0
-python3 dataset/tools/check_suite.py
+python3 dataset/Dataset_SCHR_Bench/SCHR_Bench_C_Functions/tools/check_suite.py
 
 # 4. Decompile hàng loạt
 python3 scripts/batch_decompile.py

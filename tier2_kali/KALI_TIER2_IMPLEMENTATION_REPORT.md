@@ -24,7 +24,9 @@ Toàn bộ hệ thống pipeline đã được quy hoạch và tạo lập tại
 /home/NTP/IAM302t/
 ├── bin/                         # Chứa các file nhị phân PE (.exe) / ELF stripped
 │   └── demo_target.bin          # Nhị phân mẫu đã qua kiểm thử thực tế
-├── dataset/                     # Chứa 40 cặp mã nguồn C và ground_truth_manifest.json
+├── dataset/                     # Thư mục gốc chứa bộ dữ liệu nghiên cứu
+│   └── Dataset_SCHR_Bench/
+│       └── SCHR_Bench_C_Functions/ # Chứa 40 cặp mã nguồn C (src/), tools/, và ground_truth_manifest.json
 ├── ghidra_scripts/
 │   └── ExportRE.java            # Script Java chạy trong Ghidra Headless bóc tách RE data
 ├── scripts/

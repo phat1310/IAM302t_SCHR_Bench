@@ -10,7 +10,7 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_DIR = SCRIPT_DIR.parent
-RESULTS_DIR = PROJECT_DIR / "Results"
+RESULTS_DIR = PROJECT_DIR / "results" if (PROJECT_DIR / "results").exists() else PROJECT_DIR / "Results"
 LOG_FILE = RESULTS_DIR / "benchmark_raw_logs.json"
 
 

@@ -8,6 +8,7 @@ Connects to local Ollama (in WSL2 Ubuntu at http://localhost:11434) to evaluate:
 
 import argparse
 import json
+import os
 import re
 import sys
 import time
@@ -17,10 +18,14 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_DIR = SCRIPT_DIR.parent
-RESULTS_DIR = PROJECT_DIR / "Results"
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
+
+RESULTS_DIR = PROJECT_DIR / "results" if (PROJECT_DIR / "results").exists() else PROJECT_DIR / "Results"
 CONTEXTS_FILE = RESULTS_DIR / "decompiled_contexts_80.json"
 
-OLLAMA_URL = "http://localhost:11434/api/generate"
+DEFAULT_HOST = os.environ.get("OLLAMA_HOST", "http://192.168.86.1:11434")
+OLLAMA_URL = f"{DEFAULT_HOST.rstrip('/')}/api/generate"
 DEFAULT_MODELS = ["llama3.1:8b", "qwen2.5-coder:14b"]
 
 # Fixed, deterministic prompt template (committed to repository per teacher's protocol)
@@ -75,7 +80,8 @@ class SCHRBenchMCPServer:
         return prompt
 
 
-def query_ollama(model: str, system_prompt: str, user_prompt: str, timeout: int = 120) -> dict:
+def query_ollama(model: str, system_prompt: str, user_prompt: str, ollama_url: str = None, timeout: int = 120) -> dict:
+    target_url = ollama_url or OLLAMA_URL
     payload = {
         "model": model,
         "system": system_prompt,
@@ -89,7 +95,7 @@ def query_ollama(model: str, system_prompt: str, user_prompt: str, timeout: int 
         }
     }
     req = urllib.request.Request(
-        OLLAMA_URL,
+        target_url,
         data=json.dumps(payload).encode("utf-8"),
         headers={"Content-Type": "application/json"},
         method="POST"
@@ -123,19 +129,21 @@ def query_ollama(model: str, system_prompt: str, user_prompt: str, timeout: int 
     }
 
 
-def check_ollama_online() -> list:
+def check_ollama_online(host: str = None) -> list:
+    base = (host or DEFAULT_HOST).rstrip('/')
     try:
-        req = urllib.request.Request("http://localhost:11434/api/tags", method="GET")
-        with urllib.request.urlopen(req, timeout=3) as resp:
+        req = urllib.request.Request(f"{base}/api/tags", method="GET")
+        with urllib.request.urlopen(req, timeout=5) as resp:
             data = json.loads(resp.read().decode("utf-8"))
             return [m["name"] for m in data.get("models", [])]
     except Exception:
         return []
 
 
-def run_benchmark_suite(mcp: SCHRBenchMCPServer, models: list, tiers: list, max_pairs: int = 40, run_obf: bool = True):
+def run_benchmark_suite(mcp: SCHRBenchMCPServer, models: list, tiers: list, max_pairs: int = 40, run_obf: bool = True, ollama_url: str = None):
     import step4_compute_statistics_and_tables as step4
 
+    target_url = ollama_url or OLLAMA_URL
     log_path = RESULTS_DIR / "benchmark_raw_logs.json"
     existing_logs = json.loads(log_path.read_text(encoding="utf-8")) if log_path.exists() else {}
 
@@ -159,7 +167,7 @@ def run_benchmark_suite(mcp: SCHRBenchMCPServer, models: list, tiers: list, max_
                     if log_id in existing_logs:
                         continue
                     prompt = mcp.build_user_prompt(skey, test_idx=0, tier=tier)
-                    res = query_ollama(model, FIXED_SYSTEM_PROMPT, prompt)
+                    res = query_ollama(model, FIXED_SYSTEM_PROMPT, prompt, ollama_url=target_url)
                     is_correct = (res["predicted_return"] == truth)
                     existing_logs[log_id] = {
                         "model": model,
@@ -192,7 +200,7 @@ def run_benchmark_suite(mcp: SCHRBenchMCPServer, models: list, tiers: list, max_
                         if obf_log_id in existing_logs:
                             continue
                         prompt = mcp.build_user_prompt(skey, test_idx=0, tier="CT1", obf=obf_lvl)
-                        res = query_ollama(model, FIXED_SYSTEM_PROMPT, prompt)
+                        res = query_ollama(model, FIXED_SYSTEM_PROMPT, prompt, ollama_url=target_url)
                         is_correct = (res["predicted_return"] == truth)
                         existing_logs[obf_log_id] = {
                             "model": model,
@@ -229,16 +237,21 @@ def main():
     parser.add_argument("--models", nargs="+", default=DEFAULT_MODELS, help="Ollama models to evaluate")
     parser.add_argument("--tiers", nargs="+", default=["CT1", "CT2", "CT3"], help="Context tiers to evaluate")
     parser.add_argument("--no-obf", action="store_true", help="Skip E4 obfuscation evaluation")
+    parser.add_argument("--host", default=DEFAULT_HOST, help="Ollama server host URL (default: %(default)s)")
     args = parser.parse_args()
 
-    online_models = check_ollama_online()
+    ollama_host = args.host.rstrip('/')
+    ollama_gen_url = f"{ollama_host}/api/generate"
+
+    online_models = check_ollama_online(ollama_host)
     if not online_models:
-        print("[!] Ollama server is NOT running on http://localhost:11434.")
+        print(f"[!] Ollama server is NOT running or unreachable at {ollama_host}.")
         sys.exit(1)
 
+    print(f"[✓] Connected to Ollama at {ollama_host}. Available models: {online_models}")
     mcp = SCHRBenchMCPServer(CONTEXTS_FILE)
     max_p = 5 if args.demo else args.max_pairs
-    run_benchmark_suite(mcp, args.models, args.tiers, max_pairs=max_p, run_obf=not args.no_obf)
+    run_benchmark_suite(mcp, args.models, args.tiers, max_pairs=max_p, run_obf=not args.no_obf, ollama_url=ollama_gen_url)
 
 
 if __name__ == "__main__":
