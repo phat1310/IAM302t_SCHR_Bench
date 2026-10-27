@@ -9,7 +9,7 @@
 
 ## 1. Định Vị Vai Trò Của Máy Ảo Trong Kiến Trúc 3-Tier
 
-Căn cứ theo [Master Plan](file:///c:/IAM302t_Proejct/docs/SCHR_BENCH_MASTER_PLAN_OBSIDIAN.md), hệ thống thực nghiệm của đồ án được phân bổ như sau:
+Căn cứ theo [Master Plan](file:///c:/IAM302t_Github_Project/IAM302t_SCHR_Bench/docs/SCHR_BENCH_MASTER_PLAN_OBSIDIAN.md), hệ thống thực nghiệm của đồ án được phân bổ như sau:
 * **Tier 1 (Máy thật MSI - WSL2 Ubuntu):** GPU NVIDIA phục vụ Ollama Server (`0.0.0.0:11434`, `llama3.1:8b`, `qwen2.5-coder:14b`).
 * **Tier 2 (Máy ảo Kali Linux 7.1.5):** Trung tâm thực thi tự động (MinGW-w64 build 80 PE, Ghidra 11.x Headless trích xuất JSON, MCP Pipeline, tính toán chỉ số SCHR, BLEU, McNemar test).
 * **Tier 3 (Máy ảo Windows 11 Pro này - CLIENT01):** 
@@ -25,11 +25,12 @@ Căn cứ theo [Master Plan](file:///c:/IAM302t_Proejct/docs/SCHR_BENCH_MASTER_P
 | Hạng mục kiểm tra | Trạng thái ghi nhận | Chi tiết & Ghi chú kỹ thuật |
 | :--- | :---: | :--- |
 | **Hệ điều hành** | ✅ Đạt | Windows 11 Pro 64-bit (chạy trên nền VMware Workstation, hostname: `CLIENT01`). |
-| **Cấu hình Mạng** | ✅ Đạt | Card mạng NAT: `192.168.86.136`, Gateway: `192.168.86.2`. Ping máy Host (`192.168.86.1`) thông 0ms. |
-| **Môi trường Git** | ✅ Đạt | Git for Windows v2.56.0 đã cài đặt, cấu hình GCM và đồng bộ thành công với repository GitHub `phat1310/IAM302t_SCHR_Bench`. |
+| **Cấu hình Mạng & Ollama** | ✅ Đạt | Card mạng NAT `192.168.86.136`. Ping máy Host (`192.168.86.1`) 0ms. Cổng TCP `11434` thông suốt, nhận diện `llama3.1:8b` & `qwen2.5-coder:14b`. |
+| **Môi trường Python** | ✅ Đạt | Python 3.12.10 đã cài đặt, cấu hình PATH hoàn chỉnh. Chạy thành công kiểm định E0 Sanity Check (40/40 pairs PASS, 160 assertions). |
+| **Môi trường Git** | ✅ Đạt | Git for Windows v2.56.0 đã cài đặt, cấu hình GCM và đồng bộ theo luồng Git-Flow (`main`, `dev`, `tier3-win11`). |
 | **Công cụ soạn thảo** | ✅ Đạt | Visual Studio Code đã cài đặt, tích hợp điều khiển Git và Markdown. |
 | **Quản lý tài liệu** | ✅ Đạt | Obsidian đã cài đặt phục vụ quản lý Vault đồ án RBL IAM302t. |
-| **Khảo sát Thư mục Dự án** | ✅ Chuẩn hóa | `C:\IAM302t_Proejct` đã được dọn dẹp sạch sẽ, cấu trúc chuẩn 3-Tier đồng bộ 100% với Git. |
+| **Khảo sát Thư mục Dự án** | ✅ Chuẩn hóa | Không gian làm việc sạch sẽ, cấu trúc chuẩn 3-Tier đồng bộ 100% với Git. |
 | **Công cụ phân tích tĩnh** | ✅ Sẵn sàng | Đã triển khai Detect It Easy v3.21 và PE-bear v0.7.2 Portable (tại `C:\Tools` và Shortcut Desktop). |
 | **Kênh chia sẻ Host - VM** | ✅ Sẵn sàng | Thư mục VMware Shared Folder sẵn sàng tại: `\\vmware-host\Shared Folders\Win11_shared` (đã có Shortcut Desktop). |
 | **Mẫu Gh0stRAT** | ⏳ Chờ nạp | Sẵn sàng tiếp nhận tệp mã độc `ea7cd59c...` qua Shared Folder để tiến hành phân tích tĩnh. |
@@ -66,7 +67,7 @@ Nhằm giữ cho máy ảo Windows 11 nhẹ nhất có thể và không can thi�
 ## 4. Danh Mục Tệp Đã Được Chuẩn Hóa Trên Máy
 
 ```
-C:\IAM302t_Proejct\
+C:\IAM302t_Github_Project\IAM302t_SCHR_Bench\
 ├── dataset/                              <-- Bộ 80 hàm C mẫu và Ground Truth
 ├── docs/                                 <-- Tài liệu Master Plan Obsidian
 ├── results/                              <-- Log benchmark và bảng kết quả Springer
@@ -92,7 +93,6 @@ C:\Users\ngtp1\Desktop\
 ├── PE-bear.lnk                           <-- Shortcut Desktop
 ├── Visual Studio Code.lnk                <-- Shortcut Desktop
 ├── Obsidian.lnk                          <-- Shortcut Desktop
-├── IAM302t_Proejct.lnk                   <-- Shortcut dẫn vào C:\IAM302t_Proejct
 └── Share_folder.txt                      <-- Đường dẫn \\vmware-host\Shared Folders\Win11_shared
 ```
 

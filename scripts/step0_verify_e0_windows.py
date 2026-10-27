@@ -11,8 +11,16 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_DIR = SCRIPT_DIR.parent
-DATASET_DIR = PROJECT_DIR / "Dataset_SCHR_Bench" / "SCHR_Bench_C_Functions"
-RESULTS_DIR = PROJECT_DIR / "Results"
+DATASET_DIR = (
+    PROJECT_DIR / "dataset" / "SCHR_Bench_C_Functions"
+    if (PROJECT_DIR / "dataset" / "SCHR_Bench_C_Functions").exists()
+    else PROJECT_DIR / "Dataset_SCHR_Bench" / "SCHR_Bench_C_Functions"
+)
+RESULTS_DIR = (
+    PROJECT_DIR / "results"
+    if (PROJECT_DIR / "results").exists()
+    else PROJECT_DIR / "Results"
+)
 RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
 
