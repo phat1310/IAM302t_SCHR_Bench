@@ -30,14 +30,37 @@
 
 ---
 
-## 🚀 3. Hướng Dẫn Tác Vụ Kế Tiếp Cho AI Agent / Thành Viên Nhóm
+## 🚀 3. Quy Chuẩn Phân Nhánh Git (Git-Flow) & Hướng Dẫn Tác Vụ Cho Từng Tier
 
-Khi một AI Agent hoặc thành viên mở workspace này ở bất kỳ Tier nào:
-1. Đọc file `TIER_ROLES.md` để xác định rõ quyền hạn và nhiệm vụ của máy tính hiện tại.
-2. Kiểm tra thư mục `scripts/` để chạy đúng bước cần thiết.
-3. Sau khi thực thi xong, cập nhật log kết quả vào thư mục `results/`, sửa file `PROJECT_STATUS.md` này và chạy lệnh:
+Dự án áp dụng mô hình phân nhánh chuẩn **Git-Flow / Feature-Branch**:
+* **`main`**: Nhánh ổn định, bảo vệ các mốc nộp đồ án (D1 -> D5) và bài báo Springer chính thức.
+* **`dev`**: Nhánh tích hợp trung tâm. Mọi thay đổi của các Tier được merge vào đây để kiểm thử.
+* **Nhánh của từng Tier:**
+  * `tier1-host`: Phục vụ cấu hình Ollama, prompt engineering, bài báo Springer.
+  * `tier2-kali`: Phục vụ MinGW, Ghidra Headless, MCP Benchmark.
+  * `tier3-win11`: Phục vụ công cụ DIE/PE-bear và bóc tách mẫu Gh0stRAT.
+
+### Quy trình làm việc chuẩn cho Agent / Thành viên:
+1. Luôn xuất phát từ nhánh `dev` mới nhất:
    ```bash
-   git add results/ PROJECT_STATUS.md
-   git commit -m "update: [Tier X] cập nhật kết quả thực nghiệm mới nhất"
-   git push origin main
+   git checkout dev
+   git pull origin dev
    ```
+2. Làm việc trên nhánh riêng của Tier:
+   ```bash
+   git checkout -b tier2-kali    # (Hoặc tier3-win11, tier1-host)
+   ```
+3. Sau khi hoàn thành tác vụ và kiểm thử thành công:
+   ```bash
+   git add .
+   git commit -m "feat(tierX): nội dung tác vụ vừa hoàn thành"
+   git push -u origin tier2-kali
+   ```
+4. Gộp code vào nhánh `dev` (qua Pull Request trên GitHub hoặc gộp trực tiếp):
+   ```bash
+   git checkout dev
+   git pull origin dev
+   git merge tier2-kali
+   git push origin dev
+   ```
+5. **Chỉ merge `dev` vào `main`** khi toàn bộ test suite và mốc đồ án được nghiệm thu đạt 100%.

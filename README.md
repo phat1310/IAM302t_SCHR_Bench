@@ -63,16 +63,31 @@ Xem nhật ký tiến độ dự án tại [PROJECT_STATUS.md](PROJECT_STATUS.md
 
 ---
 
-## ⚡ 5. Hướng Dẫn Đồng Bộ Giữa Các Máy Ảo
+## 🌿 5. Chiến Lược Phân Nhánh Git (Branching Workflow)
 
-Mỗi khi bắt đầu ca làm việc trên bất kỳ máy ảo nào:
-```bash
-git pull origin main
-```
+Để bảo đảm tính ổn định và tách bạch môi trường thực nghiệm, dự án tuân theo quy trình Git-Flow:
+* **`main`**: Nhánh bảo vệ (Protected Branch). Chỉ cập nhật khi nghiệm thu hoàn tất các mốc D1 $\rightarrow$ D5 và bản thảo hoàn thiện của bài báo khoa học.
+* **`dev`**: Nhánh tích hợp trung tâm (Integration Branch). Nơi hội tụ các kết quả thực nghiệm và tính năng mới từ các Tier.
+* **Nhánh theo Tier / Feature**:
+  * `tier1-host`: Phục vụ cấu hình Ollama, prompt engineering, paper drafts.
+  * `tier2-kali`: Phục vụ MinGW, Ghidra Headless, MCP Benchmark.
+  * `tier3-win11`: Phục vụ Sandbox setup, công cụ DIE/PE-bear và bóc tách mẫu Gh0stRAT.
 
-Sau khi hoàn thành tác vụ (sinh kết quả mới / cập nhật script):
-```bash
-git add .
-git commit -m "update: [Tier X] nội dung công việc vừa hoàn thành"
-git push origin main
-```
+### Luồng làm việc chuẩn:
+1. **Lấy code mới nhất từ dev:**
+   ```bash
+   git checkout dev
+   git pull origin dev
+   ```
+2. **Tạo nhánh làm việc:**
+   ```bash
+   git checkout -b tier2-kali
+   ```
+3. **Commit & Push kết quả:**
+   ```bash
+   git add .
+   git commit -m "feat(tier2): cập nhật bảng kết quả thực nghiệm CT1-CT4"
+   git push -u origin tier2-kali
+   ```
+4. **Merge vào `dev`:** Tạo Pull Request trên GitHub từ `tierX` vào `dev` hoặc gộp trực tiếp trên máy sau khi test đạt.
+5. **Merge vào `main`:** Nghiệm thu hoàn thiện mốc đồ án rồi merge `dev` $\rightarrow$ `main`.
