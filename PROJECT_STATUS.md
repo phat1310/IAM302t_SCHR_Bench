@@ -25,7 +25,7 @@
 
 | Phân Tầng (Tier) | Môi Trường | Nhiệm Vụ Cốt Lõi | Trạng Thái Hoạt Động |
 | :--- | :--- | :--- | :---: |
-| **Tier 1 (Host MSI - WSL2)** | Ubuntu (`0.0.0.0:11434`) | Phục vụ GPU Ollama Server (`llama3.1`, `qwen2.5-coder`) | 🟢 Sẵn sàng |
+| **Tier 1 (Host MSI - WSL2)** | Ubuntu (`0.0.0.0:11434`) | Phục vụ GPU Ollama Server, Git Master & Đồng bộ Bài báo Springer/IEEE | 🟢 Hoàn tất tài liệu Tier 1, scripts GPU & Tích hợp Papers LaTeX |
 | **Tier 2 (Kali Linux VM)** | Kali Linux (VMware) | Build 80 PE, Ghidra Headless, Chạy Benchmark Pipeline | 🟢 Hoàn tất Benchmark 80 PE & Sẵn sàng Live Demo D3 |
 | **Tier 3 (Win11 VM)** | Windows 11 Sandbox | Phân tích mẫu Gh0stRAT (DIE, PE-bear, IAT & Run Key) | 🟢 Hoàn tất môi trường & Sẵn sàng phân tích Gh0stRAT |
 

@@ -50,9 +50,11 @@ Xem nhật ký tiến độ dự án tại [PROJECT_STATUS.md](PROJECT_STATUS.md
 ```
 04_IAM302t_Github_Project/
 ├── dataset/                    # 40 hàm C bảo mật tự viết & các biến thể đột biến (A, S, P, E, C)
-├── docs/                       # Master Plan Obsidian, slide thuyết trình & bài báo Springer
-├── results/                    # Bảng kết quả JSON, log thực nghiệm và bảng thống kê E0
-├── scripts/                    # Toàn bộ script tự động hóa (Step 0 -> Step 4)
+├── docs/                       # Master Plan Obsidian & tài liệu kiến trúc dự án
+├── papers/                     # Mã nguồn bài báo khoa học chuẩn Springer LNICST (10-14 trang) & IEEE (8-10 trang)
+├── results/                    # Bảng kết quả JSON, log thực nghiệm N=80 và bảng thống kê Springer
+├── scripts/                    # Toàn bộ script tự động hóa (Step 0 -> Step 4, Live Demo)
+├── tier1_host/                 # Tài liệu & script giám sát Ollama GPU Server trên Host MSI (WSL2)
 ├── tier2_kali/                 # Tài liệu & script hướng dẫn chạy riêng cho máy ảo Kali Linux
 ├── tier3_win11/                # Tài liệu & script phân tích tĩnh mã độc cho Sandbox Win11
 ├── .gitignore                  # Cấu hình loại trừ file nhị phân mã độc và file đĩa ảo lớn
