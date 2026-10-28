@@ -200,3 +200,6 @@ Nhóm đề xuất tiến hành chụp bổ sung ngay 6 ảnh sau đây để ho
 | **10** | `10_kali_eval_engine_schr_tables.png` | **TASK 6** (Statistical Engine) | `python3 evaluation/eval_engine.py` | Terminal hiển thị bảng SCHR theo từng tầng context, Wilson CI 95% và kết quả McNemar test ($p < 0.01$). |
 | **11** | `11_kali_live_demo_terminal_execution.png` | **TASK 7** (Deliverable D3 Live Demo) | `bash scripts/live_demo.sh` | Terminal hiển thị banner Live Demo D3, luồng tương tác 3 bước (E0 Ground Truth $\rightarrow$ CT1 Hallucination $\rightarrow$ CT2 Assembly Anchor). |
 | **12** | `12_kali_gh0strat_case_study_evaluation.png` | **MỐC D4** (Gh0stRAT Case Study) | `python3 scripts/evaluate_gh0strat_case_study.py` | Terminal hiển thị kết quả đánh giá ảo giác Gh0stRAT: LLaMA-3.1 8B ảo giác tại CT1 (75%) và được hóa giải tại CT2 (0%) bởi Assembly Anchor. |
+
+> [!TIP]
+> Chi tiết hướng dẫn thao tác chụp ảnh, tiêu chuẩn kiểm thử từng bước và quy trình commit/push xem tại: [TASK_TIER2_KALI_EXECUTION_PLAN.md](TASK_TIER2_KALI_EXECUTION_PLAN.md#-hướng-dẫn-chi-tiết-từng-bước-chụp-bộ-ảnh-thực-nghiệm-cốt-lõi-07--12).

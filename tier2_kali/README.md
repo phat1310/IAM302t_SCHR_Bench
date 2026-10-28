@@ -39,6 +39,8 @@ Toàn bộ ảnh chụp màn hình minh chứng quá trình thiết lập và th
 * **`11_kali_live_demo_terminal_execution.png`**: Giao diện thực thi kịch bản Live Demo 1-lệnh (`scripts/live_demo.sh` nghiệm thu Mốc D3).
 * **`12_kali_gh0strat_case_study_evaluation.png`**: Thực nghiệm đối chứng ảo giác an ninh trên mẫu Gh0stRAT (`scripts/evaluate_gh0strat_case_study.py` nghiệm thu Mốc D4).
 
+👉 **Checklist hướng dẫn từng bước chi tiết kèm lệnh terminal chuẩn:** Xem mục [Hướng dẫn chụp bộ ảnh cốt lõi 07–12 trong TASK_TIER2_KALI_EXECUTION_PLAN.md](TASK_TIER2_KALI_EXECUTION_PLAN.md#-hướng-dẫn-chi-tiết-từng-bước-chụp-bộ-ảnh-thực-nghiệm-cốt-lõi-07--12).
+
 ---
 
 ## 📌 Các liên kết nhanh trong thư mục gốc dự án Kali (`/home/NTP/IAM302t/`):

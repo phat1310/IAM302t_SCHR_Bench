@@ -74,6 +74,134 @@ tags:
 
 ---
 
+## 📋 HƯỚNG DẪN CHI TIẾT TỪNG BƯỚC CHỤP BỘ ẢNH THỰC NGHIỆM CỐT LÕI (07 – 12)
+
+> **Mục tiêu:** Cung cấp đầy đủ bằng chứng thực nghiệm phục vụ viết bài báo khoa học Springer LNICST (INISCOM 2027) và báo cáo bảo vệ đồ án IAM302t.  
+> **Thư mục lưu ảnh:** [`tier2_kali/Image_Result/`](file:///home/NTP/IAM302t/IAM302t_SCHR_Bench/tier2_kali/Image_Result/)  
+> **Mẹo chụp ảnh trên Kali Linux:** Nhấn **`Alt + PrintScreen`** để chụp riêng cửa sổ Terminal đang chọn (hoặc mở công cụ `xfce4-screenshooter` chọn chế độ *Active window*).
+
+### ⚙️ Bước 0: Kiểm tra điều kiện cần trước khi thực hiện
+- [ ] **Nhóm ảnh nội bộ (Ảnh 07, 08, 10):** Chạy 100% nội bộ trên Kali, không yêu cầu Ollama Host.
+- [ ] **Nhóm ảnh kết nối mạng AI (Ảnh 09, 11, 12):** Yêu cầu máy **Host Windows** đã bật Ollama:
+  ```powershell
+  # Chạy tại PowerShell Admin máy Host
+  ollama serve
+  ```
+  Kiểm tra kết nối từ terminal Kali:
+  ```bash
+  curl -s http://192.168.86.1:11434/api/tags | jq .
+  ```
+
+---
+
+### 📷 Bước 1: Chụp Ảnh 07 — Ground Truth Sanity Check E0
+* **Tên file:** `07_kali_e0_sanity_check_160_pass.png`
+* **Mục tiêu trong Paper:** Minh chứng tính tin cậy của bộ Ground Truth tác giả tự viết, không có đột biến trung tính (non-neutral mutation đạt 100%).
+* **Lệnh thực thi tại Terminal Kali:**
+  ```bash
+  cd /home/NTP/IAM302t/IAM302t_SCHR_Bench
+  python3 /home/NTP/IAM302t/dataset/Dataset_SCHR_Bench/SCHR_Bench_C_Functions/tools/check_suite.py
+  ```
+* **Tiêu chuẩn kiểm tra trước khi bấm chụp:**
+  - [ ] Terminal in ra: `Functions: 40 | Variant builds: 80 | Test assertions: 160`
+  - [ ] Terminal in ra: `Discriminating mutations: 40`
+  - [ ] Dòng chữ xanh lá: `PASS: all hand-authored ground-truth assertions matched.`
+
+---
+
+### 📷 Bước 2: Chụp Ảnh 08 — Ghidra Headless Batch Decompile
+* **Tên file:** `08_kali_batch_decompile_80_binaries.png`
+* **Mục tiêu trong Paper:** Minh chứng pipeline RE tự động hóa của Ghidra Headless trích xuất thành công toàn bộ Pseudocode C và Assembly x64 cho 80 file PE stripped.
+* **Lệnh thực thi tại Terminal Kali:**
+  ```bash
+  cd /home/NTP/IAM302t/IAM302t_SCHR_Bench
+  python3 scripts/extract_contexts.py
+  ```
+  *(Hoặc `python3 /home/NTP/IAM302t/scripts/batch_decompile.py`)*
+* **Tiêu chuẩn kiểm tra trước khi bấm chụp:**
+  - [ ] Terminal hiển thị tiến trình duyệt qua danh sách các binary trong `bin/`.
+  - [ ] Thông báo hoàn thành hợp nhất dữ liệu vào `results/decompiled_contexts_80.json`.
+
+---
+
+### 📷 Bước 3: Chụp Ảnh 09 — MCP Benchmark Runner Đa Tầng Context
+* **Tên file:** `09_kali_run_bench_multi_context.png`
+* **Mục tiêu trong Paper:** Minh chứng giàn khảo nghiệm độc lập (Tier 2 Rig) gửi đề thi các tầng ngữ cảnh (CT1, CT2, CT3) sang Model Server qua REST API với `temperature=0.0`, `seed=42`.
+* **Lệnh thực thi tại Terminal Kali:**
+  ```bash
+  cd /home/NTP/IAM302t/IAM302t_SCHR_Bench
+  python3 scripts/step3_mcp_server_and_benchmark.py --max-pairs 5
+  ```
+* **Tiêu chuẩn kiểm tra trước khi bấm chụp:**
+  - [ ] Terminal hiển thị kết nối thành công tới Host `http://192.168.86.1:11434`.
+  - [ ] Hiển thị quá trình truy vấn lần lượt `llama3.1:8b` và `qwen2.5-coder:14b` trên từng tầng CT1, CT2, CT3 kèm chỉ số Latency (s).
+
+---
+
+### 📷 Bước 4: Chụp Ảnh 10 — Động Cơ Thống Kê & Bảng Springer LNICST
+* **Tên file:** `10_kali_eval_engine_schr_tables.png`
+* **Mục tiêu trong Paper:** Bảng định lượng trung tâm (Table 2 & Table 3 của bài báo) xác thực chỉ số SCHR, khoảng tin cậy Wilson CI 95% và kiểm định McNemar Test ($p < 0.01$).
+* **Lệnh thực thi tại Terminal Kali:**
+  ```bash
+  cd /home/NTP/IAM302t/IAM302t_SCHR_Bench
+  python3 evaluation/eval_engine.py
+  head -n 25 results/PAPER_TABLES_SPRINGER.md
+  ```
+* **Tiêu chuẩn kiểm tra trước khi bấm chụp:**
+  - [ ] Terminal hiển thị kết quả kiểm định: `SCHR: 37.50%`, `Wilson 95% CI: [24.22%, 52.97%]`, `McNemar Test: chi2=7.5625, p-value=5.9595e-03, significant=True`.
+  - [ ] Bảng Markdown đối chiếu đầy đủ các cột: LLM, Tầng Ngữ Cảnh, Lỗi Ảo Giác, SCHR (%), Miss Rate, BLEU Score.
+
+---
+
+### 📷 Bước 5: Chụp Ảnh 11 — Kịch Bản Live Demonstration 1-Lệnh
+* **Tên file:** `11_kali_live_demo_terminal_execution.png`
+* **Mục tiêu trong Paper & Báo cáo:** Minh chứng kịch bản Live Demo bảo vệ đồ án (Mốc D3) trực quan hóa hiện tượng ảo giác an ninh tại CT1 và được khắc phục tại CT2.
+* **Lệnh thực thi tại Terminal Kali:**
+  ```bash
+  cd /home/NTP/IAM302t/IAM302t_SCHR_Bench
+  bash scripts/live_demo.sh
+  ```
+  *(Hoặc `python3 scripts/live_demo.py`)*
+* **Tiêu chuẩn kiểm tra trước khi bấm chụp:**
+  - [ ] Terminal hiển thị Banner: `🎬 SCHR-BENCH: LIVE DEMONSTRATION OF CONTEXT ESCALATION (MILESTONE D3)`.
+  - [ ] Hiển thị luồng demo tương tác từng bước trực quan giữa CT1 (ảo giác) và CT2 (khắc phục bằng Assembly Anchor).
+
+---
+
+### 📷 Bước 6: Chụp Ảnh 12 — Thực Nghiệm Đánh Giá Ảo Giác Mẫu Gh0stRAT PE32
+* **Tên file:** `12_kali_gh0strat_case_study_evaluation.png`
+* **Mục tiêu trong Paper:** Dữ liệu thực nghiệm ca thực tế phục vụ **Section 5 (Real-World Malware Case Study: Gh0stRAT PE32)** của bài báo Springer.
+* **Lệnh thực thi tại Terminal Kali:**
+  ```bash
+  cd /home/NTP/IAM302t/IAM302t_SCHR_Bench
+  python3 scripts/evaluate_gh0strat_case_study.py
+  ```
+* **Tiêu chuẩn kiểm tra trước khi bấm chụp:**
+  - [ ] Terminal hiển thị đánh giá cả 2 ca: `CS01_GH0STRAT_PACKER_ENTRY` (VXiProtect/VMProtect) và `CS02_GH0STRAT_PERSISTENCE_INSTALL` (Registry Run Key).
+  - [ ] Dòng chữ xanh: `✅ Evaluation Complete! Results saved to: results/GH0STRAT_EVALUATION.json`.
+
+---
+
+### 🚀 Bước 7: Lưu File, Commit Git & Đồng Bộ Nhánh
+Sau khi chụp và lưu đủ 6 ảnh mới vào `tier2_kali/Image_Result/`:
+```bash
+cd /home/NTP/IAM302t/IAM302t_SCHR_Bench
+
+# 1. Commit trên nhánh tier2-kali
+git checkout tier2-kali
+git add tier2_kali/Image_Result/*.png
+git commit -m "feat(tier2): hoàn thành chụp bổ sung 6 ảnh thực nghiệm cốt lõi 07-12 cho paper Springer"
+
+# 2. Merge sang nhánh dev
+git checkout dev
+git merge tier2-kali
+
+# 3. Đẩy lên GitHub Remote
+git push origin dev tier2-kali
+```
+
+---
+
 ## 🚀 CHI TIẾT TỪNG BƯỚC THỰC HIỆN TRÊN TERMINAL KALI LINUX
 
 ---
