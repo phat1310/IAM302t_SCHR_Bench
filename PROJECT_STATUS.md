@@ -1,6 +1,6 @@
 # 🧭 PROJECT STATUS & AUTOMATION MANIFEST (SCHR-BENCH)
 > **Tài liệu theo dõi trạng thái đồng bộ liên Tier (Tier 1 <-> Tier 2 <-> Tier 3)**  
-> **Cập nhật lần cuối:** 2026-10-27  
+> **Cập nhật lần cuối:** 2026-10-28 — [Tier 3] Mẫu Gh0stRAT PE32 đã sẵn sàng tại Sandbox  
 > **Học phần:** IAM302t — Malware Analysis & Reverse Engineering (Fall 2026, RBL Model)  
 > **Nhóm thực hiện:** Nhóm 7 (Lớp IA2007) — Trường Đại học FPT TP.HCM  
 
@@ -16,7 +16,11 @@
   - [x] Thực thi MCP Benchmark Agent trên Ollama Server (`llama3.1:8b` & `qwen2.5-coder:14b`) toàn diện 80 binary PE ($N=80$).
   - [x] Tính toán chỉ số SCHR, Miss Rate, McNemar Test, 95% Wilson CI (`PAPER_TABLES_SPRINGER.md`).
   - [x] Đóng gói kịch bản Live Demo 1-lệnh trực quan (`scripts/live_demo.sh`).
-- [ ] **D4 (Section 5 Case Study):** Phân tích tĩnh mẫu Gh0stRAT PE32 (`ea7cd59c...`) trên Sandbox Tier 3 (Xem checklist chi tiết tại [PHASE2_GH0STRAT_EXECUTION_CHECKLIST.md](docs/PHASE2_GH0STRAT_EXECUTION_CHECKLIST.md)).
+- [ ] **D4 (Section 5 Case Study):** Phân tích tĩnh mẫu Gh0stRAT PE32 (`ea7cd59c...`) trên Sandbox Tier 3.
+  - [x] **Mẫu Gh0stRAT đã sẵn sàng** tại `C:\IAM302t_Github_Project\Malware\ea7cd59c...zip` trên máy ảo Win 11 Sandbox (2026-10-28).
+  - [ ] Giải nén mẫu và mở phân tích bằng DIE & PE-bear (Checklist: [PHASE2_GH0STRAT_EXECUTION_CHECKLIST.md](docs/PHASE2_GH0STRAT_EXECUTION_CHECKLIST.md)).
+  - [ ] Chụp ảnh 4 minh chứng IAT và lưu vào `tier3_win11/Image_Result/`.
+  - [ ] Commit ảnh minh chứng lên nhánh `tier3-win11` để Tier 2 nhận offset và chạy Ghidra.
 - [ ] **D5 (Final Paper & Bảo vệ đồ án):** Hoàn thiện bài báo Springer LNICST (8-10 trang) nộp EAI INISCOM 2027.
 
 ---
@@ -27,7 +31,7 @@
 | :--- | :--- | :--- | :---: |
 | **Tier 1 (Host MSI - WSL2)** | Ubuntu (`0.0.0.0:11434`) | Phục vụ GPU Ollama Server, Git Master & Đồng bộ Bài báo Springer/IEEE | 🟢 Hoàn tất tài liệu Tier 1, scripts GPU & Tích hợp Papers LaTeX |
 | **Tier 2 (Kali Linux VM)** | Kali Linux (VMware) | Build 80 PE, Ghidra Headless, Chạy Benchmark Pipeline | 🟢 Hoàn tất Benchmark 80 PE & Sẵn sàng Live Demo D3 |
-| **Tier 3 (Win11 VM)** | Windows 11 Sandbox | Phân tích mẫu Gh0stRAT (DIE, PE-bear, IAT & Run Key) | 🟢 Hoàn tất môi trường & Sẵn sàng phân tích Gh0stRAT |
+| **Tier 3 (Win11 VM)** | Windows 11 Sandbox | Phân tích mẫu Gh0stRAT (DIE, PE-bear, IAT & Run Key) | 🔵 **Mẫu Gh0stRAT đã nhận — Đang chuẩn bị phân tích tĩnh** |
 
 ---
 
