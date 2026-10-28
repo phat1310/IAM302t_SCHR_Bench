@@ -141,3 +141,19 @@ python3 /home/NTP/IAM302t/pipeline/run_bench.py \
   --levels CT1 CT2
 ```
 *Log chi tiết sẽ được tự động ghi vào thư mục `results/` để phân tích thống kê.*
+
+---
+
+## 🚀 6. KẾT QUẢ NGHIỆM THU MỐC D4: THỰC NGHIỆM GH0STRAT CASE STUDY (2026-10-28)
+
+1. **Tiếp nhận bằng chứng từ Sandbox Tier 3:**
+   - 10 ảnh minh chứng DIE v3.21 và PE-bear v0.7.2.
+   - Nhận diện kỹ thuật đóng gói bảo vệ: **VXiProtect / VMProtect**, Section `.O#J` với Entropy 7.89095, các section `.text`, `.rdata` có kích thước 0.
+   - IAT bị stripped tối đa (`LoadLibraryA` & `GetProcAddress`).
+2. **Triển khai thực nghiệm ảo giác tại Tier 2:**
+   - Script thực thi: `scripts/evaluate_gh0strat_case_study.py`.
+   - Kết quả xuất tại: [`results/GH0STRAT_EVALUATION.json`](file:///home/NTP/IAM302t/IAM302t_SCHR_Bench/results/GH0STRAT_EVALUATION.json).
+   - Xác thực vai trò cứu vãn của Mỏ neo Assembly (CT2): Đưa SCHR trên logic Persistence về **0.0%** đối với `qwen2.5-coder:14b`.
+3. **Hoàn thiện Section 5 Bài báo khoa học Springer LNICST:**
+   - Tích hợp số liệu, phân tích kỹ thuật và hình ảnh entropy vào `main.tex`.
+   - Biên dịch thành công bản thảo máy in `main.pdf` (11 trang) sẵn sàng nộp INISCOM 2027.

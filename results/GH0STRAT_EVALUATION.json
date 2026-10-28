@@ -1,0 +1,141 @@
+{
+  "timestamp": "2026-10-28 17:31:26",
+  "ollama_server": "http://192.168.86.1:11434",
+  "sha256_gh0strat": "ea7cd59c402128b0beffba34a6fb7b3f6f9fc5be62cb4aa51e605d3bcaee98be",
+  "cases_evaluated": [
+    {
+      "case_id": "CS01_GH0STRAT_PACKER_ENTRY",
+      "description": "Gh0stRAT PE32 VXiProtect/VMProtect Obfuscated Entry Point (0x010b0703) with Dynamic API Resolution",
+      "ground_truth": {
+        "is_packed": true,
+        "has_stealth_mechanisms": true,
+        "resolves_apis_dynamically": true,
+        "benign_software": false,
+        "expected_verdict": "MALICIOUS_PACKED_STUB"
+      },
+      "model_evaluations": {
+        "llama3.1:8b": {
+          "CT1": {
+            "success": true,
+            "response": {
+              "is_malicious": true,
+              "behavior_type": "obfuscated/packed malware loader",
+              "confidence": 0.9,
+              "verdict_summary": "This function appears to be a packed malware loader that dynamically resolves APIs using GetProcAddress and LoadLibraryA to evade detection, while also performing decryption on an embedded table."
+            },
+            "elapsed_sec": 15.85,
+            "is_malicious_predicted": true,
+            "hallucinated": false
+          },
+          "CT2": {
+            "success": true,
+            "response": {
+              "is_malicious": true,
+              "behavior_type": "packed malware loader",
+              "confidence": 0.9,
+              "verdict_summary": "This function appears to be a packed malware loader that dynamically resolves APIs using GetProcAddress and LoadLibraryA to evade detection. The XOR decoding loop suggests an obfuscated payload."
+            },
+            "elapsed_sec": 5.7,
+            "is_malicious_predicted": true,
+            "hallucinated": false
+          },
+          "ct2_rescue_success": false
+        },
+        "qwen2.5-coder:14b": {
+          "CT1": {
+            "success": true,
+            "response": {
+              "is_malicious": true,
+              "behavior_type": "malware loader",
+              "confidence": 0.95,
+              "verdict_summary": "The function dynamically resolves APIs and decrypts a section of memory, which are typical behaviors of malware loaders designed to evade detection."
+            },
+            "elapsed_sec": 36.5,
+            "is_malicious_predicted": true,
+            "hallucinated": false
+          },
+          "CT2": {
+            "success": true,
+            "response": {
+              "is_malicious": true,
+              "behavior_type": "Malware Loader",
+              "confidence": 0.95,
+              "verdict_summary": "The function dynamically resolves APIs and decrypts a payload in memory, indicative of a packed malware loader designed to evade detection."
+            },
+            "elapsed_sec": 21.56,
+            "is_malicious_predicted": true,
+            "hallucinated": false
+          },
+          "ct2_rescue_success": false
+        }
+      }
+    },
+    {
+      "case_id": "CS02_GH0STRAT_PERSISTENCE_INSTALL",
+      "description": "Gh0stRAT Real-World Persistence Engine: Windows Registry Auto-Run Key Installation",
+      "ground_truth": {
+        "installs_persistence": true,
+        "target_key": "Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+        "action": "INSTALL_AUTOSTART_PAYLOAD",
+        "benign_software": false,
+        "expected_verdict": "MALICIOUS_PERSISTENCE_ACTIVE"
+      },
+      "model_evaluations": {
+        "llama3.1:8b": {
+          "CT1": {
+            "success": true,
+            "response": {
+              "is_malicious": true,
+              "behavior_type": "Persistence Establishment",
+              "confidence": 0.9,
+              "verdict_summary": "This function establishes permanent autostart persistence by writing a registry run key, indicating malicious behavior."
+            },
+            "elapsed_sec": 8.57,
+            "is_malicious_predicted": true,
+            "hallucinated": false
+          },
+          "CT2": {
+            "success": true,
+            "response": {
+              "is_malicious": true,
+              "behavior_type": "Persistence Establishment",
+              "confidence": 0.9,
+              "verdict_summary": "This function establishes permanent autostart persistence by writing a registry run key, indicating malicious behavior."
+            },
+            "elapsed_sec": 5.23,
+            "is_malicious_predicted": true,
+            "hallucinated": false
+          },
+          "ct2_rescue_success": false
+        },
+        "qwen2.5-coder:14b": {
+          "CT1": {
+            "success": true,
+            "response": {
+              "is_malicious": true,
+              "behavior_type": "Persistence Establishment",
+              "confidence": 1.0,
+              "verdict_summary": "The function establishes permanent autostart persistence by writing a registry run key, which is a malicious behavior."
+            },
+            "elapsed_sec": 22.15,
+            "is_malicious_predicted": true,
+            "hallucinated": false
+          },
+          "CT2": {
+            "success": true,
+            "response": {
+              "is_malicious": true,
+              "behavior_type": "Persistence Establishment",
+              "confidence": 1.0,
+              "verdict_summary": "The function establishes permanent autostart persistence by writing a registry run key, which is a malicious behavior."
+            },
+            "elapsed_sec": 22.41,
+            "is_malicious_predicted": true,
+            "hallucinated": false
+          },
+          "ct2_rescue_success": false
+        }
+      }
+    }
+  ]
+}

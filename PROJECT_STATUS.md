@@ -16,12 +16,13 @@
   - [x] Thực thi MCP Benchmark Agent trên Ollama Server (`llama3.1:8b` & `qwen2.5-coder:14b`) toàn diện 80 binary PE ($N=80$).
   - [x] Tính toán chỉ số SCHR, Miss Rate, McNemar Test, 95% Wilson CI (`PAPER_TABLES_SPRINGER.md`).
   - [x] Đóng gói kịch bản Live Demo 1-lệnh trực quan (`scripts/live_demo.sh`).
-- [ ] **D4 (Section 5 Case Study):** Phân tích tĩnh mẫu Gh0stRAT PE32 (`ea7cd59c...`) trên Sandbox Tier 3.
+- [x] **D4 (Section 5 Case Study):** Phân tích tĩnh mẫu Gh0stRAT PE32 (`ea7cd59c...`) trên Sandbox Tier 3 & Thực nghiệm ảo giác tại Tier 2.
   - [x] **Mẫu Gh0stRAT đã sẵn sàng** tại `C:\IAM302t_Github_Project\Malware\ea7cd59c...zip` trên máy ảo Win 11 Sandbox (2026-10-28).
-  - [ ] Giải nén mẫu và mở phân tích bằng DIE & PE-bear (Checklist: [PHASE2_GH0STRAT_EXECUTION_CHECKLIST.md](docs/PHASE2_GH0STRAT_EXECUTION_CHECKLIST.md)).
-  - [ ] Chụp ảnh 4 minh chứng IAT và lưu vào `tier3_win11/Image_Result/`.
-  - [ ] Commit ảnh minh chứng lên nhánh `tier3-win11` để Tier 2 nhận offset và chạy Ghidra.
-- [ ] **D5 (Final Paper & Bảo vệ đồ án):** Hoàn thiện bài báo Springer LNICST (8-10 trang) nộp EAI INISCOM 2027.
+  - [x] Giải nén mẫu và mở phân tích bằng DIE v3.21 & PE-bear v0.7.2: Phát hiện VXiProtect/VMProtect, Section `.O#J` Entropy 7.89095.
+  - [x] Nộp 10 ảnh minh chứng, 3 file logs/data trích xuất tại `tier3_win11/Image_Result/`.
+  - [x] Tier 2 hoàn thành thực nghiệm đối chứng ảo giác an ninh trên GPU Ollama Server, xuất `results/GH0STRAT_EVALUATION.json`.
+  - [x] Tích hợp hình ảnh và hoàn thiện Section 5 vào bản thảo Springer LNICST (`main.tex`, biên dịch `main.pdf` 11 trang).
+- [ ] **D5 (Final Paper & Bảo vệ đồ án):** Hoàn thiện bài báo Springer LNICST (10-14 trang) nộp EAI INISCOM 2027.
 
 ---
 
@@ -29,9 +30,9 @@
 
 | Phân Tầng (Tier) | Môi Trường | Nhiệm Vụ Cốt Lõi | Trạng Thái Hoạt Động |
 | :--- | :--- | :--- | :---: |
-| **Tier 1 (Host MSI - WSL2)** | Ubuntu (`0.0.0.0:11434`) | Phục vụ GPU Ollama Server, Git Master & Đồng bộ Bài báo Springer/IEEE | 🟢 Hoàn tất tài liệu Tier 1, scripts GPU & Tích hợp Papers LaTeX |
-| **Tier 2 (Kali Linux VM)** | Kali Linux (VMware) | Build 80 PE, Ghidra Headless, Chạy Benchmark Pipeline | 🟢 Hoàn tất Benchmark 80 PE & Sẵn sàng Live Demo D3 |
-| **Tier 3 (Win11 VM)** | Windows 11 Sandbox | Phân tích mẫu Gh0stRAT (DIE, PE-bear, IAT & Run Key) | 🔵 **Mẫu Gh0stRAT đã nhận — Đang chuẩn bị phân tích tĩnh** |
+| **Tier 1 (Host MSI - WSL2)** | Ubuntu (`0.0.0.0:11434`) | Phục vụ GPU Ollama Server, Git Master & Đồng bộ Bài báo Springer/IEEE | 🟢 Sẵn sàng phục vụ suy luận LLM & Đồng bộ tài liệu |
+| **Tier 2 (Kali Linux VM)** | Kali Linux (VMware) | Build 80 PE, Ghidra Headless, Chạy Benchmark Pipeline, Case Study Gh0stRAT | 🟢 Hoàn tất Mốc D4 Case Study (`GH0STRAT_EVALUATION.json`) & Paper PDF |
+| **Tier 3 (Win11 VM)** | Windows 11 Sandbox | Phân tích mẫu Gh0stRAT (DIE, PE-bear, IAT & Run Key) | 🟢 Hoàn tất phân tích tĩnh 10 ảnh minh chứng & Layout Section |
 
 ---
 
