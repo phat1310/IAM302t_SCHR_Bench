@@ -38,17 +38,39 @@ tags:
 
 ---
 
-## 🗂️ BẢNG THEO DÕI TIẾN ĐỘ TÁC VỤ TIER 2 (TASK TRACKING MATRIX)
+## 🗂️ BẢNG THEO DÕI TIẾN ĐỘ TÁC VỤ VÀ MINH CHỨNG HÌNH ẢNH TIER 2
 
-| Mã Task | Tên Nhiệm vụ Trọng tâm | Trạng thái | Sản phẩm Đầu ra Mục tiêu |
-| :---: | :--- | :---: | :--- |
-| **TASK-1** | Kiểm tra Môi trường & Mạng LAN ảo (Host $\leftrightarrow$ Kali) | ✅ Hoàn thành | Ping 0ms, curl Ollama 200 OK (`llama3.1`, `qwen2.5`) |
-| **TASK-2** | Đồng bộ Dataset 40 hàm C & Chạy E0 Sanity Check | ✅ Hoàn thành | 160 assertions PASS, file `results/E0_sanity_kali.txt` |
-| **TASK-3** | Biên dịch Chéo 80 Binary PE x64 Stripped (`mingw-w64`) | ✅ Hoàn thành | 80 file nhị phân trong `dataset/.../build/pe_x64_O0/` |
-| **TASK-4** | Vận hành Ghidra Headless bóc tách Pseudocode/Assembly | ✅ Hoàn thành | File CSDL `results/decompiled_contexts_80.json` |
-| **TASK-5** | Vận hành MCP Agent & Khảo nghiệm Đa tầng (CT1 $\rightarrow$ CT3) | ✅ Hoàn thành | 480 queries logged trong `results/benchmark_raw_logs.json` |
-| **TASK-6** | Chạy Động cơ Thống kê (SCHR, BLEU, McNemar, Wilson CI) | ✅ Hoàn thành | Bảng Springer trong `results/PAPER_TABLES_SPRINGER.md` |
-| **TASK-7** | Đóng gói Kịch bản & Script Live Demo Mốc D3 | ✅ Hoàn thành | Script biểu diễn 1-lệnh `scripts/live_demo.sh` |
+| Mã Task | Tên Nhiệm vụ Trọng tâm | Trạng thái | Sản phẩm Đầu ra Mục tiêu | Ảnh Minh chứng (`Image_Result/`) |
+| :---: | :--- | :---: | :--- | :--- |
+| **TASK-1** | Kiểm tra Môi trường & Mạng LAN ảo (Host $\leftrightarrow$ Kali) | ✅ Hoàn thành | Ping 0ms, curl Ollama 200 OK (`llama3.1`, `qwen2.5`) | `01` - `06` (Đã chuẩn hóa) |
+| **TASK-2** | Đồng bộ Dataset 40 hàm C & Chạy E0 Sanity Check | ✅ Hoàn thành | 160 assertions PASS, file `results/E0_sanity_kali.txt` | `07_kali_e0_sanity_check_160_pass.png` *(Đề xuất)* |
+| **TASK-3** | Biên dịch Chéo 80 Binary PE x64 Stripped (`mingw-w64`) | ✅ Hoàn thành | 80 file nhị phân trong `dataset/.../build/pe_x64_O0/` | `08_kali_batch_decompile_80_binaries.png` *(Đề xuất)* |
+| **TASK-4** | Vận hành Ghidra Headless bóc tách Pseudocode/Assembly | ✅ Hoàn thành | File CSDL `results/decompiled_contexts_80.json` | `08_kali_batch_decompile_80_binaries.png` *(Đề xuất)* |
+| **TASK-5** | Vận hành MCP Agent & Khảo nghiệm Đa tầng (CT1 $\rightarrow$ CT3) | ✅ Hoàn thành | 480 queries logged trong `results/benchmark_raw_logs.json` | `09_kali_run_bench_multi_context.png` *(Đề xuất)* |
+| **TASK-6** | Chạy Động cơ Thống kê (SCHR, BLEU, McNemar, Wilson CI) | ✅ Hoàn thành | Bảng Springer trong `results/PAPER_TABLES_SPRINGER.md` | `10_kali_eval_engine_schr_tables.png` *(Đề xuất)* |
+| **TASK-7** | Đóng gói Kịch bản & Script Live Demo Mốc D3 | ✅ Hoàn thành | Script biểu diễn 1-lệnh `scripts/live_demo.sh` | `11_kali_live_demo_terminal_execution.png` *(Đề xuất)* |
+| **MỐC D4** | Thực nghiệm Ảo giác Gh0stRAT Case Study & Paper LNICST | ✅ Hoàn thành | Section 5 Paper (`main.pdf`) & `GH0STRAT_EVALUATION.json` | `12_kali_gh0strat_case_study_evaluation.png` *(Đề xuất)* |
+
+---
+
+## 📸 QUY CHUẨN ĐẶT TÊN VÀ QUẢN LÝ BỘ ẢNH TIER 2
+
+> [!NOTE] **Bộ ảnh hiện có (01 – 06): Đã chuẩn hóa theo luồng thao tác kỹ thuật**
+> 1. `01_kali_ping_host_gateway.png` (Kali: ping gateway 192.168.86.1)
+> 2. `02_host_netsh_portproxy_11434.png` (Host: netsh portproxy chuyển tiếp 11434)
+> 3. `03_host_firewall_rule_ollama.png` (Host: Windows Firewall mở inbound TCP 11434)
+> 4. `04_host_restart_vmware_nat_dhcp.png` (Host: restart VMware NAT Service & VMnetDHCP)
+> 5. `05_kali_curl_ollama_api_tags.png` (Kali: curl Ollama tags nhận diện 2 models)
+> 6. `06_kali_ghidra_headless_version.png` (Kali: ghidra_headless.sh chạy với Java 21)
+
+> [!IMPORTANT] **Đánh giá & Kế hoạch bổ sung (07 – 12):**
+> 6 ảnh đầu tiên chỉ mới chứng minh hạ tầng mạng và môi trường đã thông suốt. Để hoàn thiện hồ sơ nghiệm thu năng lực cốt lõi của Tier 2, cần chụp bổ sung 6 ảnh:
+> * `07_kali_e0_sanity_check_160_pass.png`: Kết quả 160 assertions PASS của 40 hàm C.
+> * `08_kali_batch_decompile_80_binaries.png`: Tiến trình batch decompile Ghidra Headless 80 nhị phân.
+> * `09_kali_run_bench_multi_context.png`: Khảo nghiệm benchmark gửi prompt đa tầng sang Ollama.
+> * `10_kali_eval_engine_schr_tables.png`: Bảng thống kê SCHR, Wilson CI 95%, kiểm định McNemar.
+> * `11_kali_live_demo_terminal_execution.png`: Thực thi kịch bản Live Demo 1-lệnh Mốc D3.
+> * `12_kali_gh0strat_case_study_evaluation.png`: Chạy thực nghiệm ảo giác case study Gh0stRAT Mốc D4.
 
 ---
 

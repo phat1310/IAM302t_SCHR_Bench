@@ -12,6 +12,8 @@
   - Hoàn tất bộ 40 hàm C bảo mật tự viết kèm các biến thể đột biến (A, S, P, E, C).
   - Hoàn tất **Thí nghiệm E0**: 40/40 (100% PASS) kiểm định phân biệt, 160 assertions.
 - [x] **D3 (Automated Pipeline & Live Demo):** 
+  - [x] Chuẩn hóa 6 ảnh minh chứng thông mạng & hạ tầng môi trường tại `tier2_kali/Image_Result/` (`01` -> `06`).
+  - [x] Đề xuất kế hoạch chụp bổ sung bộ ảnh minh chứng năng lực cốt lõi (`07` -> `12`: E0, batch decompile, benchmark runner, stats engine, live demo, Gh0stRAT).
   - [x] Ghidra Headless script trích xuất pseudocode & assembly JSON (`decompiled_contexts_80.json`).
   - [x] Thực thi MCP Benchmark Agent trên Ollama Server (`llama3.1:8b` & `qwen2.5-coder:14b`) toàn diện 80 binary PE ($N=80$).
   - [x] Tính toán chỉ số SCHR, Miss Rate, McNemar Test, 95% Wilson CI (`PAPER_TABLES_SPRINGER.md`).
