@@ -1,0 +1,12 @@
+Offset	Size	Entropy	Status	Name
+01073000	00000200	4.77395	not packed	Section (9) [".rsrc"]
+01072600	00000a00	4.11642	not packed	Section (8) [".reloc"]
+00000400	00000600	0.26067	not packed	Section (6) [".#v'"]
+00000000	00000000	0.00000	not packed	Section (5) [".Wey"]
+00000000	00000000	0.00000	not packed	Section (4) [".fptable"]
+00000000	00000000	0.00000	not packed	Section (3) [".data"]
+00000000	00000000	0.00000	not packed	Section (2) [".rdata"]
+00000000	00000000	0.00000	not packed	Section (1) [".text"]
+01073200	0000005b	4.74349	not packed	Overlay
+00000000	00000400	2.25353	not packed	Header
+00000a00	01071c00	7.89095	packed	Section (7) [".O#J"]

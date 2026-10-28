@@ -1,0 +1,47 @@
+[
+    {
+        "filename": "C:/IAM302t_Github_Project/IAM302t_SCHR_Bench/tier3_win11/Image_Result\\Section_0_.text.bin",
+        "offset": 0,
+        "size": 0
+    },
+    {
+        "filename": "C:/IAM302t_Github_Project/IAM302t_SCHR_Bench/tier3_win11/Image_Result\\Section_1_.rdata.bin",
+        "offset": 0,
+        "size": 0
+    },
+    {
+        "filename": "C:/IAM302t_Github_Project/IAM302t_SCHR_Bench/tier3_win11/Image_Result\\Section_2_.data.bin",
+        "offset": 0,
+        "size": 0
+    },
+    {
+        "filename": "C:/IAM302t_Github_Project/IAM302t_SCHR_Bench/tier3_win11/Image_Result\\Section_3_.fptable.bin",
+        "offset": 0,
+        "size": 0
+    },
+    {
+        "filename": "C:/IAM302t_Github_Project/IAM302t_SCHR_Bench/tier3_win11/Image_Result\\Section_4_.Wey.bin",
+        "offset": 0,
+        "size": 0
+    },
+    {
+        "filename": "C:/IAM302t_Github_Project/IAM302t_SCHR_Bench/tier3_win11/Image_Result\\Section_5_.#v'.bin",
+        "offset": 1024,
+        "size": 1536
+    },
+    {
+        "filename": "C:/IAM302t_Github_Project/IAM302t_SCHR_Bench/tier3_win11/Image_Result\\Section_6_.O#J.bin",
+        "offset": 2560,
+        "size": 17243136
+    },
+    {
+        "filename": "C:/IAM302t_Github_Project/IAM302t_SCHR_Bench/tier3_win11/Image_Result\\Section_7_.reloc.bin",
+        "offset": 17245696,
+        "size": 2560
+    },
+    {
+        "filename": "C:/IAM302t_Github_Project/IAM302t_SCHR_Bench/tier3_win11/Image_Result\\Section_8_.rsrc.bin",
+        "offset": 17248256,
+        "size": 512
+    }
+]
