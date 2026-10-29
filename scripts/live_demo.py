@@ -40,10 +40,10 @@ C_RESET = "\033[0m"
 def print_banner():
     banner = f"""{C_CYAN}{C_BOLD}
 ================================================================================
- 🎬 SCHR-BENCH: LIVE DEMONSTRATION OF CONTEXT ESCALATION (MILESTONE D3)
- 🎓 Course: IAM302t — Malware Analysis & Reverse Engineering (RBL Model)
- 👥 Team: Group 7 (IA2007) — FPT University HCMC
- 🎯 Target Venue: EAI INISCOM 2027 (Springer LNICST Series)
+ SCHR-BENCH: LIVE DEMONSTRATION OF CONTEXT ESCALATION (MILESTONE D3)
+ Course: IAM302t - Malware Analysis & Reverse Engineering (RBL Model)
+ Team: Group 7 (IA2007) - FPT University HCMC
+ Target Venue: EAI INISCOM 2027 (Springer LNICST Series)
 ================================================================================{C_RESET}
 """
     print(banner)
@@ -52,7 +52,7 @@ def print_banner():
 def pause_prompt(interactive: bool, message: str = "Press [Enter] to continue..."):
     if interactive:
         try:
-            input(f"\n{C_YELLOW}{C_BOLD}👉 {message}{C_RESET}")
+            input(f"\n{C_YELLOW}{C_BOLD}>> {message}{C_RESET}")
         except (KeyboardInterrupt, EOFError):
             print("\nExiting demo.")
             sys.exit(0)
@@ -73,7 +73,7 @@ def step1_sanity_check(auto: bool):
             print(f"  {C_GREEN}{line}{C_RESET}")
     else:
         print(f"  {C_GREEN}Functions: 40 | Variant builds: 80 | Test assertions: 160 | FAILURES: 0{C_RESET}")
-        print(f"  {C_GREEN}✓ E0 Sanity Check: 100% DISCRIMINATING (Zero Neutral Mutations){C_RESET}")
+        print(f"  {C_GREEN}[PASS] E0 Sanity Check: 100% DISCRIMINATING (Zero Neutral Mutations){C_RESET}")
     
     pause_prompt(not auto, "Nhấn [Enter] để chuyển sang Bước 2: Bắt Quả Tang Ảo Giác An Ninh (CT1)...")
 
@@ -106,10 +106,10 @@ def step2_ct1_hallucination(mcp: SCHRBenchMCPServer, model: str, sample_key: str
     print(f"  • Diễn giải của LLM: \"{res1['explanation']}\"")
     
     if pred != truth:
-        print(f"\n  {C_RED}{C_BOLD}❌ PHÁT HIỆN ẢO GIÁC AN NINH (SCHR HALLUCINATION DETECTED!){C_RESET}")
+        print(f"\n  {C_RED}{C_BOLD}[FAIL] PHÁT HIỆN ẢO GIÁC AN NINH (SCHR HALLUCINATION DETECTED!){C_RESET}")
         print(f"  {C_RED}Nguyên nhân: Decompiler Ghidra làm mờ điều kiện rẽ nhánh quan trọng, khiến LLM suy đoán sai giá trị trả về.{C_RESET}")
     else:
-        print(f"\n  {C_GREEN}✓ Mô hình trả lời đúng ở CT1: {pred}{C_RESET}")
+        print(f"\n  {C_GREEN}[PASS] Mô hình trả lời đúng ở CT1: {pred}{C_RESET}")
 
     pause_prompt(not auto, "Nhấn [Enter] để chuyển sang Bước 3: Nâng Cấp Ngữ Cảnh Lên CT2 (Assembly Anchor)...")
 
@@ -141,7 +141,7 @@ def step3_ct2_rescue(mcp: SCHRBenchMCPServer, model: str, sample_key: str, host:
     print(f"  • Diễn giải của LLM: \"{res2['explanation']}\"")
     
     if pred == truth:
-        print(f"\n  {C_GREEN}{C_BOLD}✅ CỨU VÃN THÀNH CÔNG NHỜ MỎ NEO ASSEMBLY (HALLUCINATION RESCUED!){C_RESET}")
+        print(f"\n  {C_GREEN}{C_BOLD}[RESCUED] CỨU VÃN THÀNH CÔNG NHỜ MỎ NEO ASSEMBLY (HALLUCINATION RESCUED!){C_RESET}")
         print(f"  {C_GREEN}Ý nghĩa: Nhờ có tập lệnh assembly chỉ rõ bước nạp/so sánh bit, LLM đã phát hiện đúng logic thực thi và sửa chữa ảo giác an ninh!{C_RESET}")
     else:
         print(f"\n  • Kết quả: Predicted={pred}, Ground Truth={truth}")
@@ -169,7 +169,7 @@ def step4_springer_summary():
     
     print(f"""
 {C_GREEN}{C_BOLD}================================================================================
- 🏆 KẾT THÚC BUỔI TRÌNH DIỄN LIVE DEMO (MỐC D3 THÀNH CÔNG XUẤT SẮC)
+ KẾT THÚC BUỔI TRÌNH DIỄN LIVE DEMO (MỐC D3 THÀNH CÔNG XUẤT SẮC)
  - Kiểm chứng giả thuyết: Tỷ lệ ảo giác an ninh (SCHR) giảm rõ rệt khi bổ sung Assembly.
  - Dữ liệu thống kê: Sẵn sàng phục vụ bảo vệ đồ án và nộp EAI INISCOM 2027.
 ================================================================================{C_RESET}

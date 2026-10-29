@@ -282,7 +282,7 @@ def query_ollama(model: str, user_prompt: str, timeout: int = 120) -> dict:
 
 def run_evaluation():
     print("=" * 70)
-    print("🎯 SCHR-Bench: Running Real-World Case Study Evaluation (Gh0stRAT PE32)")
+    print("[*] SCHR-Bench: Running Real-World Case Study Evaluation (Gh0stRAT PE32)")
     print(f"Target Ollama Server: {OLLAMA_URL}")
     print(f"Models to evaluate: {MODELS}")
     print("=" * 70)
@@ -353,7 +353,7 @@ def run_evaluation():
         json.dump(results, f, indent=2, ensure_ascii=False)
 
     print("\n" + "=" * 70)
-    print(f"✅ Evaluation Complete! Results saved to: {OUTPUT_FILE}")
+    print(f"[+] Evaluation Complete! Results saved to: {OUTPUT_FILE}")
     print("=" * 70)
 
 

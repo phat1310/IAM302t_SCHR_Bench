@@ -163,7 +163,7 @@ tags:
   ```
   *(Hoặc `python3 scripts/live_demo.py`)*
 * **Tiêu chuẩn kiểm tra trước khi bấm chụp:**
-  - [ ] Terminal hiển thị Banner: `🎬 SCHR-BENCH: LIVE DEMONSTRATION OF CONTEXT ESCALATION (MILESTONE D3)`.
+  - [ ] Terminal hiển thị Banner: `SCHR-BENCH: LIVE DEMONSTRATION OF CONTEXT ESCALATION (MILESTONE D3)`.
   - [ ] Hiển thị luồng demo tương tác từng bước trực quan giữa CT1 (ảo giác) và CT2 (khắc phục bằng Assembly Anchor).
 
 ---
@@ -178,7 +178,7 @@ tags:
   ```
 * **Tiêu chuẩn kiểm tra trước khi bấm chụp:**
   - [ ] Terminal hiển thị đánh giá cả 2 ca: `CS01_GH0STRAT_PACKER_ENTRY` (VXiProtect/VMProtect) và `CS02_GH0STRAT_PERSISTENCE_INSTALL` (Registry Run Key).
-  - [ ] Dòng chữ xanh: `✅ Evaluation Complete! Results saved to: results/GH0STRAT_EVALUATION.json`.
+  - [ ] Dòng chữ: `[+] Evaluation Complete! Results saved to: results/GH0STRAT_EVALUATION.json`.
 
 ---
 

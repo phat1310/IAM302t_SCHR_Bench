@@ -152,7 +152,7 @@ def run_benchmark_suite(mcp: SCHRBenchMCPServer, models: list, tiers: list, max_
 
     for model in models:
         print(f"\n==================================================================")
-        print(f" 🚀 MODEL: {model}")
+        print(f"[*] MODEL: {model}")
         print(f"==================================================================")
         for pair_idx, sid in enumerate(pair_ids, 1):
             for variant in ("original", "mutant"):
@@ -187,7 +187,7 @@ def run_benchmark_suite(mcp: SCHRBenchMCPServer, models: list, tiers: list, max_
                         "latency_sec": res["latency_sec"]
                     }
                     log_path.write_text(json.dumps(existing_logs, indent=2, ensure_ascii=False), encoding="utf-8")
-                    mark = "✅ PASS" if is_correct else "❌ SCHR"
+                    mark = "[PASS]" if is_correct else "[SCHR]"
                     print(
                         f"  [{pair_idx:02d}/{len(pair_ids):02d} | {model:17s} | {tier} | {skey:12s}] "
                         f"Truth={truth:3d} Pred={str(res['predicted_return']):4s} -> {mark} ({res['latency_sec']}s)"
@@ -220,7 +220,7 @@ def run_benchmark_suite(mcp: SCHRBenchMCPServer, models: list, tiers: list, max_
                             "latency_sec": res["latency_sec"]
                         }
                         log_path.write_text(json.dumps(existing_logs, indent=2, ensure_ascii=False), encoding="utf-8")
-                        mark = "✅ PASS" if is_correct else "❌ SCHR"
+                        mark = "[PASS]" if is_correct else "[SCHR]"
                         print(
                             f"  [E4-OBF | {model:17s} | {obf_lvl:13s} | {skey:12s}] "
                             f"Truth={truth:3d} Pred={str(res['predicted_return']):4s} -> {mark} ({res['latency_sec']}s)"
@@ -248,7 +248,7 @@ def main():
         print(f"[!] Ollama server is NOT running or unreachable at {ollama_host}.")
         sys.exit(1)
 
-    print(f"[✓] Connected to Ollama at {ollama_host}. Available models: {online_models}")
+    print(f"[+] Connected to Ollama at {ollama_host}. Available models: {online_models}")
     mcp = SCHRBenchMCPServer(CONTEXTS_FILE)
     max_p = 5 if args.demo else args.max_pairs
     run_benchmark_suite(mcp, args.models, args.tiers, max_pairs=max_p, run_obf=not args.no_obf, ollama_url=ollama_gen_url)

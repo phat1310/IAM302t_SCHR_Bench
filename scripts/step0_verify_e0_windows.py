@@ -86,7 +86,7 @@ def main():
 
     # Generate Table 1 for Springer Paper
     table_md = [
-        "# 📋 TABLE 1 (SPRINGER LNICST): E0 BENCHMARK SUITE & SANITY VERIFICATION",
+        "# TABLE 1 (SPRINGER LNICST): E0 BENCHMARK SUITE & SANITY VERIFICATION",
         "",
         "| Prefix & Category | Original/Mutant Pairs | Difficulty (Easy / Med / Tricky) | Test Vectors (Assertions) | Discriminating Rate (%) | Neutral Mutations |",
         "| :--- | :---: | :---: | :---: | :---: | :---: |"

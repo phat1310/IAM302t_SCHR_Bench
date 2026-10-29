@@ -72,7 +72,7 @@ def main():
     obf_tiers = [t for t in ("Obf1_CFF", "Obf2_Sub", "Obf3_Combined") if any((m, t) in by_model_tier for m in models)]
 
     md_lines = [
-        "# 📊 BẢNG KẾT QUẢ THỰC NGHIỆM SCHR-BENCH (SPRINGER LNICST — EAI INISCOM 2027)",
+        "# BẢNG KẾT QUẢ THỰC NGHIỆM SCHR-BENCH (SPRINGER LNICST — EAI INISCOM 2027)",
         "",
         "## 1. Bảng Trung Tâm (E1 + E2 + E3): SCHR (%), 95% Wilson CI, Miss Rate & BLEU Score",
         "",
