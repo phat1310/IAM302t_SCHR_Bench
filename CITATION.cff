@@ -1,0 +1,34 @@
+cff-version: 1.2.0
+message: "If you use this benchmark, code, or dataset in your research, please cite it as below."
+authors:
+  - family-names: "Nguyen"
+    given-names: "Tan Phat"
+    affiliation: "Department of Information Assurance, FPT University Ho Chi Minh City"
+  - family-names: "Group 7 - IA2007"
+    affiliation: "Department of Information Assurance, FPT University Ho Chi Minh City"
+title: "Security-Critical Hallucination Rate Benchmark (SCHR-Bench) on Decompiled PE Binaries"
+version: 1.0.0
+date-released: 2026-10-28
+url: "https://github.com/phat1310/IAM302t_SCHR_Bench"
+repository-code: "https://github.com/phat1310/IAM302t_SCHR_Bench"
+license: "MIT"
+keywords:
+  - "malware analysis"
+  - "reverse engineering"
+  - "large language models"
+  - "hallucination benchmark"
+  - "decompilation"
+  - "ghidra"
+  - "gh0strat"
+  - "assembly anchor"
+preferred-citation:
+  type: conference-paper
+  authors:
+    - family-names: "Nguyen"
+      given-names: "Tan Phat"
+    - family-names: "Group 7"
+      given-names: "IAM302t"
+  title: "Evaluating and Mitigating Security-Critical Hallucinations in LLM-Assisted Decompiled Binary Analysis"
+  collection-title: "EAI International Conference on Industrial Networks and Intelligent Systems (INISCOM 2027)"
+  publisher: "Springer LNICST"
+  year: 2027

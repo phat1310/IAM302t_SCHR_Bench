@@ -33,7 +33,7 @@ Dự án **SCHR-Bench** được thực hiện trong khuôn khổ học phần *
 
 ## 🏗️ 3. Cấu Trúc Hệ Thống Thực Nghiệm 3-Tier
 
-```
+```text
 SCHR-Bench Architecture:
 ├── Tier 1 (Host MSI - WSL2): Ollama GPU Server (llama3.1:8b, qwen2.5-coder:14b)
 ├── Tier 2 (Kali Linux VM) : MinGW Compiler, Ghidra 11.x Headless, MCP Benchmark Pipeline
@@ -45,22 +45,28 @@ Xem nhật ký tiến độ dự án tại [PROJECT_STATUS.md](PROJECT_STATUS.md
 
 ---
 
-## 📂 4. Cấu Trúc Thư Mục Repository
+## 📂 4. Cấu Trúc Đóng Gói Sản Phẩm Nghiên Cứu (Research Artifact Package Standard)
 
-```
-04_IAM302t_Github_Project/
-├── dataset/                    # 40 hàm C bảo mật tự viết & các biến thể đột biến (A, S, P, E, C)
-├── docs/                       # Master Plan Obsidian & tài liệu kiến trúc dự án
-├── papers/                     # Mã nguồn bài báo khoa học chuẩn Springer LNICST (10-14 trang) & IEEE (8-10 trang)
-├── results/                    # Bảng kết quả JSON, log thực nghiệm N=80 và bảng thống kê Springer
-├── scripts/                    # Toàn bộ script tự động hóa (Step 0 -> Step 4, Live Demo)
-├── tier1_host/                 # Tài liệu & script giám sát Ollama GPU Server trên Host MSI (WSL2)
-├── tier2_kali/                 # Tài liệu & script hướng dẫn chạy riêng cho máy ảo Kali Linux
-├── tier3_win11/                # Tài liệu & script phân tích tĩnh mã độc cho Sandbox Win11
-├── .gitignore                  # Cấu hình loại trừ file nhị phân mã độc và file đĩa ảo lớn
-├── PROJECT_STATUS.md           # Bảng theo dõi tiến độ đồng bộ giữa các Tier
-├── TIER_ROLES.md               # Quy chuẩn phân công nhiệm vụ cho từng máy ảo / AI Agent
-└── README.md                   # Tài liệu tổng quan dự án
+Cấu trúc Repository tuân thủ 100% quy chuẩn đóng gói sản phẩm nghiên cứu khoa học / Artifact Evaluation chuẩn RBL ĐH FPT (tham chiếu template `SOC-RL-v2.0`):
+
+```text
+IAM302t_SCHR_Bench/
+├── 📁 code/                    # Toàn bộ script và pipeline tự động hóa (Step 0 -> Step 4, Live Demo, Eval Engine)
+├── 📁 dataset/                 # 40 hàm C bảo mật tự viết & 80 file PE x64 stripped đột biến
+├── 📁 documentation/           # Master Plan, checklist nghiệm thu (D1 -> D5) & tài liệu kiến trúc
+├── 📁 manuscript/              # Bản thảo LaTeX bài báo khoa học Springer LNICST (10-14 trang) & IEEE (8-10 trang)
+├── 📁 results/                 # Cơ sở dữ liệu ngữ cảnh decompiled, raw query logs (480 entries) & bảng thống kê
+├── 📁 tier1_host/              # Cấu hình GPU Inference Hub, scripts kiểm thử LAN & giám sát Ollama
+├── 📁 tier2_kali/              # Môi trường biên dịch MinGW, Ghidra Headless decompiler & bộ ảnh minh chứng 01-12
+├── 📁 tier3_win11/             # Môi trường Sandbox cách ly, báo cáo phân tích DIE & PE-bear cho mẫu Gh0stRAT
+├── 📄 CITATION.cff             # File định dạng trích dẫn chuẩn cho bài báo khoa học và GitHub
+├── 📄 LICENSE                  # Giấy phép mã nguồn mở MIT License
+├── 📄 MANIFEST.txt             # Bảng kê khai mục lục toàn bộ file, dữ liệu và mô tả chức năng
+├── 📄 README.md                # Tài liệu tổng quan dự án & hướng dẫn vận hành
+├── 📄 reproduce.sh             # Script 1-lệnh tự động tái hiện toàn bộ kết quả thực nghiệm
+├── 📄 PROJECT_STATUS.md        # Bảng theo dõi tiến độ đồng bộ giữa các Tier
+├── 📄 TIER_ROLES.md            # Quy chuẩn phân công nhiệm vụ cho từng máy ảo / AI Agent
+└── 📄 .gitignore               # Cấu hình loại trừ file nhị phân mã độc và file đĩa ảo lớn
 ```
 
 ---
@@ -93,3 +99,20 @@ Xem nhật ký tiến độ dự án tại [PROJECT_STATUS.md](PROJECT_STATUS.md
    ```
 4. **Merge vào `dev`:** Tạo Pull Request trên GitHub từ `tierX` vào `dev` hoặc gộp trực tiếp trên máy sau khi test đạt.
 5. **Merge vào `main`:** Nghiệm thu hoàn thiện mốc đồ án rồi merge `dev` $\rightarrow$ `main`.
+
+---
+
+## ⚡ 6. Hướng Dẫn Tái Hiện Thực Nghiệm (1-Click Reproducibility)
+
+Để thẩm định tính toàn vẹn và tái hiện kết quả đo lường ảo giác của đồ án, chỉ cần thực thi kịch bản `reproduce.sh`:
+
+```bash
+# Cấp quyền thực thi và chạy kịch bản tái hiện 1-lệnh:
+chmod +x reproduce.sh
+bash reproduce.sh
+```
+
+Luồng tái hiện sẽ tự động thực hiện:
+1. **Kiểm tra tính đúng đắn Ground Truth (E0 Sanity Check):** Xác thực 160 assertions trên 40 hàm C bảo mật đạt 100% PASS.
+2. **Động cơ thống kê (Statistical Engine):** Tính toán độ tin cậy Wilson Score Interval 95%, kiểm định McNemar ($p < 0.01$) và xuất bảng LaTeX.
+3. **Kịch bản Live Demo tương tác (Mốc D3):** Trình diễn trực quan phản ứng của mô hình qua 3 bước (Ground Truth $\rightarrow$ Ảo giác CT1 $\rightarrow$ Hóa giải CT2 Assembly Anchor).

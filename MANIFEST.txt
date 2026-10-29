@@ -1,0 +1,67 @@
+================================================================================
+SCHR-BENCH ARTIFACT MANIFEST (Research-Based Learning Standard - FPT University)
+Project: Security-Critical Hallucination Rate Benchmark on Decompiled PE Binaries
+Authors: Nguyen Tan Phat (Lead Author) & Group 7 (Class IA2007, IAM302t Fall 2026)
+Repository: https://github.com/phat1310/IAM302t_SCHR_Bench
+Target Conference: EAI INISCOM 2027 (Springer LNICST Series)
+================================================================================
+
+[TOP-LEVEL DIRECTORY STRUCTURE & ARTIFACT PACKAGING]
+
+1. code/
+   Core scripts, compilation pipelines, and statistical evaluation utilities:
+   - step0_verify_e0_windows.py: E0 Ground Truth Sanity Check verification suite.
+   - step1_wsl_build_and_extract.sh: Cross-compilation of C functions to x64 PE binaries.
+   - step2_ghidra_headless_postscript.py: Ghidra Headless decompiler extraction script.
+   - step3_mcp_server_and_benchmark.py: Multi-context LLM query and benchmarking engine.
+   - step4_compute_statistics_and_tables.py: SCHR metrics, Wilson CI 95%, McNemar tests.
+   - eval_engine.py: Statistical computation engine for LaTeX table generation.
+   - evaluate_gh0strat_case_study.py: Real-world APT Gh0stRAT PE32 hallucination analysis.
+   - extract_contexts.py: Context escalation extractor (CT1, CT2, CT3, CT4).
+   - generate_reports.py: Automated report generation tool.
+   - live_demo.py: Interactive terminal demonstration script for Milestone D3.
+   - live_demo.sh: One-click launcher for the live demo.
+
+2. dataset/
+   Ground Truth metadata, original C source codes, and compiled PE binaries:
+   - Dataset_SCHR_Bench/SCHR_Bench_C_Functions/: 40 original security-critical C functions.
+   - Dataset_SCHR_Bench/SCHR_Bench_C_Functions/build/pe_x64_O0/: 80 stripped PE x64 binaries.
+   - Ground Truth test assertions (160 unit tests, non-neutral mutation validation).
+
+3. documentation/
+   Project reports, system architectures, and milestone checklists:
+   - PHASE2_GH0STRAT_EXECUTION_CHECKLIST.md: Step-by-step milestone D4 execution guide.
+   - SCHR_BENCH_MASTER_PLAN_OBSIDIAN.md: Obsidian master plan and RBL requirements.
+   - TIER_ROLES.md: Roles and responsibilities across the 3-Tier distributed architecture.
+   - PROJECT_STATUS.md: Live milestone tracking matrix (D1 -> D5).
+
+4. manuscript/
+   Academic research papers, LaTeX camera-ready templates, figures, and bibtex:
+   - 01_IEEE_Conference_Format_8_10_Pages/: 8-10 page IEEE conference submission.
+   - 02_Springer_LNICST_Format_10_14_Pages/: 10-14 page Springer LNICST camera-ready draft.
+   - IEEE_SCHR_Bench_Paper_8_10_Pages.zip: Packaged IEEE template archive.
+   - Springer_SCHR_Bench_Paper_10_14_Pages.zip: Packaged Springer template archive.
+
+5. results/
+   Experimental outputs, statistical tables, and benchmark logs:
+   - benchmark_raw_logs.json: Complete raw query logs (480 entries across CT1-CT3).
+   - GH0STRAT_EVALUATION.json: Gh0stRAT real-world case study hallucination metrics.
+   - PAPER_TABLES_SPRINGER.md: Generated LaTeX tables (Table 1 - Table 4) for LNICST paper.
+   - E0_Table1_Springer.md: Ground Truth sanity check summary table.
+
+6. tier1_host/, tier2_kali/, tier3_win11/
+   Distributed 3-Tier infrastructure logs, scripts, and visual evidence:
+   - tier1_host/: GPU LLM server (Host MSI WSL2, Ollama LLaMA-3.1 & Qwen-2.5).
+   - tier2_kali/: Reverse Engineering environment (Ghidra Headless, MinGW cross-compiler).
+   - tier3_win11/: Isolated Sandbox (DIE & PE-bear static analysis of Gh0stRAT).
+
+7. Root Operational Files:
+   - CITATION.cff: Citation File Format for academic citation and GitHub indexing.
+   - LICENSE: MIT Open-Source License.
+   - MANIFEST.txt: This manifest document.
+   - README.md: Comprehensive guide, quickstart, reproduction commands.
+   - reproduce.sh: One-click reproduction script for artifact evaluation.
+
+================================================================================
+Generated: 2026-10-29 | Validated for FPT University IAM302t RBL Final Submission
+================================================================================
