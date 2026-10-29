@@ -176,30 +176,27 @@ Toàn bộ 6 ảnh đã được đổi tên và sắp xếp theo **thứ tự l
 | **05** | `05_kali_curl_ollama_api_tags.png` | Kali Linux | Xác thực API Ollama qua mạng LAN ảo: `curl -s http://192.168.86.1:11434/api/tags \| jq .` trả về đầy đủ `llama3.1:8b` và `qwen2.5-coder:14b`. |
 | **06** | `06_kali_ghidra_headless_version.png` | Kali Linux | Xác thực runtime Ghidra Headless 11.3.2 chạy trên OpenJDK 21 qua script `bash scripts/ghidra_headless.sh --version`. |
 
-### 7.2. Nhận định Hiện trạng & Đề xuất Kế hoạch Chụp Bộ ảnh Cốt lõi (Ảnh 07 – 12)
-> [!WARNING]
-> **Khoảng trống minh chứng (Evidence Gap):**
-> Bộ 6 ảnh trên mới chỉ chứng minh rằng "môi trường và đường truyền mạng giữa Kali và máy Host đã thông suốt" (nằm trọn trong Task 1). 
-> **Hoàn toàn chưa có ảnh nào minh chứng cho các phần việc cốt lõi của Tier 2**:
-> * Không có ảnh kiểm định Ground Truth E0 (Task 2).
-> * Không có ảnh decompile hàng loạt 80 binary với Ghidra Headless (Task 3 - 4).
-> * Không có ảnh chạy Benchmark đa tầng gửi truy vấn LLM (Task 5).
-> * Không có ảnh bảng số liệu thống kê toán học SCHR / Wilson CI / McNemar (Task 6).
-> * Không có ảnh chạy kịch bản Live Demo 1-lệnh trực tiếp (Task 7 - Mốc D3).
-> * Không có ảnh chạy thực nghiệm ảo giác trên ca thực tế mã độc Gh0stRAT (Mốc D4).
+### 7.2. Hoàn tất & Chuẩn hóa Toàn bộ Bộ ảnh Minh chứng Cốt lõi (Ảnh 07 – 12)
+> [!NOTE]
+> **Hồ sơ nghiệm thu đã hoàn thiện 100%:**
+> Toàn bộ khoảng trống minh chứng kỹ thuật đã được lấp đầy với bộ 6 nhóm ảnh thực nghiệm cốt lõi (07 – 12), chuẩn hóa giao diện terminal không chứa emoji/icon thừa phục vụ nộp bài báo khoa học Springer LNICST:
+> * Đã có ảnh kiểm định Ground Truth E0 160 assertions PASS (Task 2).
+> * Đã có ảnh decompile hàng loạt 80 binary với Ghidra Headless (Task 3 - 4).
+> * Đã có ảnh chạy Benchmark đa tầng gửi truy vấn LLM (Task 5).
+> * Đã có ảnh bảng số liệu thống kê toán học SCHR / Wilson CI / McNemar (Task 6).
+> * Đã có chuỗi 4 ảnh trực quan hóa luồng Live Demo 1-lệnh Mốc D3 (Task 7).
+> * Đã có ảnh chạy thực nghiệm ảo giác trên ca thực tế mã độc Gh0stRAT (Mốc D4).
 
-### 7.3. Kế hoạch Chi tiết Chụp bổ sung 6 Ảnh Minh chứng Cốt lõi (07 – 12)
+### 7.3. Danh mục Chi tiết Bộ ảnh Minh chứng Cốt lõi (07 – 12)
 
-Nhóm đề xuất tiến hành chụp bổ sung ngay 6 ảnh sau đây để hoàn thiện 100% hồ sơ nghiệm thu kỹ thuật của Tier 2:
-
-| STT | Tên Tệp Ảnh Đề Xuất | Nhiệm Vụ Liên Quan | Lệnh / Thao Tác Cần Thực Hiện Để Chụp | Tiêu Chí Bắt Buộc Trên Ảnh |
+| STT | Tên Tệp Ảnh Chuẩn Hóa | Nhiệm Vụ Minh Chứng | Lệnh / Thao Tác Thực Hiện | Kết Quả Xác Nhận Trên Ảnh |
 | :---: | :--- | :---: | :--- | :--- |
-| **07** | `07_kali_e0_sanity_check_160_pass.png` | **TASK 2** (Ground Truth Sanity Check) | `python3 dataset/Dataset_SCHR_Bench/SCHR_Bench_C_Functions/tools/check_suite.py` | Terminal hiển thị: `Functions: 40 \| Variant builds: 80 \| Test assertions: 160`, `Discriminating mutations: 40/40 (100.0%)`, `PASS: all hand-authored ground-truth assertions matched`. |
-| **08** | `08_kali_batch_decompile_80_binaries.png` | **TASK 3 & 4** (Ghidra Headless Decompile) | `python3 scripts/batch_decompile.py` | Terminal hiển thị tiến trình Ghidra bóc tách các file nhị phân trong `bin/` và thông báo tạo thành công `decompiled_db.json`. |
-| **09** | `09_kali_run_bench_multi_context.png` | **TASK 5** (MCP Agent & Multi-Tier Bench) | `python3 pipeline/run_bench.py --demo --models llama3.1:8b qwen2.5-coder:14b` | Terminal hiển thị quá trình đóng gói prompt CT1/CT2, gửi request tới `192.168.86.1:11434` và ghi log vào `results/`. |
-| **10** | `10_kali_eval_engine_schr_tables.png` | **TASK 6** (Statistical Engine) | `python3 evaluation/eval_engine.py` | Terminal hiển thị bảng SCHR theo từng tầng context, Wilson CI 95% và kết quả McNemar test ($p < 0.01$). |
-| **11** | `11_kali_live_demo_terminal_execution.png` | **TASK 7** (Deliverable D3 Live Demo) | `bash scripts/live_demo.sh` | Terminal hiển thị banner Live Demo D3, luồng tương tác 3 bước (E0 Ground Truth $\rightarrow$ CT1 Hallucination $\rightarrow$ CT2 Assembly Anchor). |
-| **12** | `12_kali_gh0strat_case_study_evaluation.png` | **MỐC D4** (Gh0stRAT Case Study) | `python3 scripts/evaluate_gh0strat_case_study.py` | Terminal hiển thị kết quả đánh giá ảo giác Gh0stRAT: LLaMA-3.1 8B ảo giác tại CT1 (75%) và được hóa giải tại CT2 (0%) bởi Assembly Anchor. |
+| **07** | `07_kali_e0_sanity_check_160_pass.png` | **TASK 2** (Ground Truth Sanity Check) | `python3 dataset/SCHR_Bench_C_Functions/tools/check_suite.py` | Terminal hiển thị: `Functions: 40 \| Variant builds: 80 \| Test assertions: 160`, `Discriminating mutations: 40`, `PASS: all hand-authored ground-truth assertions matched`. |
+| **08** | `08_kali_batch_decompile_80_binaries.png` | **TASK 3 & 4** (Ghidra Headless Decompile) | `python3 scripts/extract_contexts.py` | Terminal hiển thị: `[+] Built 80 enriched context records at: .../results/decompiled_contexts_80.json`. |
+| **09** | `09_kali_run_bench_multi_context.png` | **TASK 5** (MCP Agent & Multi-Tier Bench) | `python3 scripts/step3_mcp_server_and_benchmark.py --max-pairs 5` | Terminal hiển thị kết nối Ollama `192.168.86.1:11434`, các model và kết quả `[PASS]` / `[SCHR]` sạch emoji. |
+| **10** | `10_kali_eval_engine_schr_tables.png` | **TASK 6** (Statistical Engine) | `python3 evaluation/eval_engine.py && head -n 25 results/PAPER_TABLES_SPRINGER.md` | Terminal hiển thị: `SCHR: 37.50%`, Wilson 95% CI, McNemar Test ($p < 0.01$) và Bảng Markdown LNICST sạch icon. |
+| **11** | `11_kali_live_demo_terminal_execution_1` $\rightarrow$ `_4.png` | **TASK 7** (Deliverable D3 Live Demo) | `bash scripts/live_demo.sh` | Chuỗi 4 ảnh tuần tự 4 bước: E0 Sanity $\rightarrow$ CT1 Hallucination $\rightarrow$ CT2 Assembly Rescue $\rightarrow$ Bảng tổng hợp D3. |
+| **12** | `12_kali_gh0strat_case_study_evaluation.png` | **MỐC D4** (Gh0stRAT Case Study) | `python3 scripts/evaluate_gh0strat_case_study.py` | Terminal hiển thị: `[*] SCHR-Bench: Running Real-World Case Study Evaluation` và `[+] Evaluation Complete!`. |
 
 > [!TIP]
 > Chi tiết hướng dẫn thao tác chụp ảnh, tiêu chuẩn kiểm thử từng bước và quy trình commit/push xem tại: [TASK_TIER2_KALI_EXECUTION_PLAN.md](TASK_TIER2_KALI_EXECUTION_PLAN.md#-hướng-dẫn-chi-tiết-từng-bước-chụp-bộ-ảnh-thực-nghiệm-cốt-lõi-07--12).

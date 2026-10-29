@@ -43,13 +43,13 @@ tags:
 | Mã Task | Tên Nhiệm vụ Trọng tâm | Trạng thái | Sản phẩm Đầu ra Mục tiêu | Ảnh Minh chứng (`Image_Result/`) |
 | :---: | :--- | :---: | :--- | :--- |
 | **TASK-1** | Kiểm tra Môi trường & Mạng LAN ảo (Host $\leftrightarrow$ Kali) | ✅ Hoàn thành | Ping 0ms, curl Ollama 200 OK (`llama3.1`, `qwen2.5`) | `01` - `06` (Đã chuẩn hóa) |
-| **TASK-2** | Đồng bộ Dataset 40 hàm C & Chạy E0 Sanity Check | ✅ Hoàn thành | 160 assertions PASS, file `results/E0_sanity_kali.txt` | `07_kali_e0_sanity_check_160_pass.png` *(Đề xuất)* |
-| **TASK-3** | Biên dịch Chéo 80 Binary PE x64 Stripped (`mingw-w64`) | ✅ Hoàn thành | 80 file nhị phân trong `dataset/.../build/pe_x64_O0/` | `08_kali_batch_decompile_80_binaries.png` *(Đề xuất)* |
-| **TASK-4** | Vận hành Ghidra Headless bóc tách Pseudocode/Assembly | ✅ Hoàn thành | File CSDL `results/decompiled_contexts_80.json` | `08_kali_batch_decompile_80_binaries.png` *(Đề xuất)* |
-| **TASK-5** | Vận hành MCP Agent & Khảo nghiệm Đa tầng (CT1 $\rightarrow$ CT3) | ✅ Hoàn thành | 480 queries logged trong `results/benchmark_raw_logs.json` | `09_kali_run_bench_multi_context.png` *(Đề xuất)* |
-| **TASK-6** | Chạy Động cơ Thống kê (SCHR, BLEU, McNemar, Wilson CI) | ✅ Hoàn thành | Bảng Springer trong `results/PAPER_TABLES_SPRINGER.md` | `10_kali_eval_engine_schr_tables.png` *(Đề xuất)* |
-| **TASK-7** | Đóng gói Kịch bản & Script Live Demo Mốc D3 | ✅ Hoàn thành | Script biểu diễn 1-lệnh `scripts/live_demo.sh` | `11_kali_live_demo_terminal_execution.png` *(Đề xuất)* |
-| **MỐC D4** | Thực nghiệm Ảo giác Gh0stRAT Case Study & Paper LNICST | ✅ Hoàn thành | Section 5 Paper (`main.pdf`) & `GH0STRAT_EVALUATION.json` | `12_kali_gh0strat_case_study_evaluation.png` *(Đề xuất)* |
+| **TASK-2** | Đồng bộ Dataset 40 hàm C & Chạy E0 Sanity Check | ✅ Hoàn thành | 160 assertions PASS, file `results/E0_sanity_kali.txt` | `07_kali_e0_sanity_check_160_pass.png` |
+| **TASK-3** | Biên dịch Chéo 80 Binary PE x64 Stripped (`mingw-w64`) | ✅ Hoàn thành | 80 file nhị phân trong `dataset/.../build/pe_x64_O0/` | `08_kali_batch_decompile_80_binaries.png` |
+| **TASK-4** | Vận hành Ghidra Headless bóc tách Pseudocode/Assembly | ✅ Hoàn thành | File CSDL `results/decompiled_contexts_80.json` | `08_kali_batch_decompile_80_binaries.png` |
+| **TASK-5** | Vận hành MCP Agent & Khảo nghiệm Đa tầng (CT1 $\rightarrow$ CT3) | ✅ Hoàn thành | 480 queries logged trong `results/benchmark_raw_logs.json` | `09_kali_run_bench_multi_context.png` |
+| **TASK-6** | Chạy Động cơ Thống kê (SCHR, BLEU, McNemar, Wilson CI) | ✅ Hoàn thành | Bảng Springer trong `results/PAPER_TABLES_SPRINGER.md` | `10_kali_eval_engine_schr_tables.png` |
+| **TASK-7** | Đóng gói Kịch bản & Script Live Demo Mốc D3 | ✅ Hoàn thành | Script biểu diễn 1-lệnh `scripts/live_demo.sh` | `11_kali_live_demo_terminal_execution_1` $\rightarrow$ `_4.png` |
+| **MỐC D4** | Thực nghiệm Ảo giác Gh0stRAT Case Study & Paper LNICST | ✅ Hoàn thành | Section 5 Paper (`main.pdf`) & `GH0STRAT_EVALUATION.json` | `12_kali_gh0strat_case_study_evaluation.png` |
 
 ---
 
@@ -63,13 +63,13 @@ tags:
 > 5. `05_kali_curl_ollama_api_tags.png` (Kali: curl Ollama tags nhận diện 2 models)
 > 6. `06_kali_ghidra_headless_version.png` (Kali: ghidra_headless.sh chạy với Java 21)
 
-> [!IMPORTANT] **Đánh giá & Kế hoạch bổ sung (07 – 12):**
-> 6 ảnh đầu tiên chỉ mới chứng minh hạ tầng mạng và môi trường đã thông suốt. Để hoàn thiện hồ sơ nghiệm thu năng lực cốt lõi của Tier 2, cần chụp bổ sung 6 ảnh:
-> * `07_kali_e0_sanity_check_160_pass.png`: Kết quả 160 assertions PASS của 40 hàm C.
+> [!IMPORTANT] **Đánh giá & Kết quả hoàn thiện Bộ ảnh Cốt lõi (07 – 12):**
+> Bộ 12 ảnh minh chứng cốt lõi của Tier 2 đã được chụp đầy đủ 100%, chuẩn hóa tên file theo quy chuẩn học thuật (không emoji, không icon rườm rà) và lưu trữ trực tiếp tại `tier2_kali/Image_Result/`:
+> * `07_kali_e0_sanity_check_160_pass.png`: Kết quả 160 assertions PASS của 40 hàm C (100% non-neutral mutation).
 > * `08_kali_batch_decompile_80_binaries.png`: Tiến trình batch decompile Ghidra Headless 80 nhị phân.
 > * `09_kali_run_bench_multi_context.png`: Khảo nghiệm benchmark gửi prompt đa tầng sang Ollama.
 > * `10_kali_eval_engine_schr_tables.png`: Bảng thống kê SCHR, Wilson CI 95%, kiểm định McNemar.
-> * `11_kali_live_demo_terminal_execution.png`: Thực thi kịch bản Live Demo 1-lệnh Mốc D3.
+> * `11_kali_live_demo_terminal_execution_1.png` đến `_4.png`: Chuỗi 4 ảnh trực quan hóa đầy đủ 4 bước Live Demo 1-lệnh Mốc D3.
 > * `12_kali_gh0strat_case_study_evaluation.png`: Chạy thực nghiệm ảo giác case study Gh0stRAT Mốc D4.
 
 ---
@@ -81,8 +81,8 @@ tags:
 > **Mẹo chụp ảnh trên Kali Linux:** Nhấn **`Alt + PrintScreen`** để chụp riêng cửa sổ Terminal đang chọn (hoặc mở công cụ `xfce4-screenshooter` chọn chế độ *Active window*).
 
 ### ⚙️ Bước 0: Kiểm tra điều kiện cần trước khi thực hiện
-- [ ] **Nhóm ảnh nội bộ (Ảnh 07, 08, 10):** Chạy 100% nội bộ trên Kali, không yêu cầu Ollama Host.
-- [ ] **Nhóm ảnh kết nối mạng AI (Ảnh 09, 11, 12):** Yêu cầu máy **Host Windows** đã bật Ollama:
+- [x] **Nhóm ảnh nội bộ (Ảnh 07, 08, 10):** Chạy 100% nội bộ trên Kali, không yêu cầu Ollama Host.
+- [x] **Nhóm ảnh kết nối mạng AI (Ảnh 09, 11, 12):** Yêu cầu máy **Host Windows** đã bật Ollama:
   ```powershell
   # Chạy tại PowerShell Admin máy Host
   ollama serve
@@ -103,9 +103,9 @@ tags:
   python3 /home/NTP/IAM302t/dataset/Dataset_SCHR_Bench/SCHR_Bench_C_Functions/tools/check_suite.py
   ```
 * **Tiêu chuẩn kiểm tra trước khi bấm chụp:**
-  - [ ] Terminal in ra: `Functions: 40 | Variant builds: 80 | Test assertions: 160`
-  - [ ] Terminal in ra: `Discriminating mutations: 40`
-  - [ ] Dòng chữ xanh lá: `PASS: all hand-authored ground-truth assertions matched.`
+  - [x] Terminal in ra: `Functions: 40 | Variant builds: 80 | Test assertions: 160`
+  - [x] Terminal in ra: `Discriminating mutations: 40`
+  - [x] Dòng chữ xanh lá: `PASS: all hand-authored ground-truth assertions matched.`
 
 ---
 
@@ -119,8 +119,8 @@ tags:
   ```
   *(Hoặc `python3 /home/NTP/IAM302t/scripts/batch_decompile.py`)*
 * **Tiêu chuẩn kiểm tra trước khi bấm chụp:**
-  - [ ] Terminal hiển thị tiến trình duyệt qua danh sách các binary trong `bin/`.
-  - [ ] Thông báo hoàn thành hợp nhất dữ liệu vào `results/decompiled_contexts_80.json`.
+  - [x] Terminal hiển thị tiến trình duyệt qua danh sách các binary trong `bin/`.
+  - [x] Thông báo hoàn thành hợp nhất dữ liệu vào `results/decompiled_contexts_80.json`.
 
 ---
 
@@ -133,8 +133,8 @@ tags:
   python3 scripts/step3_mcp_server_and_benchmark.py --max-pairs 5
   ```
 * **Tiêu chuẩn kiểm tra trước khi bấm chụp:**
-  - [ ] Terminal hiển thị kết nối thành công tới Host `http://192.168.86.1:11434`.
-  - [ ] Hiển thị quá trình truy vấn lần lượt `llama3.1:8b` và `qwen2.5-coder:14b` trên từng tầng CT1, CT2, CT3 kèm chỉ số Latency (s).
+  - [x] Terminal hiển thị kết nối thành công tới Host `http://192.168.86.1:11434`.
+  - [x] Hiển thị quá trình truy vấn lần lượt `llama3.1:8b` và `qwen2.5-coder:14b` trên từng tầng CT1, CT2, CT3 kèm chỉ số Latency (s).
 
 ---
 
@@ -148,13 +148,13 @@ tags:
   head -n 25 results/PAPER_TABLES_SPRINGER.md
   ```
 * **Tiêu chuẩn kiểm tra trước khi bấm chụp:**
-  - [ ] Terminal hiển thị kết quả kiểm định: `SCHR: 37.50%`, `Wilson 95% CI: [24.22%, 52.97%]`, `McNemar Test: chi2=7.5625, p-value=5.9595e-03, significant=True`.
-  - [ ] Bảng Markdown đối chiếu đầy đủ các cột: LLM, Tầng Ngữ Cảnh, Lỗi Ảo Giác, SCHR (%), Miss Rate, BLEU Score.
+  - [x] Terminal hiển thị kết quả kiểm định: `SCHR: 37.50%`, `Wilson 95% CI: [24.22%, 52.97%]`, `McNemar Test: chi2=7.5625, p-value=5.9595e-03, significant=True`.
+  - [x] Bảng Markdown đối chiếu đầy đủ các cột: LLM, Tầng Ngữ Cảnh, Lỗi Ảo Giác, SCHR (%), Miss Rate, BLEU Score.
 
 ---
 
 ### 📷 Bước 5: Chụp Ảnh 11 — Kịch Bản Live Demonstration 1-Lệnh
-* **Tên file:** `11_kali_live_demo_terminal_execution.png`
+* **Tên file:** `11_kali_live_demo_terminal_execution_1.png` $\rightarrow$ `_4.png`
 * **Mục tiêu trong Paper & Báo cáo:** Minh chứng kịch bản Live Demo bảo vệ đồ án (Mốc D3) trực quan hóa hiện tượng ảo giác an ninh tại CT1 và được khắc phục tại CT2.
 * **Lệnh thực thi tại Terminal Kali:**
   ```bash
@@ -163,8 +163,8 @@ tags:
   ```
   *(Hoặc `python3 scripts/live_demo.py`)*
 * **Tiêu chuẩn kiểm tra trước khi bấm chụp:**
-  - [ ] Terminal hiển thị Banner: `SCHR-BENCH: LIVE DEMONSTRATION OF CONTEXT ESCALATION (MILESTONE D3)`.
-  - [ ] Hiển thị luồng demo tương tác từng bước trực quan giữa CT1 (ảo giác) và CT2 (khắc phục bằng Assembly Anchor).
+  - [x] Terminal hiển thị Banner: `SCHR-BENCH: LIVE DEMONSTRATION OF CONTEXT ESCALATION (MILESTONE D3)`.
+  - [x] Hiển thị luồng demo tương tác 4 bước trực quan giữa CT1 (ảo giác) và CT2 (khắc phục bằng Assembly Anchor).
 
 ---
 
@@ -177,8 +177,8 @@ tags:
   python3 scripts/evaluate_gh0strat_case_study.py
   ```
 * **Tiêu chuẩn kiểm tra trước khi bấm chụp:**
-  - [ ] Terminal hiển thị đánh giá cả 2 ca: `CS01_GH0STRAT_PACKER_ENTRY` (VXiProtect/VMProtect) và `CS02_GH0STRAT_PERSISTENCE_INSTALL` (Registry Run Key).
-  - [ ] Dòng chữ: `[+] Evaluation Complete! Results saved to: results/GH0STRAT_EVALUATION.json`.
+  - [x] Terminal hiển thị đánh giá cả 2 ca: `CS01_GH0STRAT_PACKER_ENTRY` (VXiProtect/VMProtect) và `CS02_GH0STRAT_PERSISTENCE_INSTALL` (Registry Run Key).
+  - [x] Dòng chữ: `[+] Evaluation Complete! Results saved to: results/GH0STRAT_EVALUATION.json`.
 
 ---
 
