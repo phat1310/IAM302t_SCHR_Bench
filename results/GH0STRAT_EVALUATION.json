@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-10-28 17:31:26",
+  "timestamp": "2026-10-29 15:26:14",
   "ollama_server": "http://192.168.86.1:11434",
   "sha256_gh0strat": "ea7cd59c402128b0beffba34a6fb7b3f6f9fc5be62cb4aa51e605d3bcaee98be",
   "cases_evaluated": [
@@ -21,9 +21,9 @@
               "is_malicious": true,
               "behavior_type": "obfuscated/packed malware loader",
               "confidence": 0.9,
-              "verdict_summary": "This function appears to be a packed malware loader that dynamically resolves APIs using GetProcAddress and LoadLibraryA to evade detection, while also performing decryption on an embedded table."
+              "verdict_summary": "This function appears to be a packed malware loader that dynamically resolves APIs using GetProcAddress, indicating an attempt to evade detection."
             },
-            "elapsed_sec": 15.85,
+            "elapsed_sec": 4.52,
             "is_malicious_predicted": true,
             "hallucinated": false
           },
@@ -33,9 +33,9 @@
               "is_malicious": true,
               "behavior_type": "packed malware loader",
               "confidence": 0.9,
-              "verdict_summary": "This function appears to be a packed malware loader that dynamically resolves APIs using GetProcAddress and LoadLibraryA to evade detection. The XOR decoding loop suggests an obfuscated payload."
+              "verdict_summary": "This function appears to be a packed malware loader that dynamically resolves APIs using GetProcAddress and LoadLibraryA, indicating an attempt to evade detection. The XOR decoding loop suggests obfuscation of the malware body."
             },
-            "elapsed_sec": 5.7,
+            "elapsed_sec": 5.91,
             "is_malicious_predicted": true,
             "hallucinated": false
           },
@@ -48,9 +48,9 @@
               "is_malicious": true,
               "behavior_type": "malware loader",
               "confidence": 0.95,
-              "verdict_summary": "The function dynamically resolves APIs and decrypts a section of memory, which are typical behaviors of malware loaders designed to evade detection."
+              "verdict_summary": "The function dynamically resolves APIs and decrypts a section of memory, indicative of obfuscated malware behavior designed to evade detection."
             },
-            "elapsed_sec": 36.5,
+            "elapsed_sec": 32.58,
             "is_malicious_predicted": true,
             "hallucinated": false
           },
@@ -62,7 +62,7 @@
               "confidence": 0.95,
               "verdict_summary": "The function dynamically resolves APIs and decrypts a payload in memory, indicative of a packed malware loader designed to evade detection."
             },
-            "elapsed_sec": 21.56,
+            "elapsed_sec": 20.86,
             "is_malicious_predicted": true,
             "hallucinated": false
           },
@@ -90,7 +90,7 @@
               "confidence": 0.9,
               "verdict_summary": "This function establishes permanent autostart persistence by writing a registry run key, indicating malicious behavior."
             },
-            "elapsed_sec": 8.57,
+            "elapsed_sec": 7.67,
             "is_malicious_predicted": true,
             "hallucinated": false
           },
@@ -102,7 +102,7 @@
               "confidence": 0.9,
               "verdict_summary": "This function establishes permanent autostart persistence by writing a registry run key, indicating malicious behavior."
             },
-            "elapsed_sec": 5.23,
+            "elapsed_sec": 4.78,
             "is_malicious_predicted": true,
             "hallucinated": false
           },
@@ -117,7 +117,7 @@
               "confidence": 1.0,
               "verdict_summary": "The function establishes permanent autostart persistence by writing a registry run key, which is a malicious behavior."
             },
-            "elapsed_sec": 22.15,
+            "elapsed_sec": 20.03,
             "is_malicious_predicted": true,
             "hallucinated": false
           },
@@ -129,7 +129,7 @@
               "confidence": 1.0,
               "verdict_summary": "The function establishes permanent autostart persistence by writing a registry run key, which is a malicious behavior."
             },
-            "elapsed_sec": 22.41,
+            "elapsed_sec": 20.25,
             "is_malicious_predicted": true,
             "hallucinated": false
           },
