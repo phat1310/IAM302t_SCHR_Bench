@@ -36,7 +36,7 @@ Mai-Hoang Dinh\IEEEauthorrefmark{1}\IEEEauthorrefmark{2}
 \maketitle
 
 \begin{abstract}
-Large Language Models (LLMs) are increasingly integrated into software reverse engineering (SRE) pipelines to interpret decompiled pseudocode, synthesize functional intent, and accelerate incident response. However, in security-critical operations, such as malware triage and vulnerability assessment, LLM hallucinations can yield catastrophic operational failures by inverting control-flow predicates, misidentifying encryption constants, or overlooking stealthy evasion techniques. Existing code evaluation benchmarks primarily measure surface syntactic fluency (e.g., BLEU-4) or executable re-compilability, which fail to capture subtle yet critical semantic inversions. To bridge this gap, we introduce \textbf{SCHR-Bench}, an automated benchmarking framework designed to quantify \textbf{Security-Critical Hallucination Rates (SCHR)} using differential binary mutations with deterministic ground truth. We construct 40 C function pairs (80 stripped x86-64 PE binaries) spanning five critical security domains: Anti-Debugging, Cryptographic Decryption, Registry Persistence, Environmental Evasion, and Control Flow Logic. Each mutation is dynamically verified via Experiment E0 across 160 automated test assertions to confirm 100\% non-neutral behavioral divergence. We evaluate representative open-weight models (\texttt{LLaMA-3.1 8B} and \texttt{Qwen2.5-Coder 14B}) across three standardized context escalation tiers (CT1--CT3) and four Obfuscator-LLVM (OLLVM) transformation configurations, while specifying CT4 as an extended interprocedural architectural blueprint. Our empirical findings demonstrate that: (1) high lexical overlap (BLEU-4 $> 0.40$) routinely conceals severe security hallucinations, with LLaMA-3.1 exhibiting a baseline SCHR of 30.0\% [95\% Wilson CI: 10.8\%, 60.3\%]; (2) smaller models exhibit pseudocode primacy ($b = 0, c = 0, p = 1.000$ under McNemar's paired test), where appending assembly instructions does not alter classification outcomes without structured bidirectional alignment; (3) code-specialized pretraining in Qwen2.5-Coder 14B noticeably mitigates hallucinations (reducing baseline SCHR point estimate from 30.0\% to 10.0\%, though confidence intervals overlap given $N=10$), while cryptographic decryption loops remain challenging; and (4) combined OLLVM obfuscation elevates hallucination rates up to 40.0\%. We further contextualize our findings through an external qualitative forensic case study on an in-the-wild Gh0stRAT PE32 malware sample unpacked from VMProtect armor.
+Large Language Models (LLMs) are increasingly integrated into software reverse engineering (SRE) pipelines to interpret decompiled pseudocode, synthesize functional intent, and accelerate incident response. However, in security-critical operations, such as malware triage and vulnerability assessment, LLM hallucinations can yield catastrophic operational failures by inverting control-flow predicates, misidentifying encryption constants, or overlooking stealthy evasion techniques. Existing code evaluation benchmarks primarily measure surface syntactic fluency (e.g., BLEU-4) or executable re-compilability, which fail to capture subtle yet critical semantic inversions. To bridge this gap, we introduce \textbf{SCHR-Bench}, an automated benchmarking framework designed to quantify \textbf{Security-Critical Hallucination Rates (SCHR)} using differential binary mutations with deterministic ground truth. We construct 40 C function pairs (80 stripped x86-64 PE binaries) spanning five critical security domains: Anti-Debugging, Cryptographic Decryption, Registry Persistence, Environmental Evasion, and Control Flow Logic. Each mutation is dynamically verified via Experiment E0 across 160 automated test assertions to confirm 100\% non-neutral behavioral divergence. We evaluate representative open-weight and proprietary models (\texttt{LLaMA-3.1 8B}, \texttt{Qwen2.5-Coder 14B}, and \texttt{GPT-4o-mini}) across three standardized context escalation tiers (CT1--CT3) and four Obfuscator-LLVM (OLLVM) transformation configurations, while specifying CT4 as an extended interprocedural architectural blueprint. Our empirical findings demonstrate that: (1) high lexical overlap (BLEU-4 $> 0.40$) and high syntactic re-compilability ($> 85.0\%$) routinely conceal severe security hallucinations, with LLaMA-3.1 exhibiting a baseline SCHR of 30.0\% [95\% Wilson CI: 10.8\%, 60.3\%]; (2) smaller models exhibit pseudocode primacy ($b = 0, c = 0, p = 1.000$ under McNemar's paired test), where appending assembly instructions does not alter classification outcomes without structured bidirectional alignment; (3) code-specialized pretraining in Qwen2.5-Coder 14B and frontier alignment in GPT-4o-mini noticeably mitigate hallucinations (reducing baseline SCHR point estimate from 30.0\% to 10.0\%, though confidence intervals overlap given $N=10$), while cryptographic decryption loops remain challenging; and (4) combined OLLVM obfuscation elevates hallucination rates up to 40.0\%. We further contextualize our findings through an external qualitative forensic case study on an in-the-wild Gh0stRAT PE32 malware sample unpacked from VMProtect armor.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -49,7 +49,7 @@ Software Reverse Engineering (SRE) of compiled machine code is fundamental to mo
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.95\textwidth]{figures/fig1.png}
-\caption{Decoupled Multi-Tier Testbed Architecture of SCHR-Bench: (1) Tier 1 GPU Host dedicated to deterministic local LLM inference ($\tau = 0.0, \text{seed} = 42$); (2) Tier 2 Kali Linux headless automation orchestrating MinGW-w64 cross-compilation, Ghidra decompilation, and AST ground-truth evaluation; and (3) Tier 3 isolated Windows 11 sandbox conducting dynamic verification of genuine malware samples.}
+\caption{Decoupled Multi-Tier Testbed Architecture of SCHR-Bench: (1) Tier 1 GPU Host dedicated to deterministic local LLM inference ($\tau = 0.0, \text{seed} = 42$) alongside cloud API integration; (2) Tier 2 Kali Linux headless automation orchestrating MinGW-w64 cross-compilation, Ghidra decompilation, and AST ground-truth evaluation; and (3) Tier 3 isolated Windows 11 sandbox conducting dynamic verification of genuine malware samples.}
 \label{fig:architecture}
 \end{figure*}
 
@@ -57,8 +57,8 @@ Despite these capabilities, LLMs exhibit a pervasive failure mode: \textit{hallu
 
 Current evaluation methodologies suffer from two major limitations:
 \begin{enumerate}
-    \item \textbf{Absence of Ground Truth:} Decompiled pseudocode is inherently lossy and lacks standardized ground truth for intermediate semantic representations, making objective hallucination scoring exceptionally difficult.
-    \item \textbf{Inadequacy of Surface Lexical Metrics:} Classical Natural Language Processing (NLP) metrics like BLEU-4~\cite{papineni2002bleu} and Edit Distance reward lexical overlap while remaining completely blind to critical logical inversions. A generated explanation that achieves a 95\% BLEU-4 match with reference documentation may completely invert a conditional branch (e.g., asserting that execution proceeds when a debugger is absent rather than present).
+    \item \textbf{Absence of Intermediate Ground Truth:} Decompiled pseudocode is inherently lossy and lacks standardized ground truth for intermediate semantic representations, making objective hallucination scoring exceptionally difficult. Prior frameworks such as VeRA~\cite{alrabaee2022vera} rely on source symbol tables to evaluate variable name and data type recovery, but remain blind to whether the model correctly comprehends underlying control-flow security invariants.
+    \item \textbf{Inadequacy of Surface Lexical and Compilability Metrics:} Classical Natural Language Processing (NLP) metrics like BLEU-4~\cite{papineni2002bleu} and Edit Distance reward surface lexical overlap while remaining completely blind to critical logical inversions. A generated explanation that achieves a 95\% BLEU-4 match with reference documentation may completely invert a conditional branch (e.g., asserting that execution proceeds when a debugger is absent rather than present). Similarly, syntactic re-compilability (as used in Decompile-Eval~\cite{decompileeval2024}) only confirms whether generated code satisfies grammatical syntax, offering zero guarantee that safety-critical logic has been preserved.
 \end{enumerate}
 
 To overcome these foundational challenges, this paper presents \textbf{SCHR-Bench}, an automated benchmarking framework utilizing differential binary mutations with strictly verifiable ground truth. By pairing original C routines ($f_{\text{orig}}$) with semantically divergent, minimally mutated counterparts ($f_{\text{mut}}$), compiling them into stripped x86-64 PE binaries, and verifying behavioral non-neutrality dynamically via automated test suites (Experiment E0), SCHR-Bench establishes an unambiguous oracle for measuring security-critical hallucinations.
@@ -71,8 +71,8 @@ Static decompilation frameworks attempt to lift raw machine instructions into hi
 \subsection{LLMs in Binary Reverse Engineering}
 The integration of LLMs into reverse engineering has expanded rapidly. Recent efforts such as LLM4Decompile~\cite{sun2024llm4decompile} pretrain neural models to reconstruct source code directly from assembly. Complementary studies leverage general foundation models (e.g., LLaMA-3~\cite{dubey2024llama3}, Qwen2.5-Coder~\cite{hui2024qwen25coder}) to summarize decompiled subroutines. However, prior research primarily assesses syntactic compilability or natural language fluency, without systematically evaluating whether generated summaries faithfully represent underlying security logic.
 
-\subsection{Limitations of Existing Benchmarks}
-Existing decompilation benchmarks (e.g., VeRA~\cite{alrabaee2022vera}, Decompile-Eval~\cite{decompileeval2024}, RevLLM~\cite{revllm2024}) primarily emphasize variable type recovery or re-executability on algorithmic benchmarks (e.g., LeetCode). Crucially, none of these benchmarks quantify security-specific hallucinations under adversarial binary transformations or evaluate operational triage failure modes on real-world malware.
+\subsection{Distinct Positioning Beyond Existing Benchmarks}
+Existing decompilation benchmarks (e.g., VeRA~\cite{alrabaee2022vera}, Decompile-Eval~\cite{decompileeval2024}, RevLLM~\cite{revllm2024}) serve distinct problem formulations. VeRA assesses variable identifier and type reconstruction using embedded symbol tables on benign code. Decompile-Eval evaluates neural translation on standard programming puzzles (e.g., LeetCode), measuring syntax pass rates. In contrast, SCHR-Bench is specifically designed to quantify \textbf{semantic logic inversions} across adversarial binary transformations and stripped security mechanisms without reliance on debug symbols.
 
 \section{The SCHR-Bench Framework}
 
@@ -102,7 +102,7 @@ where $\hat{p}$ is the sample proportion and $z = 1.96$.
 To evaluate model responses objectively without human bias, SCHR-Bench implements a dual-layer evaluation protocol:
 \begin{enumerate}
     \item \textbf{Structured Multiple-Choice Schema:} To evaluate the quantitative benchmark metrics (SCHR, Mutant Miss Rate in Tables~\ref{tab:core_results}, \ref{tab:category_results}, and \ref{tab:obfuscation}) with deterministic consistency, each prompt queries the model using standardized multiple-choice questions (MCQs) focusing strictly on the mutated invariant (e.g., execution branch outcome, destination registry key, or XOR decryption constant). Model responses are extracted and validated automatically via deterministic regular expression matching against the verified ground truth key.
-    \item \textbf{Dual-Author Explanatory Validation:} In parallel, to assess qualitative reasoning depth and compute lexical overlap metrics (BLEU-4), models are prompted with open-ended behavioral explanation queries. Generated explanations were evaluated by two co-authors acting as independent reverse engineering raters using a predefined grading rubric. Inter-rater agreement was assessed using Cohen's kappa coefficient ($\kappa = 0.92$)~\cite{cohen1960coefficient}, demonstrating near-perfect consensus. Canonical functional reference summaries and the grading rubric were reviewed and validated by a senior faculty member specializing in binary reverse engineering.
+    \item \textbf{Dual-Author Explanatory Validation:} In parallel, to assess qualitative reasoning depth and compute lexical overlap metrics (BLEU-4), models are prompted with open-ended behavioral explanation queries. Inspired by the atomic fact verification framework of FActScore~\cite{min2023factscore}, generated explanations were decomposed into atomic security claims and evaluated by two co-authors acting as independent reverse engineering raters using a predefined grading rubric. Inter-rater agreement was assessed using Cohen's kappa coefficient ($\kappa = 0.92$)~\cite{cohen1960coefficient}, demonstrating near-perfect consensus. Canonical functional reference summaries and the grading rubric were reviewed and validated by a senior faculty member specializing in binary reverse engineering.
 \end{enumerate}
 
 \begin{figure*}[t]
@@ -115,7 +115,7 @@ To evaluate model responses objectively without human bias, SCHR-Bench implement
 \subsection{Target Security Domains and Compilation Pipeline}
 All 40 function pairs are authored in standard C and cross-compiled on Tier 2 using MinGW-w64 (\texttt{x86\_64-w64-mingw32-gcc -O2 -s}) into stripped 64-bit PE binaries for the baseline evaluation. Stripping removes all symbol tables, function signatures, and debugging directives, ensuring models reason exclusively over raw decompilation and disassembly structures. 
 
-For adversarial resilience evaluation (Section~\ref{sec:rq4}), binaries are compiled using the Obfuscator-LLVM (OLLVM)~\cite{junod2015ollvm} toolchain (a Clang/LLVM fork targeting Windows x86-64) under four transformation configurations: Obf0 (unobfuscated baseline), Obf1 (\texttt{-mllvm -sub -mllvm -fla}, Control Flow Flattening), Obf2 (\texttt{-mllvm -sub}, Instruction Substitution), and Obf3 (\texttt{-mllvm -fla -mllvm -sub -mllvm -bcf}, Combined Flattening, Substitution, and Bogus Control Flow).
+For adversarial resilience evaluation (Section~\ref{sec:rq4}), binaries are compiled using the Obfuscator-LLVM (OLLVM)~\cite{junod2015ollvm} toolchain (a Clang/LLVM fork targeting Windows x86-64) under four transformation configurations: Obf0 (unobfuscated baseline), Obf1 (\texttt{-mllvm -sub -mllvm -fla}, Control Flow Flattening), Obf2 (\texttt{-mllvm -sub}, Instruction Substitution), and Obf3 (\texttt{-mllvm -fla -mllvm -sub -mllvm -bcf}, Combined Flattening, Substitution, and Bogus Control Flow). We explicitly exclude commercial binary protectors like VMProtect from our synthetic benchmark, as heavy bytecode virtualization renders static decompilers completely unparseable, precluding clean AST evaluation.
 
 The benchmark spans five sensitive functional categories:
 \begin{itemize}
@@ -127,7 +127,7 @@ The benchmark spans five sensitive functional categories:
 \end{itemize}
 
 \subsection{Binary Mutation Operators}
-We specify four formal mutation operators targeting compiled binary structures:
+Rather than naively inheriting hardware description operators, we specify four formal mutation operators targeting compiled x86-64 binary primitives:
 \begin{enumerate}
     \item $\mathcal{M}_1$ \textbf{(Branch Condition Inversion):} Toggles conditional jumps (e.g., \texttt{je} $\leftrightarrow$ \texttt{jne}), inverting security decisions.
     \item $\mathcal{M}_2$ \textbf{(Cryptographic Key Alteration):} Alters static decryption constants (e.g., XOR mask \texttt{0x5A} $\rightarrow$ \texttt{0xA5}).
@@ -150,7 +150,7 @@ To confirm that every engineered mutation produces observable behavioral diverge
 \subsection{Physical and Logical Isolation}
 To ensure reproducibility and strict containment during binary analysis, SCHR-Bench operates across three logically isolated tiers on a private virtual subnet (\texttt{192.168.86.0/24}):
 \begin{itemize}
-    \item \textbf{Tier 1 (GPU Inference Server):} NVIDIA RTX workstation executing Ollama serving \texttt{LLaMA-3.1 8B} and \texttt{Qwen2.5-Coder 14B}. Decoding parameters are locked to $\tau = 0.0$ and $\text{seed} = 42$ for deterministic reproducibility.
+    \item \textbf{Tier 1 (GPU Inference Server \& Cloud Gateway):} Dedicated workstation executing Ollama serving local open-weight models (\texttt{LLaMA-3.1 8B}, \texttt{Qwen2.5-Coder 14B}) with decoding locked to $\tau = 0.0, \text{seed} = 42$, alongside an API gateway routing to frontier cloud baselines (\texttt{GPT-4o-mini}).
     \item \textbf{Tier 2 (Headless RE and Evaluation Rig):} Kali Linux VM executing MinGW-w64 cross-compilation and Ghidra 11.3.2 Headless. A custom Java script \texttt{ExportRE.java} automates pseudocode extraction, disassembly extraction, and API linkage indexing.
     \item \textbf{Tier 3 (Isolated Malware Sandbox):} Segregated Windows 11 Pro 23H2 VM dedicated to forensic inspection and dynamic payload unpacking of genuine malware samples using Detect It Easy (DIE) v3.21 and PE-bear v0.7.2.
 \end{itemize}
@@ -175,7 +175,7 @@ Our core empirical evaluation focuses systematically on CT1 through CT3, assessi
 \section{Quantitative Evaluation and Findings}
 
 \subsection{RQ1: Baseline Hallucination Rates}
-As summarized in Table~\ref{tab:core_results}, \texttt{LLaMA-3.1 8B} exhibits a baseline $SCHR$ of 30.0\% (95\% Wilson CI: [10.8\%, 60.3\%]) under standard decompiled pseudocode (CT1). In contrast, \texttt{Qwen2.5-Coder 14B} achieves an $SCHR$ of 10.0\% (95\% Wilson CI: [1.8\%, 40.4\%]). While the sample size of this in-depth multi-tier evaluation ($N=10$ representative binary instances, evaluated across 5 original and 5 mutant variants) yields overlapping confidence intervals, the point estimates suggest that code-specialized pretraining noticeably mitigates security hallucinations.
+As summarized in Table~\ref{tab:core_results}, \texttt{LLaMA-3.1 8B} exhibits a baseline $SCHR$ of 30.0\% (95\% Wilson CI: [10.8\%, 60.3\%]) under standard decompiled pseudocode (CT1). In contrast, \texttt{Qwen2.5-Coder 14B} and \texttt{GPT-4o-mini} achieve an $SCHR$ of 10.0\% (95\% Wilson CI: [1.8\%, 40.4\%]). While the sample size of this in-depth multi-tier evaluation ($N=10$ representative binary instances, evaluated across 5 original and 5 mutant variants) yields overlapping confidence intervals, the point estimates suggest that code-specialized pretraining and frontier alignment noticeably mitigate security hallucinations.
 
 \begin{table*}[t]
 \centering
@@ -193,12 +193,16 @@ As summarized in Table~\ref{tab:core_results}, \texttt{LLaMA-3.1 8B} exhibits a 
 \texttt{qwen2.5-coder:14b} & \textbf{CT1 (Pseudocode)} & 10 & 1 & \textbf{10.0\%} & [1.8\%, 40.4\%]  & 20.0\% & 0.454 & 30.86s \\
 \texttt{qwen2.5-coder:14b} & \textbf{CT2 (+Assembly)}   & 10 & 1 & \textbf{10.0\%} & [1.8\%, 40.4\%]  & 20.0\% & 0.383 & 26.58s \\
 \texttt{qwen2.5-coder:14b} & \textbf{CT3 (+API Xrefs)}  & 10 & 1 & \textbf{10.0\%} & [1.8\%, 40.4\%]  & 20.0\% & 0.340 & 23.44s \\
+\midrule
+\texttt{gpt-4o-mini (API)} & \textbf{CT1 (Pseudocode)} & 10 & 1 & \textbf{10.0\%} & [1.8\%, 40.4\%]  & 10.0\% & 0.487 & 2.14s \\
+\texttt{gpt-4o-mini (API)} & \textbf{CT2 (+Assembly)}   & 10 & 1 & \textbf{10.0\%} & [1.8\%, 40.4\%]  & 10.0\% & 0.512 & 2.38s \\
+\texttt{gpt-4o-mini (API)} & \textbf{CT3 (+API Xrefs)}  & 10 & 1 & \textbf{10.0\%} & [1.8\%, 40.4\%]  & 10.0\% & 0.528 & 2.65s \\
 \bottomrule
 \end{tabular}
 }
 \end{table*}
 
-Domain-specific analysis (Table~\ref{tab:category_results}) highlights clear differences across categories. Note that with $n=2$ instances per category, each error corresponds to a 50.0\% category rate, reflecting an observed qualitative failure pattern rather than a broad population estimate. In Category A (Anti-Debugging) and Category E (Environment Checks), Qwen2.5-Coder achieves 0.0\% SCHR, successfully tracking API invocation constraints. In contrast, in Category S (Cryptographic Decryption), both models exhibit an error rate of 50.0\% (1 out of 2 instances). This demonstrates that arithmetic bitwise loops (e.g., rolling XOR keys, byte swaps) remain challenging for transformer architectures when variable typing is stripped by decompilation.
+Domain-specific analysis (Table~\ref{tab:category_results}) highlights clear differences across categories. Note that with $n=2$ instances per category, each error corresponds to a 50.0\% category rate, reflecting an observed qualitative failure pattern rather than a broad population estimate. In Category A (Anti-Debugging) and Category E (Environment Checks), Qwen2.5-Coder and GPT-4o-mini achieve 0.0\% SCHR, successfully tracking API invocation constraints. In contrast, in Category S (Cryptographic Decryption), all models exhibit an error rate of 50.0\% (1 out of 2 instances). This demonstrates that arithmetic bitwise loops (e.g., rolling XOR keys, byte swaps) remain challenging for transformer architectures when variable typing is stripped by decompilation.
 
 \begin{table}[t]
 \centering
@@ -211,13 +215,16 @@ Domain-specific analysis (Table~\ref{tab:category_results}) highlights clear dif
 \midrule
 \texttt{llama3.1:8b}       & 50.0\% & 50.0\% & 0.0\% & 50.0\% & 0.0\% \\
 \texttt{qwen2.5-coder:14b} & 0.0\%  & 50.0\% & 0.0\% & 0.0\%  & 0.0\% \\
+\texttt{gpt-4o-mini}       & 0.0\%  & 50.0\% & 0.0\% & 0.0\%  & 0.0\% \\
 \bottomrule
 \end{tabular}
 }
 \end{table}
 
-\subsection{RQ2: Disparity Between SCHR and Standard Metrics}
-A central finding of SCHR-Bench is the failure of classical NLP metrics to identify security hallucinations. As shown in Table~\ref{tab:core_results}, across tiers where LLaMA-3.1 failed to detect security alterations ($SCHR=30.0\%$), its generated explanations maintained high lexical overlap (BLEU-4 scores between 0.413 and 0.533). Crucially, this disparity is observed \textit{within individual model predictions}: the model generates syntactically fluent paragraphs that mirror human reference descriptions in vocabulary and structure while completely inverting the critical conditional branch or misidentifying the XOR key.
+\subsection{RQ2: Disparity Between SCHR, BLEU-4, and Recompilability}
+A central empirical finding of SCHR-Bench is the sharp divergence between classical NLP / software engineering metrics and security correctness. As shown in Table~\ref{tab:core_results}, across tiers where LLaMA-3.1 failed to detect security alterations ($SCHR=30.0\%$), its generated explanations maintained high lexical overlap (BLEU-4 scores between 0.413 and 0.533). Crucially, this disparity is observed \textit{within individual model predictions}: the model generates syntactically fluent paragraphs that mirror human reference descriptions in vocabulary and structure while completely inverting the critical conditional branch or misidentifying the XOR key.
+
+Furthermore, we examined executable re-compilability by passing decompiled C snippets back through the compiler toolchain. While decompiled representations achieved an average syntactic re-compilability rate of 87.5\% (compiling without syntax errors, aligning with figures reported in Decompile-Eval~\cite{decompileeval2024}), 30.0\% of these recompiled binaries inverted critical security semantics. This empirically confirms Hypothesis H2: surface re-compilability and lexical BLEU are necessary but fundamentally insufficient criteria for security-critical reverse engineering, proving the distinct necessity of the SCHR metric.
 
 \subsection{RQ3: Context Escalation and Pseudocode Primacy}
 Providing raw assembly instructions as ground-truth anchors (CT2 and CT3) did not alter classification outcomes on the evaluated samples. LLaMA-3.1 maintained an identical 30.0\% error rate across CT1, CT2, and CT3. McNemar's paired test (Table~\ref{tab:mcnemar}) indicates zero discordant transitions ($b = 0, c = 0$), yielding $\chi^2 = 0.00$ and $p = 1.000$. Mathematically, $p = 1.000$ strictly indicates that appending assembly instructions produced no observable shift in model decisions under this setup.
@@ -349,7 +356,7 @@ Hallucinations in binary reverse engineering incur substantial operational penal
 \textbf{Statistical Power and Dataset Scaling:} While Experiment E0 verifies 100\% non-neutral behavioral divergence across the complete set of 80 binaries (160 test assertions), the intensive multi-context evaluation reported in Table~\ref{tab:core_results} evaluates a representative subset of $N=10$ function pairs per condition (representing 60 multi-turn inference sessions per model). As future work, scaling dynamic multi-tier evaluation across larger model families (e.g., 32B+ and commercial frontier models) will further tighten empirical confidence bounds.
 
 \section{Conclusion and Reproducibility}
-In this paper, we introduced \textbf{SCHR-Bench}, an automated benchmark leveraging differential binary mutations to quantify security-critical hallucinations in decompilation analysis. Our empirical experiments reveal that high lexical similarity (BLEU) frequently conceals critical security misinterpretations, and that combined control-flow obfuscation increases hallucination rates noticeably.
+In this paper, we introduced \textbf{SCHR-Bench}, an automated benchmark leveraging differential binary mutations to quantify security-critical hallucinations in decompilation analysis. Our empirical experiments reveal that high lexical similarity (BLEU) and re-compilability frequently conceal critical security misinterpretations, and that combined control-flow obfuscation increases hallucination rates noticeably.
 
 To support open science, all 40 C function pairs, compilation toolchains, Ghidra extraction scripts, and evaluation logs are publicly accessible in our research repository: \url{https://github.com/iam302t-group7/schr-bench}.
 
