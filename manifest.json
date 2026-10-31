@@ -23,9 +23,14 @@
     "CT4_Interprocedural"
   ],
   "verification_experiment_e0": {
-    "total_test_assertions": 160,
-    "divergence_pass_rate": 1.0,
-    "neutral_mutations_retained": 0
+    "total_function_pairs": 40,
+    "test_vectors_per_pair": 2,
+    "total_test_vectors": 80,
+    "total_execution_assertions": 160,
+    "execution_assertion_breakdown": "80 original binary executions + 80 mutant binary executions",
+    "pair_level_divergence_rate": 1.0,
+    "neutral_mutations_retained": 0,
+    "description": "Each of the 40 function pairs is dynamically executed across 2 targeted input vectors to verify that the mutation alters runtime behavior. 100% of function pairs demonstrate non-neutral behavioral divergence on at least one input vector."
   },
   "models_evaluated": [
     "llama3.1:8b",
