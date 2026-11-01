@@ -12,7 +12,7 @@
   },
   "obfuscation_levels": [
     "Obf0_None",
-    "Obf1_FLA",
+    "Obf1_CFF",
     "Obf2_Sub",
     "Obf3_Combined"
   ],
@@ -34,8 +34,7 @@
   },
   "models_evaluated": [
     "llama3.1:8b",
-    "qwen2.5-coder:14b",
-    "gpt-4o-mini"
+    "qwen2.5-coder:14b"
   ],
   "license": "MIT",
   "functions": [
@@ -999,5 +998,7 @@
       "semantic_target": "toy state-machine transition increment vs decrement",
       "question": "After three transitions, does state equal c?"
     }
-  ]
+  ],
+  "total_logged_evaluations": 540,
+  "evaluation_breakdown": "480 core runs (80 binaries x 3 context tiers x 2 models) + 60 obfuscation runs (10 stratified binaries x 3 OLLVM levels x 2 models)"
 }

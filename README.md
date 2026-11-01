@@ -55,7 +55,7 @@ IAM302t_SCHR_Bench/
 ├── 📁 dataset/                 # 40 hàm C bảo mật tự viết & 80 file PE x64 stripped đột biến
 ├── 📁 documentation/           # Master Plan, checklist nghiệm thu (D1 -> D5) & tài liệu kiến trúc
 ├── 📁 manuscript/              # Bản thảo LaTeX bài báo khoa học Springer LNICST (10-14 trang) & IEEE (8-10 trang)
-├── 📁 results/                 # Cơ sở dữ liệu ngữ cảnh decompiled, raw query logs (480 entries) & bảng thống kê
+├── 📁 results/                 # Cơ sở dữ liệu ngữ cảnh decompiled, raw query logs (540 entries) & bảng thống kê
 ├── 📁 tier1_host/              # Cấu hình GPU Inference Hub, scripts kiểm thử LAN & giám sát Ollama
 ├── 📁 tier2_kali/              # Môi trường biên dịch MinGW, Ghidra Headless decompiler & bộ ảnh minh chứng 01-12
 ├── 📁 tier3_win11/             # Môi trường Sandbox cách ly, báo cáo phân tích DIE & PE-bear cho mẫu Gh0stRAT
@@ -113,6 +113,6 @@ bash reproduce.sh
 ```
 
 Luồng tái hiện sẽ tự động thực hiện:
-1. **Kiểm tra tính đúng đắn Ground Truth (E0 Sanity Check):** Xác thực 160 assertions trên 40 hàm C bảo mật đạt 100% PASS.
-2. **Động cơ thống kê (Statistical Engine):** Tính toán độ tin cậy Wilson Score Interval 95%, kiểm định McNemar ($p < 0.01$) và xuất bảng LaTeX.
-3. **Kịch bản Live Demo tương tác (Mốc D3):** Trình diễn trực quan phản ứng của mô hình qua 3 bước (Ground Truth $\rightarrow$ Ảo giác CT1 $\rightarrow$ Hóa giải CT2 Assembly Anchor).
+1. **Kiểm tra tính đúng đắn Ground Truth (E0 Sanity Check):** Xác thực 80 test vectors (160 binary execution assertions) trên 40 cặp hàm C bảo mật đạt 100% behavioral divergence.
+2. **Động cơ thống kê (Statistical Engine):** Tính toán độ tin cậy Wilson Score Interval 95%, kiểm định McNemar ($N=80$) và xuất bảng LaTeX từ 540 lượt đánh giá thực nghiệm.
+3. **Kịch bản Live Demo tương tác (Mốc D3):** Trình diễn trực quan phản ứng của mô hình qua 3 bước (Ground Truth $\rightarrow$ Ảo giác CT1 $\rightarrow$ Đối chiếu CT2 Assembly Anchor).
