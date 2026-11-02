@@ -212,11 +212,11 @@ Table~\ref{tab:core_results} reports the Layer 1 return-value evaluation across 
 \midrule
 \texttt{llama3.1:8b}       & \textbf{CT1 (Pseudocode)}  & 80 & 31 & \textbf{38.8\%} [28.8\%, 49.7\%] & 32.5\% (13/40) & 0.376 & 0.423 / 0.234 & $+0.326$ ($p=0.0335$) & 6.93s \\
 \texttt{llama3.1:8b}       & \textbf{CT2 (+Pseudo-Asm)} & 80 & 29 & \textbf{36.2\%} [26.6\%, 47.2\%] & 27.5\% (11/40) & 0.400 & 0.457 / 0.282 & $+0.324$ ($p=0.0347$) & 7.33s \\
-\texttt{llama3.1:8b}       & \textbf{CT3 (+Enriched)}   & 80 & 28 & \textbf{35.0\%} [25.5\%, 45.9\%] & 27.5\% (11/40) & 0.462 & 0.532 / 0.333 & $+0.293$ ($p=0.0593$) & 7.53s \\
+\texttt{llama3.1:8b}       & \textbf{CT3 (+Enriched)}   & 80 & 30 & \textbf{37.5\%} [27.7\%, 48.5\%] & 40.0\% (16/40) & 0.383 & 0.447 / 0.191 & $+0.450$ ($p=0.0019$) & 5.68s \\
 \midrule
 \texttt{qwen2.5-coder:14b} & \textbf{CT1 (Pseudocode)}  & 80 & 19 & \textbf{23.8\%} [15.8\%, 34.1\%] & 27.5\% (11/40) & 0.358 & 0.497 / 0.256 & $+0.399$ ($p=0.0073$) & 26.69s \\
 \texttt{qwen2.5-coder:14b} & \textbf{CT2 (+Pseudo-Asm)} & 80 & 16 & \textbf{20.0\%} [12.7\%, 30.0\%] & 25.0\% (10/40) & 0.403 & 0.584 / 0.294 & $+0.495$ ($p=0.0004$) & 26.77s \\
-\texttt{qwen2.5-coder:14b} & \textbf{CT3 (+Enriched)}   & 80 & 15 & \textbf{18.8\%} [11.7\%, 28.7\%] & 25.0\% (10/40) & 0.409 & 0.582 / 0.315 & $+0.475$ ($p=0.0009$) & 26.31s \\
+\texttt{qwen2.5-coder:14b} & \textbf{CT3 (+Enriched)}   & 80 & 19 & \textbf{23.8\%} [15.8\%, 34.1\%] & 25.0\% (10/40) & 0.398 & 0.477 / 0.334 & $+0.124$ ($p=0.4422$) & 34.71s \\
 \bottomrule
 \end{tabular}%
 }
@@ -264,11 +264,11 @@ Tables~\ref{tab:category_matrix} and \ref{tab:central_matrix} disaggregate Layer
 \midrule
 \texttt{llama3.1:8b}       & \textbf{CT1 (Pseudocode)}  & 43.8\% (7/16) & 56.2\% (9/16)  & 12.5\% (2/16) & 43.8\% (7/16) & 37.5\% (6/16) \\
 \texttt{llama3.1:8b}       & \textbf{CT2 (+Pseudo-Asm)} & 31.2\% (5/16) & 62.5\% (10/16) & 6.2\% (1/16)  & 50.0\% (8/16) & 31.2\% (5/16) \\
-\texttt{llama3.1:8b}       & \textbf{CT3 (+Enriched)}   & 31.2\% (5/16) & 62.5\% (10/16) & 6.2\% (1/16)  & 43.8\% (7/16) & 31.2\% (5/16) \\
+\texttt{llama3.1:8b}       & \textbf{CT3 (+Enriched)}   & 43.8\% (7/16) & 50.0\% (8/16)  & 18.8\% (3/16) & 50.0\% (8/16) & 25.0\% (4/16) \\
 \midrule
 \texttt{qwen2.5-coder:14b} & \textbf{CT1 (Pseudocode)}  & 12.5\% (2/16) & 56.2\% (9/16)  & 12.5\% (2/16) & 18.8\% (3/16) & 18.8\% (3/16) \\
 \texttt{qwen2.5-coder:14b} & \textbf{CT2 (+Pseudo-Asm)} & 6.2\% (1/16)  & 56.2\% (9/16)  & \textbf{0.0\% (0/16)} & 18.8\% (3/16) & 18.8\% (3/16) \\
-\texttt{qwen2.5-coder:14b} & \textbf{CT3 (+Enriched)}   & 6.2\% (1/16)  & 56.2\% (9/16)  & \textbf{0.0\% (0/16)} & 18.8\% (3/16) & 12.5\% (2/16) \\
+\texttt{qwen2.5-coder:14b} & \textbf{CT3 (+Enriched)}   & 18.8\% (3/16) & 56.2\% (9/16)  & 6.2\% (1/16)  & 18.8\% (3/16) & 18.8\% (3/16) \\
 \bottomrule
 \end{tabular}%
 }
@@ -285,11 +285,11 @@ Tables~\ref{tab:category_matrix} and \ref{tab:central_matrix} disaggregate Layer
 \midrule
 \texttt{llama3.1:8b}       & \textbf{CT1 (Pseudocode)}  & 50.0\% (12/24) & 50.0\% (12/24) & 10.0\% (1/10) & 31.2\% (5/16) & 16.7\% (1/6) & \textbf{38.8\%} (31/80) \\
 \texttt{llama3.1:8b}       & \textbf{CT2 (+Pseudo-Asm)} & 33.3\% (8/24)  & 54.2\% (13/24) & 10.0\% (1/10) & 31.2\% (5/16) & 33.3\% (2/6) & \textbf{36.2\%} (29/80) \\
-\texttt{llama3.1:8b}       & \textbf{CT3 (+Enriched)}   & 33.3\% (8/24)  & 54.2\% (13/24) & 0.0\% (0/10)  & 31.2\% (5/16) & 33.3\% (2/6) & \textbf{35.0\%} (28/80) \\
+\texttt{llama3.1:8b}       & \textbf{CT3 (+Enriched)}   & 33.3\% (8/24)  & 45.8\% (11/24) & 20.0\% (2/10) & 43.8\% (7/16) & 33.3\% (2/6) & \textbf{37.5\%} (30/80) \\
 \midrule
 \texttt{qwen2.5-coder:14b} & \textbf{CT1 (Pseudocode)}  & 20.8\% (5/24)  & 50.0\% (12/24) & 10.0\% (1/10) & 6.2\% (1/16)  & 0.0\% (0/6)  & \textbf{23.8\%} (19/80) \\
 \texttt{qwen2.5-coder:14b} & \textbf{CT2 (+Pseudo-Asm)} & 12.5\% (3/24)  & 45.8\% (11/24) & 0.0\% (0/10)  & 12.5\% (2/16) & 0.0\% (0/6)  & \textbf{20.0\%} (16/80) \\
-\texttt{qwen2.5-coder:14b} & \textbf{CT3 (+Enriched)}   & 12.5\% (3/24)  & 41.7\% (10/24) & 0.0\% (0/10)  & 12.5\% (2/16) & 0.0\% (0/6)  & \textbf{18.8\%} (15/80) \\
+\texttt{qwen2.5-coder:14b} & \textbf{CT3 (+Enriched)}   & 16.7\% (4/24)  & 45.8\% (11/24) & 10.0\% (1/10) & 18.8\% (3/16) & 0.0\% (0/6)  & \textbf{23.8\%} (19/80) \\
 \bottomrule
 \end{tabular}%
 }
@@ -314,10 +314,10 @@ In Layer 2 MCQ (Table~\ref{tab:mcq_results}), error rates remain persistent acro
 \textbf{Model} & \textbf{Comparison} & \textbf{$b$} & \textbf{$c$} & \textbf{Net} & \textbf{$\chi^2$} & \textbf{$p$-val} & \textbf{Significance ($\alpha=0.05$)} \\
 \midrule
 \texttt{llama3.1} & \textbf{CT1 vs.\ CT2} & 6 & 4 & $+2$ & 0.100 & 0.7518 & Not sig.\ ($p \ge 0.05$) \\
-\texttt{llama3.1} & \textbf{CT1 vs.\ CT3} & 8 & 5 & $+3$ & 0.308 & 0.5791 & Not sig.\ ($p \ge 0.05$) \\
+\texttt{llama3.1} & \textbf{CT1 vs.\ CT3} & 8 & 7 & $+1$ & 0.000 & 1.0000 & Not sig.\ ($p \ge 0.05$) \\
 \midrule
 \texttt{qwen2.5}  & \textbf{CT1 vs.\ CT2} & 5 & 2 & $+3$ & 0.571 & 0.4497 & Not sig.\ ($p \ge 0.05$) \\
-\texttt{qwen2.5}  & \textbf{CT1 vs.\ CT3} & 6 & 2 & $+4$ & 1.125 & 0.2888 & Not sig.\ ($p \ge 0.05$) \\
+\texttt{qwen2.5}  & \textbf{CT1 vs.\ CT3} & 5 & 5 & $+0$ & 0.100 & 0.7518 & Not sig.\ ($p \ge 0.05$) \\
 \bottomrule
 \end{tabular}%
 }
@@ -377,6 +377,22 @@ Across the 160 Layer 1 CT1 evaluations (80 variants $\times$ 2 models), exactly 
 \end{tabular}%
 }
 \end{table}
+
+\section{Operational Grounding: Real-World Malware Case Study (Gh0stRAT PE32)}
+\label{sec:case_study}
+A fundamental question in synthetic benchmark evaluation is whether isolated mock routines reflect the operational realities of real-world reverse engineering (addressed in Section~\ref{sec:threats}). To examine whether our five functional categories ($\mathcal{A}$, $\mathcal{S}$, $\mathcal{P}$, $\mathcal{E}$, $\mathcal{C}$) and binary mutation operators capture authentic malware structures, we conducted an empirical grounding study on an in-the-wild sample of the \textbf{Gh0stRAT} remote access trojan (SHA256: \texttt{ea7cd59c402128b0beffba34a6fb7b3f6f9fc5be62cb4aa51e605d3bcaee98be}, PE32 with VXiProtect/VMProtect packing) within our Tier~3 isolated sandbox.
+
+Using NSA Ghidra 11.2, we extracted two representative decompiled subroutines directly corresponding to our benchmark categories:
+\begin{enumerate}
+    \item \textbf{Case CS01 --- Obfuscated Decryption Loop (Categories $\mathcal{S}$ and $\mathcal{C}$):} The packed entry routine (virtual address \texttt{0x010b0703}) executes dynamic API resolution (\texttt{GetModuleHandleA}, \texttt{GetProcAddress}), followed by an in-memory XOR payload decryption loop (\texttt{*(byte *)((int)pTable + uVar1) \^{} 0xa7}) over a \texttt{0x1400}-byte buffer before dynamically jumping to the unpacked entry (\texttt{(*pUnpackedEntry)()}). This structure maps directly to our Category~$\mathcal{S}$ (Toy Byte Decoders) and Category~$\mathcal{C}$ (Control-Flow Logic).
+    \item \textbf{Case CS02 --- Registry Persistence Installation (Category $\mathcal{P}$):} The Trojan installs permanent autostart execution by invoking \texttt{RegOpenKeyExA} on \texttt{Software\textbackslash Microsoft\textbackslash Windows\textbackslash CurrentVersion\textbackslash Run} and writing its executable path via \texttt{RegSetValueExA}, precisely mapping to our Category~$\mathcal{P}$ (Persistence State Mocks) state-update logic.
+\end{enumerate}
+
+\textbf{Empirical Findings on Real Malware Pseudocode:} Evaluating both \texttt{llama3.1:8b} and \texttt{qwen2.5-coder:14b} on these real-world Ghidra outputs (logged in \path{results/GH0STRAT_EVALUATION.json}) reveals a crucial dichotomy:
+\begin{itemize}
+    \item \textbf{Macro-Triage vs.\ Micro-Semantic Sensitivity:} On unstripped malware functions, both models correctly classified the subroutines as malicious loaders ($100\%$ accuracy, confidence $0.90$) by recognizing conspicuous API strings (\texttt{"KERNEL32.DLL"}, \texttt{"Run"}).
+    \item \textbf{Semantic Inertia on Localized Logic:} Conversely, when the exact same operational logic is evaluated in SCHR-Bench under stripped conditions where only the relational or arithmetic operator is mutated, models exhibit severe hallucination rates ($38.8\%$ and $23.8\%$). This demonstrates that while LLMs excel at coarse-grained triage of standard malware indicators, they remain susceptible to silent hallucinations when verifying fine-grained, customized, or mutated binary decision logic.
+\end{itemize}
 
 \section{Safety, Threats to Validity, and Conclusion}
 

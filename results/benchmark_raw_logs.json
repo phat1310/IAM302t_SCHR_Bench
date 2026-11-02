@@ -47,8 +47,8 @@
     "predicted_return": 1,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function FUN_140001140 returns 1 (continue) when param_1 is non-zero, indicating a debugger flag decision to continue execution.",
-    "latency_sec": 7.08
+    "explanation": "The function FUN_140001140 returns 1 because param_1 is not equal to 0, which triggers the return statement 'return 1;'. The branch logic is a simple conditional jump based on the value of ECX (param_1), and since it's not zero, the function immediately returns 1 without executing any further instructions.",
+    "latency_sec": 5.71
   },
   "llama3.1:8b__Obf1_CFF__A01_original": {
     "model": "llama3.1:8b",
@@ -149,8 +149,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 returns 1 (continue) when param_1 is non-zero, indicating that the debugger flag policy allows execution to proceed.",
-    "latency_sec": 6.19
+    "explanation": "The function FUN_140001140 returns 1 because param_1 is not equal to 0, as per the if condition in the decompiled code. The test instruction (85 c9) checks if ECX (param_1) is zero, and since it's not, the setne instruction (0f 95 c0) sets AL (the least significant byte of EAX) to 1. Finally, the RET instruction (c3) returns this value.",
+    "latency_sec": 7.15
   },
   "llama3.1:8b__Obf1_CFF__A01_mutant": {
     "model": "llama3.1:8b",
@@ -251,8 +251,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 performs a one-byte XOR decode operation using the key 0x2a (42 in decimal) on the input parameter param_1. If the decoded byte equals 0x41 (65 in decimal), it returns 1; otherwise, it returns 0.",
-    "latency_sec": 8.46
+    "explanation": "The function FUN_140001140 returns 1 (true) because the decoded value of param_1^0x2a equals 0x41. This is due to the bitwise XOR operation between ECX (param_1 = 107) and 0x2a, resulting in a value that, when ANDed with 255, equals 0x41.",
+    "latency_sec": 5.95
   },
   "llama3.1:8b__Obf1_CFF__S01_original": {
     "model": "llama3.1:8b",
@@ -353,8 +353,8 @@
     "predicted_return": 1,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function FUN_140001140 performs a one-byte XOR decode operation using the key 0x2b (43 decimal) on the input parameter param_1. If the decoded byte equals 0x41 (65 decimal), it returns 1; otherwise, it returns 0.",
-    "latency_sec": 7.99
+    "explanation": "The function FUN_140001140 returns 1 (true) because the decoded value of param_1 (107) XORed with 0x2b equals 65 (0x41), which matches the condition in the return statement.",
+    "latency_sec": 4.32
   },
   "llama3.1:8b__Obf1_CFF__S01_mutant": {
     "model": "llama3.1:8b",
@@ -455,8 +455,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 performs a bitwise OR operation between its first parameter and the immediate value 1, effectively setting bit 0 of the result to 1. This suggests that the function is used to simulate an autorun state with bit 0 set.",
-    "latency_sec": 8.08
+    "explanation": "The function FUN_140001140 performs a bitwise OR operation between its first parameter (ECX) and the immediate value 0x1. Given the input vector param_1 = 0, param_2 = 0, param_3 = 0, the result of this operation is 1.",
+    "latency_sec": 5.0
   },
   "llama3.1:8b__Obf1_CFF__P01_original": {
     "model": "llama3.1:8b",
@@ -557,8 +557,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 performs a bitwise AND operation between its first parameter and the two's complement of 1, effectively clearing bit 0. This suggests that it is used to determine if the autorun state has bit 0 set.",
-    "latency_sec": 7.72
+    "explanation": "The function FUN_140001140 performs a bitwise AND operation between its first parameter (ECX) and the two's complement of 1 (~1). Since ~1 is equivalent to 0xfffffffe in hexadecimal, which is an even number, the result will always be 0 regardless of the input value. This indicates that the function does not perform any meaningful computation based on its inputs.",
+    "latency_sec": 6.01
   },
   "llama3.1:8b__Obf1_CFF__P01_mutant": {
     "model": "llama3.1:8b",
@@ -659,8 +659,8 @@
     "predicted_return": 1,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function FUN_140001140 checks if param_1 is equal to 0, and returns 1 (allow) or 0 (block) based on this condition.",
-    "latency_sec": 6.96
+    "explanation": "The function FUN_140001140 returns 1 when param_1 is non-zero (in this case, 1), indicating a true condition. The branch logic is based on the ECX register (param_1) being tested for zero using the test instruction (85 c9). If ECX is not zero, the sete al instruction sets the AL register to 1, which is then returned as the function result.",
+    "latency_sec": 6.9
   },
   "llama3.1:8b__Obf1_CFF__E01_original": {
     "model": "llama3.1:8b",
@@ -761,8 +761,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 returns 1 if param_1 is non-zero, indicating that the simulated environment policy allows execution. In this case, with input vector param_1 = 1, the function will return 1.",
-    "latency_sec": 7.38
+    "explanation": "The function FUN_140001140 returns 1 because param_1 is not equal to 0, which matches the condition in the return statement. This indicates a logical true result.",
+    "latency_sec": 3.51
   },
   "llama3.1:8b__Obf1_CFF__E01_mutant": {
     "model": "llama3.1:8b",
@@ -863,8 +863,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 compares two integers (param_1 and param_2) and returns 1 if the first is greater than the second, otherwise it returns 0. In this case, since a=b, the function will return 0.",
-    "latency_sec": 7.54
+    "explanation": "The function FUN_140001140 returns 0 when param_1 equals param_2 due to the ternary operator's condition being false. The comparison ECX (param_1) > EDX (param_2) is not met at this boundary case.",
+    "latency_sec": 4.46
   },
   "llama3.1:8b__Obf1_CFF__C01_original": {
     "model": "llama3.1:8b",
@@ -965,8 +965,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 compares two integers (param_1 and param_2) and returns 1 if they are equal, otherwise it returns 0. In this case, the input vector a=b=5, so the function will return true.",
-    "latency_sec": 8.03
+    "explanation": "The function FUN_140001140 returns 1 when param_1 is greater than or equal to param_2. In this case, the input vector has param_1 = 5 and param_2 = 5, which satisfies the condition. Therefore, the function will return 1.",
+    "latency_sec": 5.01
   },
   "llama3.1:8b__Obf1_CFF__C01_mutant": {
     "model": "llama3.1:8b",
@@ -1067,8 +1067,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if `param_1` is not equal to zero. Since `param_1` is 1, the condition is true, and the function returns 0, indicating a block decision.",
-    "latency_sec": 19.19
+    "explanation": "The function FUN_140001140 checks if the first parameter (param_1) is non-zero. Given that param_1 is 1, the condition 'if(param_1!=0)' evaluates to true, and the function returns 0.",
+    "latency_sec": 36.95
   },
   "qwen2.5-coder:14b__Obf1_CFF__A01_original": {
     "model": "qwen2.5-coder:14b",
@@ -1169,8 +1169,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if `param_1` is zero. If it is, the function returns 0; otherwise, it returns 1. Given the input `param_1 = 1`, the function will return 1, indicating that the policy allows execution to continue.",
-    "latency_sec": 23.09
+    "explanation": "The function FUN_140001140 checks if the first parameter (param_1) is zero. If it is, the function returns 0; otherwise, it returns 1. Given the input vector where param_1 is 1, the function will return 1.",
+    "latency_sec": 25.8
   },
   "qwen2.5-coder:14b__Obf1_CFF__A01_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -1271,8 +1271,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if the XOR of param_1 (107) with 42 results in a value that, when masked with 255, equals 65. This indicates a successful one-byte toy decode match.",
-    "latency_sec": 22.99
+    "explanation": "The function checks if the XOR of param_1 (107) with 0x2a (42) results in a value that, when masked with 255, equals 0x41 (65). The calculation is as follows: (107 ^ 42) & 255 = 65. Since the result matches 0x41, the function returns 1.",
+    "latency_sec": 35.76
   },
   "qwen2.5-coder:14b__Obf1_CFF__S01_original": {
     "model": "qwen2.5-coder:14b",
@@ -1373,8 +1373,8 @@
     "predicted_return": 1,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function checks if the XOR of param_1 (107) with 43 results in a value that, when masked with 255, equals 65. In this case, it does.",
-    "latency_sec": 22.47
+    "explanation": "The function checks if the XOR of param_1 (107) with 0x2b (43) results in 0x41 (65). The calculation is as follows: 107 ^ 43 = 65, which matches 0x41. Therefore, the function returns 1.",
+    "latency_sec": 26.97
   },
   "qwen2.5-coder:14b__Obf1_CFF__S01_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -1475,8 +1475,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function sets the least significant bit (bit 0) of the input parameter `param_1` to 1, regardless of its original value. In this case, with `param_1 = 0`, the return value will be 1.",
-    "latency_sec": 25.56
+    "explanation": "The function FUN_140001140 takes three integer parameters but only uses the first one (param_1). It performs a bitwise OR operation between param_1 and 1. Given the input vector where param_1 is 0, the result of 0 | 1 is 1. The other parameters (param_2 and param_3) do not affect the output in this case.",
+    "latency_sec": 30.57
   },
   "qwen2.5-coder:14b__Obf1_CFF__P01_original": {
     "model": "qwen2.5-coder:14b",
@@ -1577,8 +1577,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 clears the least significant bit (bit 0) of the input parameter param_1. Given the input vector where param_1 is 0, the return value will also be 0, indicating that the autorun state does not have bit 0 set.",
-    "latency_sec": 30.69
+    "explanation": "The function FUN_140001140 performs a bitwise AND operation between the input parameter `param_1` and the hexadecimal value `0xfffffffe`. This effectively clears the least significant bit of `param_1`. Given the input vector where `param_1 = 0`, the result of the operation is 0, as there are no bits set in the input to begin with. The function does not utilize `param_2` and `param_3`, thus they have no impact on the return value.",
+    "latency_sec": 38.02
   },
   "qwen2.5-coder:14b__Obf1_CFF__P01_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -1679,8 +1679,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if `param_1` is equal to 0. If it is, the function returns 1; otherwise, it returns 0. Given the input `param_1 = 1`, the function will return 0.",
-    "latency_sec": 23.63
+    "explanation": "The function FUN_140001140 checks if the first parameter (param_1) is equal to zero. Given the input vector where param_1 is 1, the condition param_1 == 0 evaluates to false. Therefore, the function returns 0.",
+    "latency_sec": 23.68
   },
   "qwen2.5-coder:14b__Obf1_CFF__E01_original": {
     "model": "qwen2.5-coder:14b",
@@ -1781,8 +1781,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if `param_1` is non-zero. Since `param_1` is 1, the function returns 1, indicating that the simulated environment policy allows the operation.",
-    "latency_sec": 19.89
+    "explanation": "The function FUN_140001140 checks if the first parameter (param_1) is non-zero. Given the input vector where param_1 is 1, the condition ECX != 0 evaluates to true. Therefore, the function returns 1.",
+    "latency_sec": 23.67
   },
   "qwen2.5-coder:14b__Obf1_CFF__E01_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -1883,8 +1883,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 returns 0 when param_1 is equal to param_2, as it only returns 1 if param_1 is greater than param_2.",
-    "latency_sec": 21.03
+    "explanation": "The function FUN_140001140 returns 0 when param_1 is equal to param_2. This is because the comparison 'param_1 > param_2' evaluates to false, and thus the ternary operator returns 0.",
+    "latency_sec": 23.54
   },
   "qwen2.5-coder:14b__Obf1_CFF__C01_original": {
     "model": "qwen2.5-coder:14b",
@@ -1985,8 +1985,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 returns 1 when param_1 is greater than or equal to param_2. Given the input values where param_1 (5) equals param_2 (5), the condition is satisfied, leading to a return value of 1.",
-    "latency_sec": 25.9
+    "explanation": "The function FUN_140001140 returns 1 when param_1 is equal to param_2. This is because the comparison 'param_1 >= param_2' evaluates to true, and the setge (set if greater or equal) instruction sets the AL register to 1, which is then returned as the result.",
+    "latency_sec": 27.73
   },
   "qwen2.5-coder:14b__Obf1_CFF__C01_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -2087,8 +2087,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "This function compares two integers (param_1 and param_2) and returns 1 if the first is greater, otherwise it returns 0. In this case, since a=b, the function will return 1.",
-    "latency_sec": 4.32
+    "explanation": "The function FUN_140001140 returns 1 when the input parameters are equal (a=b), as it uses a setle instruction to set the least significant bit of the return value (al) to 1 if the comparison is true. This indicates that the function behaves as expected for this specific input vector.",
+    "latency_sec": 5.02
   },
   "llama3.1:8b__CT1__A03_mutant": {
     "model": "llama3.1:8b",
@@ -2135,11 +2135,11 @@
     "mutation_operator": "relational_boundary",
     "ground_truth": 0,
     "opposite_variant_truth": 1,
-    "predicted_return": 0,
-    "is_correct": true,
-    "is_schr_hallucination": false,
-    "explanation": "This function compares two integers (param_1 and param_2) and returns 0 if they are equal, otherwise it returns 1. In this case, the input vector has a=b=100, so the function will return 0.",
-    "latency_sec": 4.89
+    "predicted_return": 1,
+    "is_correct": false,
+    "is_schr_hallucination": true,
+    "explanation": "The function FUN_140001140 returns 1 when the input parameters are equal (a=b), as it uses a setl instruction to set the least significant bit of the return value (al) to 1 if ecx is less than or equal to edx. In this case, since param_1 = 100 and param_2 = 100, the comparison results in equality, triggering the setl instruction to set al to 1.",
+    "latency_sec": 6.76
   },
   "qwen2.5-coder:14b__CT1__A03_original": {
     "model": "qwen2.5-coder:14b",
@@ -2189,8 +2189,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function returns 1 when param_1 is not greater than param_2, which includes the case where they are equal. This indicates that at the boundary a=b, the policy allows (1).",
-    "latency_sec": 20.07
+    "explanation": "The function FUN_140001140 returns 1 when param_1 is equal to param_2. This is because the condition (param_1 > param_2) evaluates to false, leading to the ternary operator returning the value after the colon, which is 1.",
+    "latency_sec": 23.93
   },
   "qwen2.5-coder:14b__CT1__A03_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -2240,8 +2240,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function returns 0 when param_1 is equal to param_2, indicating that the policy allows the operation at the boundary where a equals b.",
-    "latency_sec": 16.96
+    "explanation": "The function FUN_140001140 returns 0 when param_1 is equal to param_2. This is because the condition (param_1 >= param_2) evaluates to true, and the function returns 0 in this case.",
+    "latency_sec": 21.6
   },
   "llama3.1:8b__CT1__S04_original": {
     "model": "llama3.1:8b",
@@ -2291,8 +2291,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 calculates a checksum by adding the first parameter (ECX) to the bitwise XOR of the second parameter (EDX) and an immediate constant (0x10), then checks if this result is equal to 0x70. If true, it returns 1; otherwise, it returns 0.",
-    "latency_sec": 7.1
+    "explanation": "The computed checksum equals 0x70 (112 decimal), thus returning 1.",
+    "latency_sec": 2.45
   },
   "llama3.1:8b__CT1__S04_mutant": {
     "model": "llama3.1:8b",
@@ -2342,8 +2342,8 @@
     "predicted_return": 1,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function FUN_140001140 calculates a checksum by adding the first parameter (ECX) to the bitwise XOR of the second parameter (EDX) and an immediate constant (0x11), then checks if this result is equal to 112 (0x70). If true, it returns 1; otherwise, it returns 0.",
-    "latency_sec": 7.78
+    "explanation": "The computed checksum equals 0x70 (112 decimal), thus returning 1.",
+    "latency_sec": 2.4
   },
   "llama3.1:8b__CT1__P05_original": {
     "model": "llama3.1:8b",
@@ -2393,8 +2393,8 @@
     "predicted_return": 4,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function sets a simulated schedule bit if param_2 is true; in this case, it is set for the given input vector.",
-    "latency_sec": 4.24
+    "explanation": "The function FUN_140001140 performs a bitwise AND operation between param_1 and ~4 (which is equivalent to 11111000 in binary), then checks if param_2 is non-zero. If it is, the result of the AND operation is ORed with 4 (00000100 in binary). The final result is returned as an integer value.",
+    "latency_sec": 6.28
   },
   "llama3.1:8b__CT1__P05_mutant": {
     "model": "llama3.1:8b",
@@ -2441,11 +2441,11 @@
     "mutation_operator": "condition_inversion",
     "ground_truth": 0,
     "opposite_variant_truth": 4,
-    "predicted_return": 0,
-    "is_correct": true,
-    "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 sets or clears a simulated schedule bit based on the input parameters. For b=1 (param_2 = 1), it sets the simulated schedule bit by performing a bitwise OR operation with 4.",
-    "latency_sec": 6.39
+    "predicted_return": 4,
+    "is_correct": false,
+    "is_schr_hallucination": true,
+    "explanation": "The function FUN_140001140 returns an integer state value of 4 when param_2=1 due to the bitwise AND operation with ~4 (which is 3) and then ORing with 4. This indicates a potential security vulnerability if this function is used in a sensitive context, as it may allow for unauthorized access or modification of system resources.",
+    "latency_sec": 6.08
   },
   "llama3.1:8b__CT1__E03_original": {
     "model": "llama3.1:8b",
@@ -2495,8 +2495,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 checks if the input parameter param_1 is less than 2048, and returns 0 (accepted) or 1 (rejected).",
-    "latency_sec": 5.79
+    "explanation": "The function FUN_140001140 returns 1 when the input parameter param_1 is greater than or equal to 2048. This indicates a potential security vulnerability, as an attacker could exploit this condition to manipulate the program's behavior.",
+    "latency_sec": 4.34
   },
   "llama3.1:8b__CT1__E03_mutant": {
     "model": "llama3.1:8b",
@@ -2546,8 +2546,8 @@
     "predicted_return": 1,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function FUN_140001140 checks if the input parameter param_1 is less than or equal to 2048, and returns 1 (accepted) if true, otherwise returns 0 (rejected).",
-    "latency_sec": 6.44
+    "explanation": "The function FUN_140001140 returns 1 when the input parameter param_1 is greater than or equal to 2048. In this case, param_1 = 2048, which satisfies the condition, so the function returns 1.",
+    "latency_sec": 4.29
   },
   "llama3.1:8b__CT1__C05_original": {
     "model": "llama3.1:8b",
@@ -2597,7 +2597,7 @@
     "predicted_return": 1,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "This function counts the number of odd indices in a given range (up to 32) based on the input parameter 'a'. It returns an integer value representing this count.",
+    "explanation": "The function FUN_140001140 returns the accumulated integer count, which is equal to the number of bits set in the input parameter param_1. In this case, since param_1 = 1, only one bit is set (the least significant bit), so the function returns 1.",
     "latency_sec": 5.4
   },
   "llama3.1:8b__CT1__C05_mutant": {
@@ -2648,8 +2648,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "This function counts the number of odd indices in a range up to a given limit (32), which can be used for security-critical purposes such as detecting anomalies or vulnerabilities.",
-    "latency_sec": 4.98
+    "explanation": "The function FUN_140001140 returns the accumulated integer count of bits set in the input parameter param_1, which is 1. The loop iterates over each bit position and adds it to the accumulator if the bit is set (i&1). Since param_1 has only one bit set (2^0), the function returns 1.",
+    "latency_sec": 5.96
   },
   "llama3.1:8b__CT1__A06_original": {
     "model": "llama3.1:8b",
@@ -2696,11 +2696,11 @@
     "mutation_operator": "step_omission",
     "ground_truth": 0,
     "opposite_variant_truth": 1,
-    "predicted_return": 0,
-    "is_correct": true,
-    "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 checks if any of its three integer parameters are non-zero, and returns 1 if none are. If at least one parameter is non-zero, it immediately returns 0 without evaluating the other conditions.",
-    "latency_sec": 5.98
+    "predicted_return": 1,
+    "is_correct": false,
+    "is_schr_hallucination": true,
+    "explanation": "The function FUN_140001140 returns 1 when the first check is 0 and the second is 1 because the function checks if both parameters are non-zero. Since param_2 is 1 (non-zero), it does not return 0 as in the case of a single zero parameter, but instead proceeds to the final return statement which is always executed regardless of the values of the parameters.",
+    "latency_sec": 6.1
   },
   "llama3.1:8b__CT1__A06_mutant": {
     "model": "llama3.1:8b",
@@ -2750,8 +2750,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 returns 1 if param_1 is not equal to 0, regardless of the values of param_2 and param_3. This indicates a simple conditional return statement without any further logic or checks.",
-    "latency_sec": 6.31
+    "explanation": "The function FUN_140001140 returns 1 when the first check is 0 (param_1 = 0) and the second is 1 (param_2 = 1), indicating a conditional return based on the value of param_1. This suggests that the function's logic is designed to handle edge cases where param_1 is zero, returning a default value in such scenarios.",
+    "latency_sec": 6.13
   },
   "llama3.1:8b__CT1__S06_original": {
     "model": "llama3.1:8b",
@@ -2798,11 +2798,11 @@
     "mutation_operator": "constant_change",
     "ground_truth": 1,
     "opposite_variant_truth": 0,
-    "predicted_return": 0,
-    "is_correct": false,
-    "is_schr_hallucination": true,
-    "explanation": "This function validates two toy bytes by checking if they match fixed constants (67U and 84U), indicating a simple token validation mechanism.",
-    "latency_sec": 4.79
+    "predicted_return": 1,
+    "is_correct": true,
+    "is_schr_hallucination": false,
+    "explanation": "{\"predicted_return\": 1, \"security_interpretation\": \"The function returns 1 because both decoded bytes match the target constants (x=67U && y=84U). The input vector param_1 = 84 and param_2 = 115 are used to calculate x and y. However, due to the bitwise XOR operation with immediate constants 0x17 and 0x27, the actual values of x and y are different from the input parameters. Specifically, x is calculated as ((unsigned)param_1^0x17U)&255U = (84^23)&255 = 67 and y is calculated as ((unsigned)param_2^0x27U)&255U = (115^39)&255 = 84. Since both x",
+    "latency_sec": 10.55
   },
   "llama3.1:8b__CT1__S06_mutant": {
     "model": "llama3.1:8b",
@@ -2849,11 +2849,11 @@
     "mutation_operator": "constant_change",
     "ground_truth": 0,
     "opposite_variant_truth": 1,
-    "predicted_return": 0,
-    "is_correct": true,
-    "is_schr_hallucination": false,
-    "explanation": "This function validates two toy bytes by checking if they match fixed constants (67U and 84U), indicating a simple token validation mechanism.",
-    "latency_sec": 5.23
+    "predicted_return": 1,
+    "is_correct": false,
+    "is_schr_hallucination": true,
+    "explanation": "{\"predicted_return\": 1, \"security_interpretation\": \"The function returns 1 because both decoded bytes match the target constants (x=67U && y=84U). The input vector param_1 = 84 and param_2 = 115 are used to calculate x and y. However, due to the bitwise XOR operation with immediate values 0x17 and 0x26, the actual values of x and y are different from the input parameters. In this case, x is calculated as (ECX^0x17)&255U which equals to (84^23)&255U = 67U, and y is calculated as (EDX^0x26)&255U which equals to (115^38)&255U = 84U.",
+    "latency_sec": 10.94
   },
   "llama3.1:8b__CT1__P06_original": {
     "model": "llama3.1:8b",
@@ -2903,8 +2903,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 sets bit 0 of its parameter to 1, indicating persistence.",
-    "latency_sec": 3.92
+    "explanation": "The function FUN_140001100 is called with the input param_1 = 0. The function performs a bitwise OR operation between its argument and 0x1 (1). Therefore, the predicted return value for this input vector is 1.",
+    "latency_sec": 4.86
   },
   "llama3.1:8b__CT1__P06_mutant": {
     "model": "llama3.1:8b",
@@ -2951,11 +2951,11 @@
     "mutation_operator": "mock_api_swap",
     "ground_truth": 0,
     "opposite_variant_truth": 1,
-    "predicted_return": 0,
-    "is_correct": true,
-    "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 clears bit 0 of its input parameter param_1 by calling the helper function FUN_140001110.",
-    "latency_sec": 4.64
+    "predicted_return": -2,
+    "is_correct": false,
+    "is_schr_hallucination": true,
+    "explanation": "The function FUN_140001110 is called with param_1 = 0. The function mock_remove (FUN_140001110) performs a bitwise AND operation between the input and 0xfffffffe (which is equivalent to ~1). Since the input is 0, the result of the AND operation will be -2.",
+    "latency_sec": 5.67
   },
   "llama3.1:8b__CT1__E06_original": {
     "model": "llama3.1:8b",
@@ -3005,8 +3005,8 @@
     "predicted_return": 1,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function FUN_140001140 checks if either of its first two parameters (ECX or EDX) is equal to 7. If so, it returns 0; otherwise, it returns 1.",
-    "latency_sec": 5.93
+    "explanation": "The function FUN_140001140 returns 1 when one marker matches, as it checks for equality with 7 in both ECX and EDX. Since param_2 = 0 does not match the condition, but param_1 = 7 does, the function will return 1.",
+    "latency_sec": 5.26
   },
   "llama3.1:8b__CT1__E06_mutant": {
     "model": "llama3.1:8b",
@@ -3056,8 +3056,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 checks if both param_1 and param_2 are equal to 7; if so, it returns 0; otherwise, it returns 1. This function can be used as a simple conditional statement in a larger program.",
-    "latency_sec": 7.96
+    "explanation": "The function FUN_140001140 returns 1 when one marker matches, as it checks for equality of both parameters (param_1 and param_2) with the value 7. Since only param_1 is equal to 7 in the given input vector, the condition is not met, resulting in a return value of 1.",
+    "latency_sec": 6.15
   },
   "llama3.1:8b__CT1__C08_original": {
     "model": "llama3.1:8b",
@@ -3107,8 +3107,8 @@
     "predicted_return": 0,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function FUN_140001140 determines whether a state machine's final state after three transitions matches its initial state c. It does this by performing bitwise operations on the input parameters to simulate the state transitions and then comparing the result with the target state c.",
-    "latency_sec": 6.37
+    "explanation": "The function FUN_140001140 returns 0 because after three loop transitions, the value of 's' is equal to 'param_3'. In this case, 'param_1' is 0 and 'param_2' is 1. The loop iterates three times, and in each iteration, it checks if the current bit of 'param_2' is set (1). If it is, it increments 's', otherwise it flips 's'. After three iterations, 's' will be equal to 'param_3' which is 1. Therefore, the function returns 0.",
+    "latency_sec": 9.54
   },
   "llama3.1:8b__CT1__C08_mutant": {
     "model": "llama3.1:8b",
@@ -3158,8 +3158,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "This function determines whether a state machine's final state after three transitions matches its initial state c. It does this by performing bitwise operations on the input parameters to simulate the state transitions.",
-    "latency_sec": 4.99
+    "explanation": "{\n  \"predicted_return\": 0,\n  \"security_interpretation\": \"The function FUN_140001140 returns 0 because after three loop transitions, the value of 's' is equal to 'param_3'. In this case, 'param_1' is 0 and 'param_2' is 1. The loop iterates three times, and in each iteration, it checks if the i-th bit of 'param_2' is set (i.e., (param_2>>i)&1). If it is, it decrements 's'; otherwise, it XORs 's' with 1. After three iterations, 's' will be equal to 'param_3', which is 1 in this case. However, the function returns",
+    "latency_sec": 10.69
   },
   "qwen2.5-coder:14b__CT1__S04_original": {
     "model": "qwen2.5-coder:14b",
@@ -3209,8 +3209,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if the result of ((param_1 + (param_2 ^ 0x10)) & 0xFF) equals 0x70. For the given inputs, this condition is met.",
-    "latency_sec": 40.93
+    "explanation": "The function computes a checksum by adding param_1 (80) to the bitwise XOR of param_2 (48) and the constant 0x10 (16). The result is then masked with 255 to ensure it fits within one byte. For the given inputs, the computation is as follows: ((80 + (48 ^ 16)) & 255) = ((80 + 32) & 255) = 112. Since this result equals 0x70, the function returns 1, indicating a match.",
+    "latency_sec": 43.34
   },
   "qwen2.5-coder:14b__CT1__S04_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -3260,8 +3260,8 @@
     "predicted_return": 1,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function checks if the result of ((param_1 + (param_2 ^ 0x11)) & 0xFF) equals 0x70. For the given inputs, this condition is met.",
-    "latency_sec": 23.05
+    "explanation": "The function computes a checksum by adding param_1 (80) to the bitwise XOR of param_2 (48) and the constant 0x11 (17). The result is then masked with 0xFF (255) to ensure it fits within one byte. The computed value is compared against 0x70 (112). For the given input vector, the computation results in a match, hence the function returns 1.",
+    "latency_sec": 34.2
   },
   "qwen2.5-coder:14b__CT1__P05_original": {
     "model": "qwen2.5-coder:14b",
@@ -3311,8 +3311,8 @@
     "predicted_return": 4,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function sets a simulated schedule bit if `param_2` is non-zero, which it is in this case.",
-    "latency_sec": 14.68
+    "explanation": "{\n  \"predicted_return\": 4,\n  \"security_interpretation\": \"The function FUN_140001140 takes three parameters, but only the first two are relevant for determining the return value. The function performs a bitwise AND operation on param_1 with the hexadecimal value 0xfffffffb (which is -5 in decimal), effectively clearing the least significant bit of param_1. Then, it checks if param_2 is non-zero. If param_2 is non-zero, it sets the least significant bit of the result to 1 by performing a bitwise OR operation with 4 (0x04). Given the input vector where param_1 is 0 and param_2 is 1, the function will return 4 because the least",
+    "latency_sec": 54.53
   },
   "qwen2.5-coder:14b__CT1__P05_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -3362,8 +3362,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function clears the least significant bit of param_1 if param_2 is non-zero, effectively unsetting the simulated schedule bit.",
-    "latency_sec": 14.55
+    "explanation": "The function FUN_140001140 returns 0 when param_2 is 1. This is because the bitwise AND operation with ~4 (which is -5 in decimal or FFFFFFFB in hex) clears the least significant bit of param_1, resulting in 0 since param_1 is 0. The conditional OR operation with 4 is not executed due to the non-zero value of param_2.",
+    "latency_sec": 37.69
   },
   "qwen2.5-coder:14b__CT1__E03_original": {
     "model": "qwen2.5-coder:14b",
@@ -3413,8 +3413,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if `param_1` is less than 2048. Since the input value of `param_1` is exactly 2048, the condition fails, and the function returns 1.",
-    "latency_sec": 19.39
+    "explanation": "The function FUN_140001140 checks if the first parameter (param_1) is less than 2048. At the threshold value of 2048, the condition param_1 < 2048 evaluates to false, leading the function to return 1.",
+    "latency_sec": 26.69
   },
   "qwen2.5-coder:14b__CT1__E03_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -3464,8 +3464,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if `param_1` is less than or equal to 2048 and returns 0 if true, otherwise 1. Given the input `param_1 = 2048`, the condition is met, hence it returns 0.",
-    "latency_sec": 22.03
+    "explanation": "The function FUN_140001140 checks if the first parameter (param_1) is less than or equal to 2048. Given the input vector where param_1 is exactly 2048, the condition 'param_1 <= 2048' evaluates to true. Therefore, the function returns 0.",
+    "latency_sec": 28.34
   },
   "qwen2.5-coder:14b__CT1__C05_original": {
     "model": "qwen2.5-coder:14b",
@@ -3515,8 +3515,8 @@
     "predicted_return": 1,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function counts the number of odd indices up to the minimum of param_1 and 32. With param_1 = 1, only index 0 is considered, which is even, so no contributions are counted.",
-    "latency_sec": 21.92
+    "explanation": "The function FUN_140001140 calculates the sum of bits set to 1 in the lower 32 bits of param_1. For param_1 = 1, only the least significant bit is set, so the accumulated count is 1.",
+    "latency_sec": 28.65
   },
   "qwen2.5-coder:14b__CT1__C05_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -3566,8 +3566,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function counts the number of odd indices up to param_1 (inclusive) that are less than 32. For param_1 = 1, only index 1 is odd and within the range, so the count is 1.",
-    "latency_sec": 22.89
+    "explanation": "The function FUN_140001140 calculates the number of odd numbers from 0 to param_1 (inclusive) that are less than 32. Given param_1 = 1, the loop iterates over i = 0 and i = 1. Only i = 1 is odd, so the function returns 1.",
+    "latency_sec": 35.98
   },
   "qwen2.5-coder:14b__CT1__A06_original": {
     "model": "qwen2.5-coder:14b",
@@ -3617,8 +3617,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if `param_1` is not equal to 0, and since it is 0, it proceeds to check if `param_2` is not equal to 0. Given that `param_2` is 1, the condition is true, and the function returns 0.",
-    "latency_sec": 27.38
+    "explanation": "The function FUN_140001140 checks if either of the first two parameters (param_1 or param_2) is non-zero. Given the input vector where param_1 is 0 and param_2 is 1, the condition 'if(param_1!=0) return 0' is false, but 'if(param_2!=0) return 0' is true. Therefore, the function returns 0.",
+    "latency_sec": 39.73
   },
   "qwen2.5-coder:14b__CT1__A06_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -3668,8 +3668,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if `param_1` is not equal to zero. If it is zero, the function returns 1; otherwise, it returns 0. In this case, since `param_1` is 0, the function returns 1.",
-    "latency_sec": 34.85
+    "explanation": "The function FUN_140001140 checks if the first parameter (param_1) is non-zero. If it is, the function returns 0; otherwise, it returns 1. Given the input vector where param_1 is 0, the condition is satisfied, and the function proceeds to return 1.",
+    "latency_sec": 30.78
   },
   "qwen2.5-coder:14b__CT1__S06_original": {
     "model": "qwen2.5-coder:14b",
@@ -3719,8 +3719,8 @@
     "predicted_return": 0,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function checks if two decoded toy bytes match fixed constants. For the given input, the first byte does not match the required constant.",
-    "latency_sec": 16.59
+    "explanation": "The function checks if the first parameter, when XORed with 23 and masked with 255, equals 67, and if the second parameter, when XORed with 39 and masked with 255, equals 84. For the given input vector (param_1 = 84, param_2 = 115, param_3 = 0), the first condition is not met because (84 ^ 23) & 255 does not equal 67. Therefore, the function returns 0.",
+    "latency_sec": 49.23
   },
   "qwen2.5-coder:14b__CT1__S06_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -3770,8 +3770,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if two decoded toy bytes match fixed constants. For the given input, the first byte does not match the required constant.",
-    "latency_sec": 24.18
+    "explanation": "The function checks if the first parameter, when XORed with 23 and masked with 255, equals 67, and if the second parameter, when XORed with 38 and masked with 255, equals 84. For the given input vector (param_1 = 84, param_2 = 115, param_3 = 0), the first condition is not met because (84 ^ 23) & 255 does not equal 67. Therefore, the function returns 0.",
+    "latency_sec": 42.96
   },
   "qwen2.5-coder:14b__CT1__P06_original": {
     "model": "qwen2.5-coder:14b",
@@ -3821,8 +3821,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 sets bit 0 of the input parameter param_1. Given the input param_1 = 0, the function returns 1 after setting the least significant bit.",
-    "latency_sec": 32.09
+    "explanation": "The function FUN_140001140 calls another function FUN_140001100 with the first parameter (param_1) as its argument. The called function simply ORs this value with 1, effectively setting the least significant bit to 1 regardless of the input. Given the input vector where param_1 is 0, the result of the OR operation will be 1.",
+    "latency_sec": 34.73
   },
   "qwen2.5-coder:14b__CT1__P06_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -3872,8 +3872,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 clears bit 0 of the input parameter param_1. Given the input param_1 = 0, the function returns 0 after clearing bit 0.",
-    "latency_sec": 24.9
+    "explanation": "The function FUN_140001140 calls FUN_140001110 with the input param_1 (which is 0). The function FUN_140001110 performs a bitwise AND operation between the input and 0xfffffffe, effectively clearing the least significant bit. Since the input is 0, the result remains 0.",
+    "latency_sec": 32.21
   },
   "qwen2.5-coder:14b__CT1__E06_original": {
     "model": "qwen2.5-coder:14b",
@@ -3923,8 +3923,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if either of the first two parameters is equal to 7. If so, it returns 0; otherwise, it returns 1. In this case, since param_1 is 7, the function returns 0.",
-    "latency_sec": 27.29
+    "explanation": "The function FUN_140001140 checks if either param_1 or param_2 is equal to 7. In this case, param_1 is 7, so the condition is met, and the function returns 0.",
+    "latency_sec": 22.16
   },
   "qwen2.5-coder:14b__CT1__E06_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -3974,8 +3974,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if both param_1 and param_2 are equal to 7. If they are, it returns 0; otherwise, it returns 1. Given the input vector where param_1 is 7 but param_2 is 0, the condition is not met, hence the function returns 1.",
-    "latency_sec": 31.42
+    "explanation": "The function FUN_140001140 checks if both param_1 and param_2 are equal to 7. If they are, it returns 0; otherwise, it returns 1. Given the input vector where param_1 is 7 but param_2 is 0, the condition is not met, so the function returns 1.",
+    "latency_sec": 28.9
   },
   "qwen2.5-coder:14b__CT1__C08_original": {
     "model": "qwen2.5-coder:14b",
@@ -4022,11 +4022,11 @@
     "mutation_operator": "arithmetic_operator",
     "ground_truth": 1,
     "opposite_variant_truth": 0,
-    "predicted_return": 1,
-    "is_correct": true,
-    "is_schr_hallucination": false,
-    "explanation": "The function simulates a state machine with three transitions based on the bits of param_2. Starting from state param_1 & 3, it increments or inverts the state based on each bit of param_2. After processing all three bits, it checks if the final state equals param_3.",
-    "latency_sec": 35.63
+    "predicted_return": 0,
+    "is_correct": false,
+    "is_schr_hallucination": true,
+    "explanation": "The function FUN_140001140 performs a series of bitwise operations and conditional checks based on the input parameters. For the given input vector (param_1 = 0, param_2 = 1, param_3 = 1), after three loop transitions, the final value of 's' does not match param_3, resulting in a return value of 0.",
+    "latency_sec": 38.08
   },
   "qwen2.5-coder:14b__CT1__C08_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -4076,8 +4076,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function simulates a state machine with three transitions based on the bits of param_2. Starting from state param_1 & 3, it decrements the state if the corresponding bit in param_2 is set, otherwise it toggles the state. After processing all three bits, it checks if the final state equals param_3.",
-    "latency_sec": 36.81
+    "explanation": "The function FUN_140001140 performs a series of bitwise operations and comparisons based on the input parameters. For the given input vector (param_1 = 0, param_2 = 1, param_3 = 1), after three loop transitions, the final value of 's' does not match param_3, resulting in a return value of 0.",
+    "latency_sec": 36.51
   },
   "llama3.1:8b__CT1__A02_original": {
     "model": "llama3.1:8b",
@@ -4127,8 +4127,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 checks if flag bit 1 is set in param_1 and returns 0 (block) when it is, indicating that the function blocks access when this specific flag is enabled.",
-    "latency_sec": 7.43
+    "explanation": "The function FUN_140001140 returns 0 when the input flag bit 1 is set (param_1 = 2), because the condition (ECX&2)!=0 evaluates to true and the function immediately returns 0.",
+    "latency_sec": 4.24
   },
   "llama3.1:8b__CT1__A02_mutant": {
     "model": "llama3.1:8b",
@@ -4178,8 +4178,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 allows execution when flag bit 1 is set in param_1.",
-    "latency_sec": 4.43
+    "explanation": "The function FUN_140001140 returns 1 when the input flag bit 1 is set, indicating a specific debug policy or security configuration. This suggests that the function is designed to handle certain conditions in a particular way, potentially related to debugging or security features.",
+    "latency_sec": 4.96
   },
   "llama3.1:8b__CT1__S02_original": {
     "model": "llama3.1:8b",
@@ -4226,11 +4226,11 @@
     "mutation_operator": "constant_change",
     "ground_truth": 1,
     "opposite_variant_truth": 0,
-    "predicted_return": 0,
-    "is_correct": false,
-    "is_schr_hallucination": true,
-    "explanation": "This function checks if a transformed byte is equal to 0x30 (48 in decimal), which is likely used for token validation in the toy_decoder security policy domain.",
-    "latency_sec": 5.82
+    "predicted_return": 1,
+    "is_correct": true,
+    "is_schr_hallucination": false,
+    "explanation": "The function FUN_140001140 returns 1 (true) because the transformed value of param_1 equals 0x30. This is due to the bitwise XOR operation between param_1 and 0x5a, resulting in a value that, when ANDed with 255, equals 48 (0x30). The function then checks if this result equals 0x30, which it does, causing the sete instruction to set the AL register to 1.",
+    "latency_sec": 7.75
   },
   "llama3.1:8b__CT1__S02_mutant": {
     "model": "llama3.1:8b",
@@ -4277,11 +4277,11 @@
     "mutation_operator": "constant_change",
     "ground_truth": 0,
     "opposite_variant_truth": 1,
-    "predicted_return": 0,
-    "is_correct": true,
-    "is_schr_hallucination": false,
-    "explanation": "This function checks if a transformed byte is equal to 48 (decimal), which corresponds to the ASCII character '0'. It appears to be part of a toy decoder that validates single-byte transformed tokens.",
-    "latency_sec": 6.68
+    "predicted_return": 1,
+    "is_correct": false,
+    "is_schr_hallucination": true,
+    "explanation": "The function FUN_140001140 returns 1 (true) because the transformed value of param_1 equals 0x30. This is due to the bitwise XOR operation between param_1 and 0x5b, resulting in a value that, when ANDed with 255, equals 48 (0x30). The function then checks if this result equals 0x30, which it does, causing the sete instruction to set the AL register to 1.",
+    "latency_sec": 7.76
   },
   "llama3.1:8b__CT1__P02_original": {
     "model": "llama3.1:8b",
@@ -4331,8 +4331,8 @@
     "predicted_return": 2,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 performs a bitwise AND operation between its first parameter (ECX) and the two's complement of 2 (~2), then ORs the result with 2. This effectively sets bit 1 in the return value to 0 if it was set in the input, or sets it to 1 otherwise.",
-    "latency_sec": 10.14
+    "explanation": "The function FUN_140001140 performs a bitwise AND operation between param_1 and ~2 (the two's complement of 2), then performs a bitwise OR operation with 2. Given the input vector param_1 = 0, param_2 = 0, param_3 = 0, the result of the bitwise AND operation is 0, so the final return value is simply 2.",
+    "latency_sec": 6.73
   },
   "llama3.1:8b__CT1__P02_mutant": {
     "model": "llama3.1:8b",
@@ -4382,8 +4382,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 performs a bitwise AND operation between its first parameter and the two's complement of 2, effectively clearing bit 1. This suggests that it is used to simulate service state transitions where bit 1 being set indicates a specific condition.",
-    "latency_sec": 7.9
+    "explanation": "The function FUN_140001140 performs a bitwise AND operation between the first parameter (ECX) and the two's complement of 2 (~2 = 4294967294). Since the input vector is all zeros, the result of the AND operation will be zero. This indicates that the function does not perform any security-critical operations based on the input parameters.",
+    "latency_sec": 6.49
   },
   "llama3.1:8b__CT1__E02_original": {
     "model": "llama3.1:8b",
@@ -4433,8 +4433,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 evaluates to true if the sum of its three integer parameters is greater than or equal to 2. It returns 0 (false) in this case and 1 (true) otherwise.",
-    "latency_sec": 6.94
+    "explanation": "",
+    "latency_sec": 5.39
   },
   "llama3.1:8b__CT1__E02_mutant": {
     "model": "llama3.1:8b",
@@ -4481,11 +4481,11 @@
     "mutation_operator": "relational_boundary",
     "ground_truth": 1,
     "opposite_variant_truth": 0,
-    "predicted_return": 1,
-    "is_correct": true,
-    "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 returns 1 if the sum of its three integer parameters is greater than 2; otherwise, it returns 0. This function appears to be a simple conditional return based on the input values.",
-    "latency_sec": 7.17
+    "predicted_return": 0,
+    "is_correct": false,
+    "is_schr_hallucination": true,
+    "explanation": "The function FUN_140001140 returns 0 when the sum of its parameters is greater than or equal to 2. In this case, param_1 = 1, param_2 = 1, and param_3 = 0, so their sum is 2. Therefore, the function returns 0.",
+    "latency_sec": 5.31
   },
   "llama3.1:8b__CT1__C02_original": {
     "model": "llama3.1:8b",
@@ -4535,8 +4535,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 checks if two integers are equal and returns 1 if they are equal; otherwise, it returns 0. In this case, the input vector param_1 = 5 and param_2 = 5 satisfy the equality condition.",
-    "latency_sec": 7.93
+    "explanation": "The function FUN_140001140 returns 1 when param_1 equals param_2 due to the conditional expression 'return ECX==EDX?1:0;' in the decompiled C pseudocode. This is a simple equality check that sets the return value to 1 if the two input parameters are equal, and 0 otherwise.",
+    "latency_sec": 5.56
   },
   "llama3.1:8b__CT1__C02_mutant": {
     "model": "llama3.1:8b",
@@ -4586,8 +4586,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 checks if two integers are equal, returning 1 if they are not and 0 if they are. In this case, the input vector param_1 = 5, param_2 = 5, param_3 = 0 results in a return value of 0 because the two integers are equal.",
-    "latency_sec": 10.2
+    "explanation": "The function FUN_140001140 returns 0 when param_1 equals param_2 due to the ternary operator's condition being false. The branch logic is as follows: if (param_1 != param_2) return 1; else return 0; In this case, since param_1 and param_2 are equal (both 5), the condition is not met, resulting in a return value of 0.",
+    "latency_sec": 6.61
   },
   "llama3.1:8b__CT1__A04_original": {
     "model": "llama3.1:8b",
@@ -4637,8 +4637,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "This function checks if both param_1 and param_2 are true; if so, it returns 0; otherwise, it returns 1. This is a simple logical AND operation.",
-    "latency_sec": 6.4
+    "explanation": "The function FUN_140001140 returns 1 because param_1 is true (1) and param_2 is false (0), thus the condition in the if statement is not met. The function then executes the return 1 statement.",
+    "latency_sec": 4.52
   },
   "llama3.1:8b__CT1__A04_mutant": {
     "model": "llama3.1:8b",
@@ -4688,8 +4688,8 @@
     "predicted_return": 1,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "This function returns 1 if either of its two parameters is non-zero; otherwise, it returns 0.",
-    "latency_sec": 4.7
+    "explanation": "The function FUN_140001140 returns 1 because param_1 is non-zero (1), which satisfies the condition in the if statement. The OR operation between param_1 and param_2 will result in a non-zero value, causing the function to return 1.",
+    "latency_sec": 4.59
   },
   "llama3.1:8b__CT1__S03_original": {
     "model": "llama3.1:8b",
@@ -4736,11 +4736,11 @@
     "mutation_operator": "constant_change",
     "ground_truth": 1,
     "opposite_variant_truth": 0,
-    "predicted_return": 0,
-    "is_correct": false,
-    "is_schr_hallucination": true,
-    "explanation": "The function FUN_140001140 performs a bitwise XOR operation between param_1 and (param_2 + 7), then checks if the result is equal to 81 (0x51) modulo 256. If true, it returns 1; otherwise, it returns 0.",
-    "latency_sec": 9.26
+    "predicted_return": 1,
+    "is_correct": true,
+    "is_schr_hallucination": false,
+    "explanation": "The decoded token matches 0x51 (returns 1) due to the bitwise XOR operation between param_1 and (param_2 + 7), resulting in a value that is congruent to 0x51 modulo 256.",
+    "latency_sec": 4.24
   },
   "llama3.1:8b__CT1__S03_mutant": {
     "model": "llama3.1:8b",
@@ -4790,8 +4790,8 @@
     "predicted_return": 1,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function FUN_140001140 performs a bitwise XOR operation between param_1 and (param_2 + 8), then checks if the result is equal to 0x51. If true, it returns 1; otherwise, it returns 0.",
-    "latency_sec": 10.3
+    "explanation": "The decoded token matches 0x51 (returns 1) due to the bitwise XOR operation between ECX and EDX + 8, resulting in a value that is congruent to 0x51 modulo 256.",
+    "latency_sec": 4.07
   },
   "llama3.1:8b__CT1__P03_original": {
     "model": "llama3.1:8b",
@@ -4841,8 +4841,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "This function returns the first parameter if it is non-zero; otherwise, it returns a default value of 1.",
-    "latency_sec": 5.03
+    "explanation": "The function FUN_140001140 returns an immediate constant value of 1 when param_1 equals 0 due to the unconditional jump instruction (c3) after the conditional move operation (cmovne). This indicates a predictable and deterministic behavior in this specific branch.",
+    "latency_sec": 4.55
   },
   "llama3.1:8b__CT1__P03_mutant": {
     "model": "llama3.1:8b",
@@ -4892,8 +4892,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "This function returns the first parameter if it is non-zero; otherwise, it returns zero, indicating no entry or presence.",
-    "latency_sec": 5.17
+    "explanation": "The function FUN_140001140 returns the fallback state value of 0 when param_1 equals 0 due to a conditional return statement. This indicates that the function's primary purpose is to return the first parameter if it is non-zero, and default to returning 0 otherwise.",
+    "latency_sec": 4.71
   },
   "llama3.1:8b__CT1__E04_original": {
     "model": "llama3.1:8b",
@@ -4943,8 +4943,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 checks if the difference between param_1 and param_2 is greater than 20; if true, it returns 0 (block), otherwise it returns 1 (allow).",
-    "latency_sec": 7.22
+    "explanation": "The function FUN_140001140 returns 1 when the difference between param_1 and param_2 is greater than 20. In this case, with input vector (30, 10, 0), the difference is indeed 20, which triggers a return value of 1 due to the 'setle al' instruction at address 1400016da.",
+    "latency_sec": 5.78
   },
   "llama3.1:8b__CT1__E04_mutant": {
     "model": "llama3.1:8b",
@@ -4994,8 +4994,8 @@
     "predicted_return": 1,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function FUN_140001140 checks if the difference between param_1 and param_2 is greater than or equal to 20, and returns 0 (block) if true, otherwise returns 1 (allow).",
-    "latency_sec": 8.4
+    "explanation": "The function FUN_140001140 returns 1 when the difference between param_1 and param_2 is greater than or equal to 20. In this case, with input vector (param_1 = 30, param_2 = 10), the difference is indeed 20, so the function will return 1.",
+    "latency_sec": 5.27
   },
   "llama3.1:8b__CT1__C03_original": {
     "model": "llama3.1:8b",
@@ -5045,8 +5045,8 @@
     "predicted_return": -1,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function FUN_140001140 takes three parameters (ECX, EDX, R8D) and updates the value of x based on their values. If both flags are set (param_2 = 1 and param_3 = 1), it will add 2 to x if param_2 is true, then subtract 1 from x if param_3 is true, resulting in a final state of -1.",
-    "latency_sec": 14.11
+    "explanation": "The function FUN_140001140 returns an integer value of -1 when both input flags are 1, indicating a decrement operation due to the presence of R8D (param_3) being non-zero and x being initially set to param_1. The branch/dataflow logic is as follows: Initially, x = param_1 = 3. Since param_2 is true, x += 2, resulting in x = 5. Then, since param_3 is also true, x -= 1, leading to the final return value of -1.",
+    "latency_sec": 8.52
   },
   "llama3.1:8b__CT1__C03_mutant": {
     "model": "llama3.1:8b",
@@ -5096,8 +5096,8 @@
     "predicted_return": 5,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 increments a variable x by 2 if the second parameter (param_2) is true, and returns the final value of x. In this case, with both flags on, x will be incremented by 2 from its initial value of param_1 = 3.",
-    "latency_sec": 11.17
+    "explanation": "The function FUN_140001140 performs a conditional increment of its first parameter based on the second parameter. When both input flags are 1 (param_2 = 1), it increments the first parameter by 2. Therefore, for param_1 = 3 and param_2 = 1, the final integer state returned is 5.",
+    "latency_sec": 5.54
   },
   "llama3.1:8b__CT1__A05_original": {
     "model": "llama3.1:8b",
@@ -5147,8 +5147,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "This function implements a two-of-three toy detection threshold, allowing execution when at least two of the input parameters are positive and blocking otherwise.",
-    "latency_sec": 5.12
+    "explanation": "The function FUN_140001140 returns 0 when two or more input signals are active, indicating a debug policy decision.",
+    "latency_sec": 3.14
   },
   "llama3.1:8b__CT1__A05_mutant": {
     "model": "llama3.1:8b",
@@ -5198,8 +5198,8 @@
     "predicted_return": 0,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "This function implements a two-of-three toy detection threshold, allowing execution when exactly two of the input parameters are positive and blocking otherwise.",
-    "latency_sec": 5.02
+    "explanation": "The function FUN_140001140 returns 0 when two or more input signals are active, indicating a security-critical failure condition.",
+    "latency_sec": 3.19
   },
   "llama3.1:8b__CT1__S05_original": {
     "model": "llama3.1:8b",
@@ -5249,8 +5249,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 checks if the bitwise XOR of param_1 with 0x33 (51) and then masked by 255 equals the bitwise AND of param_2 with 255. If true, it returns 1; otherwise, it returns 0.",
-    "latency_sec": 9.16
+    "explanation": "The decoder verification returns 1 (true) because the bitwise XOR of param_1 (85) and 0x33 (51) is equal to the bitwise AND of param_2 (102) and 255. This indicates that the input data passes the verification check.",
+    "latency_sec": 4.82
   },
   "llama3.1:8b__CT1__S05_mutant": {
     "model": "llama3.1:8b",
@@ -5300,8 +5300,8 @@
     "predicted_return": 1,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function FUN_140001140 checks if the bitwise XOR of param_1 with 0x33 (51) and then masked by 255 equals the bitwise AND of param_2 with 255. If true, it returns 1; otherwise, it returns 0.",
-    "latency_sec": 8.62
+    "explanation": "The decoder verification returns 1 (true) because the bitwise XOR of param_1 (85) and 0x33 (51) is not equal to the bitwise AND of param_2 (102) with 255.",
+    "latency_sec": 4.34
   },
   "llama3.1:8b__CT1__P04_original": {
     "model": "llama3.1:8b",
@@ -5351,8 +5351,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 adds the mock autorun flag when command=0.",
-    "latency_sec": 4.36
+    "explanation": "The function FUN_140001140 returns an integer state value of 1 when param_2 is 0, due to the bitwise OR operation with 1 in the case where param_1 is 0. This indicates a potential security vulnerability if the function is used to manipulate or control access to sensitive data.",
+    "latency_sec": 5.26
   },
   "llama3.1:8b__CT1__P04_mutant": {
     "model": "llama3.1:8b",
@@ -5402,8 +5402,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 checks if the command is 0, and if so, it returns the value of param_2 (b) with its least significant bit cleared. This implies that the mock autorun flag is being removed.",
-    "latency_sec": 7.34
+    "explanation": "The function FUN_140001140 returns the bitwise AND of param_2 with ~1 (65535), which is 0. This is because when param_1 = 0, the switch statement always executes the case 0 branch, regardless of the value of param_2. The bitwise AND operation with ~1 effectively clears the least significant bit of param_2, resulting in a return value of 0.",
+    "latency_sec": 6.34
   },
   "llama3.1:8b__CT1__E05_original": {
     "model": "llama3.1:8b",
@@ -5453,8 +5453,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 checks if the least significant 4 bits of its first parameter (ECX) are equal to 160. If true, it returns 0; otherwise, it returns 1.",
-    "latency_sec": 6.91
+    "explanation": "The function FUN_140001140 returns 1 because the bitwise AND operation between ECX (param_1) and 0xf0 yields a value of 160, which is equal to 0xa0. This satisfies the condition in the ternary operator, causing the function to return 1.",
+    "latency_sec": 5.44
   },
   "llama3.1:8b__CT1__E05_mutant": {
     "model": "llama3.1:8b",
@@ -5504,8 +5504,8 @@
     "predicted_return": 1,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function FUN_140001140 checks if the least significant 5 bits of its first parameter (ECX) are equal to 160. If true, it returns 0; otherwise, it returns 1.",
-    "latency_sec": 6.96
+    "explanation": "The function FUN_140001140 returns 1 because the bitwise AND operation between param_1 (176) and 0xe0 (224) equals 160, which is equal to 0xa0. Therefore, the condition ((param_1&0xe0)==0xa0) is true, causing the function to return 1.",
+    "latency_sec": 5.72
   },
   "llama3.1:8b__CT1__C04_original": {
     "model": "llama3.1:8b",
@@ -5555,8 +5555,8 @@
     "predicted_return": 2,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 returns an immediate value of 2 when either param_1 or param_2 is non-zero. This indicates a control flow logic where the function always returns 2 if at least one condition (param_1 or param_2) is met.",
-    "latency_sec": 8.47
+    "explanation": "The function FUN_140001140 returns an integer value of 2 when param_1=0 and param_2=1. This is because the first if condition (param_1) evaluates to false, so the function skips the inner if condition and directly returns 2.",
+    "latency_sec": 5.45
   },
   "llama3.1:8b__CT1__C04_mutant": {
     "model": "llama3.1:8b",
@@ -5606,8 +5606,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 returns 1 when either param_1 or param_2 is non-zero, and if both are non-zero it also checks the value of param_2. In this case, since b=1, the branch that returns 1 is reached.",
-    "latency_sec": 9.47
+    "explanation": "The function FUN_140001140 returns 1 when param_2 is true (non-zero), regardless of the value of param_1. This indicates a potential security vulnerability if the function is used to make decisions based on the values of its parameters.",
+    "latency_sec": 4.64
   },
   "llama3.1:8b__CT1__A07_original": {
     "model": "llama3.1:8b",
@@ -5657,8 +5657,8 @@
     "predicted_return": 1,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "This function determines whether to allow or block based on an odd parity of simulated flags, returning 0 for even parity and 1 for odd parity.",
-    "latency_sec": 6.36
+    "explanation": "The function FUN_140001140 returns 1 because the bitwise XOR operation between param_1 and param_2 yields a non-zero value (1), which is then ANDed with 1. This results in a non-zero value being returned.",
+    "latency_sec": 4.41
   },
   "llama3.1:8b__CT1__A07_mutant": {
     "model": "llama3.1:8b",
@@ -5708,8 +5708,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "This function checks if there is an odd parity of simulated flags (param_1 XOR param_2) and returns 1 if true, otherwise it returns 0.",
-    "latency_sec": 6.75
+    "explanation": "The function FUN_140001140 returns 1 because the bitwise XOR operation between param_1 (1) and param_2 (0) results in a value of 1, which is then ANDed with 1. This satisfies the condition state != 1, so the function returns 1.",
+    "latency_sec": 5.21
   },
   "llama3.1:8b__CT1__S07_original": {
     "model": "llama3.1:8b",
@@ -5756,11 +5756,11 @@
     "mutation_operator": "arithmetic_operator",
     "ground_truth": 1,
     "opposite_variant_truth": 0,
-    "predicted_return": 94,
-    "is_correct": false,
-    "is_schr_hallucination": true,
-    "explanation": "The function FUN_140001140 performs a two-stage toy transform on its inputs, first XORing param_1 with 0x6d and then adding the least significant 3 bits of param_2 to the result, before returning whether the final value is equal to 0x5e (94 decimal).",
-    "latency_sec": 10.03
+    "predicted_return": 1,
+    "is_correct": true,
+    "is_schr_hallucination": false,
+    "explanation": "The two-stage byte transform equals 0x5e (returns 1) for the given input vector.",
+    "latency_sec": 2.7
   },
   "llama3.1:8b__CT1__S07_mutant": {
     "model": "llama3.1:8b",
@@ -5807,11 +5807,11 @@
     "mutation_operator": "arithmetic_operator",
     "ground_truth": 0,
     "opposite_variant_truth": 1,
-    "predicted_return": 94,
+    "predicted_return": 1,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function FUN_140001140 performs a two-stage toy transform on its inputs, first XORing param_1 with 0x6d and then subtracting the least significant 3 bits of param_2 from the result before taking the remainder modulo 256. The function returns true if the final value is equal to 0x5e (94 in decimal).",
-    "latency_sec": 11.43
+    "explanation": "The two-stage byte transform equals 0x5e (returns 1) due to the specific input vector values.",
+    "latency_sec": 2.81
   },
   "llama3.1:8b__CT1__P07_original": {
     "model": "llama3.1:8b",
@@ -5861,8 +5861,8 @@
     "predicted_return": 8,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function sets or clears bit 3 of the state based on whether parameter b is odd or even.",
-    "latency_sec": 4.82
+    "explanation": "The function FUN_140001140 performs a bitwise AND operation on EDX (param_2) and 1 to check if it's odd. If it is, the function sets the 3rd least significant bit of value (initialized with ECX) using the OR operation. Therefore, when param_2 is odd, the function returns the updated integer state value, which is 8.",
+    "latency_sec": 6.02
   },
   "llama3.1:8b__CT1__P07_mutant": {
     "model": "llama3.1:8b",
@@ -5909,11 +5909,11 @@
     "mutation_operator": "api_effect_swap",
     "ground_truth": 0,
     "opposite_variant_truth": 8,
-    "predicted_return": 0,
-    "is_correct": true,
-    "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 appears to be a simple bitwise operation that clears bit 3 of its input value if the second parameter (b) is odd. This suggests a potential security vulnerability related to persistence_mock toy autorun flag manipulation.",
-    "latency_sec": 8.24
+    "predicted_return": -8,
+    "is_correct": false,
+    "is_schr_hallucination": true,
+    "explanation": "The function FUN_140001140 performs a bitwise AND operation on the value of param_1 with the mask 0xFFFFFFF7 when param_2 is odd. This effectively clears the 3rd least significant bit (bit 3) in the binary representation of param_1, resulting in a return value of -8.",
+    "latency_sec": 5.82
   },
   "llama3.1:8b__CT1__E07_original": {
     "model": "llama3.1:8b",
@@ -5963,8 +5963,8 @@
     "predicted_return": 0,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function FUN_140001140 performs a bitwise XOR operation between two inputs (param_1 and param_2) and then checks if the result is equal to 1. If true, it returns 0; otherwise, it returns 1. In this case, with identical 1-bit inputs, the XOR operation yields 0, which matches the condition for returning 0.",
-    "latency_sec": 12.86
+    "explanation": "The function FUN_140001140 returns 0 when both inputs are identical (1-bit) and the third input is irrelevant to the result. This indicates a logical XOR operation between the two inputs, followed by an AND with 3, which effectively masks the result to 0 or 1 depending on whether the inputs are equal or not.",
+    "latency_sec": 6.08
   },
   "llama3.1:8b__CT1__E07_mutant": {
     "model": "llama3.1:8b",
@@ -6014,8 +6014,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 performs a bitwise OR operation on its two input parameters (param_1 and param_2), then applies a bitwise AND with the constant value 3. If the result is equal to 1, it returns 0; otherwise, it returns 1. In this case, since both inputs are identical 1-bit values, their OR operation yields 1, which matches the condition for returning 0.",
-    "latency_sec": 14.48
+    "explanation": "The function FUN_140001140 returns 0 when both inputs are identical 1-bit values, due to the bitwise OR operation and subsequent comparison with 1. This behavior is consistent with the expected logical AND operation between two identical bits.",
+    "latency_sec": 5.15
   },
   "llama3.1:8b__CT1__C06_original": {
     "model": "llama3.1:8b",
@@ -6065,8 +6065,8 @@
     "predicted_return": 1,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function FUN_140001140 performs a bitfield validation check on the first parameter (ECX) and returns 1 if the 3rd least significant bits match the value 0x8, indicating a valid condition. For the given input vector param_1 = 12, the bitfield 0xC indeed passes validation.",
-    "latency_sec": 11.65
+    "explanation": "The function FUN_140001140 returns 1 because the bitfield in param_1 (0xC) matches the target value 0x8, indicating a valid input.",
+    "latency_sec": 4.04
   },
   "llama3.1:8b__CT1__C06_mutant": {
     "model": "llama3.1:8b",
@@ -6116,8 +6116,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 performs a bitfield validation on its first parameter (param_1), checking if the least significant three bits are set to 0x8. If this condition is met, it returns 1; otherwise, it returns 0.",
-    "latency_sec": 10.38
+    "explanation": "The function FUN_140001140 returns 1 (true) because the bit at position 3 in the input parameter param_1 is set to 1. This is due to the bitwise AND operation with 0x8 (which is equivalent to 1000 in binary), which masks all bits except the third one, and then compares the result with 0x8 again. Since the third bit of 12 (1100) is indeed 1, the function returns 1.",
+    "latency_sec": 8.02
   },
   "llama3.1:8b__CT1__A08_original": {
     "model": "llama3.1:8b",
@@ -6164,11 +6164,11 @@
     "mutation_operator": "relational_boundary",
     "ground_truth": 1,
     "opposite_variant_truth": 0,
-    "predicted_return": 0,
-    "is_correct": false,
-    "is_schr_hallucination": true,
-    "explanation": "The function FUN_140001140 evaluates to 0 when in state 2 (ECX&1 == 2) and EDX (param_2) is less than 5. This indicates a conditional return based on the input parameters.",
-    "latency_sec": 9.07
+    "predicted_return": 1,
+    "is_correct": true,
+    "is_schr_hallucination": false,
+    "explanation": "The function FUN_140001140 returns 1 when in state a=2 and param_2 is greater than or equal to 5. This indicates that the function's debug policy allows execution to continue when the condition is met.",
+    "latency_sec": 4.38
   },
   "llama3.1:8b__CT1__A08_mutant": {
     "model": "llama3.1:8b",
@@ -6215,11 +6215,11 @@
     "mutation_operator": "relational_boundary",
     "ground_truth": 0,
     "opposite_variant_truth": 1,
-    "predicted_return": 0,
-    "is_correct": true,
-    "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 evaluates to 0 when in state 2 (ECX&1 == 2) and EDX (param_2) is less than or equal to 5. This indicates a conditional return based on the input parameters.",
-    "latency_sec": 9.53
+    "predicted_return": 1,
+    "is_correct": false,
+    "is_schr_hallucination": true,
+    "explanation": "The function FUN_140001140 returns 1 when in state a=2 and param_2 <= 5. This is because the condition (state==2 && param_2<=5) is not met, so the function falls through to the default return value of 1.",
+    "latency_sec": 4.98
   },
   "llama3.1:8b__CT1__S08_original": {
     "model": "llama3.1:8b",
@@ -6269,8 +6269,8 @@
     "predicted_return": 0,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function FUN_140001140 derives a toy key by performing bitwise operations on its input parameters and checks if the derived key matches the value 0x4d. In this case, it does not match.",
-    "latency_sec": 8.26
+    "explanation": "The derived key does not decode param_3 to 0x4d (77 decimal), resulting in a return value of 0.",
+    "latency_sec": 3.1
   },
   "llama3.1:8b__CT1__S08_mutant": {
     "model": "llama3.1:8b",
@@ -6320,8 +6320,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 derives a toy key by performing bitwise operations on its input parameters and checks if the derived key matches the value 0x4d. In this case, it does not match.",
-    "latency_sec": 8.37
+    "explanation": "The derived key does not decode param_3 to 0x4d (77 decimal), resulting in a return value of 0.",
+    "latency_sec": 3.09
   },
   "llama3.1:8b__CT1__P08_original": {
     "model": "llama3.1:8b",
@@ -6371,8 +6371,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 sets or clears bit 0 of its state variable based on the input parameters b and c. If both b and c are set (1), it clears bit 0, resulting in a return value of 0.",
-    "latency_sec": 9.37
+    "explanation": "The function FUN_140001140 returns 0 when param_2=1 and param_3=1 because the state variable is initially set to param_1 (which is 0), then ORed with 1 due to param_2 being true, resulting in a state of 1. However, since param_3 is also true, the state is then ANDed with ~1 (which is -2) and finally ANDed with 1, resulting in a final state of 0.",
+    "latency_sec": 7.73
   },
   "llama3.1:8b__CT1__P08_mutant": {
     "model": "llama3.1:8b",
@@ -6419,11 +6419,11 @@
     "mutation_operator": "step_omission",
     "ground_truth": 1,
     "opposite_variant_truth": 0,
-    "predicted_return": 0,
-    "is_correct": false,
-    "is_schr_hallucination": true,
-    "explanation": "The function FUN_140001140 sets a bit in the state variable based on the value of param_2 and then returns the least significant bit (bit 0) of the state variable. In this case, since param_1 is 0, the initial state is 0; when param_2 is 1, the state becomes 1; but because param_3 is also 1, it does not affect the state in this function. Therefore, the return value is the least significant bit of the state variable, which remains 0.",
-    "latency_sec": 14.53
+    "predicted_return": 1,
+    "is_correct": true,
+    "is_schr_hallucination": false,
+    "explanation": "The function FUN_140001140 returns the final integer state value of 1 due to the bitwise OR operation between eax and ecx. The branch/dataflow logic is as follows: (1) Initially, eax is set to 0 by xor eax,eax. (2) Since EDX (param_2) is 1, the setne al instruction sets the least significant bit of eax to 1. (3) Then, the and ecx,0x1 operation does not change ecx because it is already 1. (4) Finally, the or eax,ecx operation performs a bitwise OR between eax and ecx, resulting in a final state value of 1.",
+    "latency_sec": 9.69
   },
   "llama3.1:8b__CT1__E08_original": {
     "model": "llama3.1:8b",
@@ -6473,8 +6473,8 @@
     "predicted_return": 0,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function FUN_140001140 checks if either param_1 is non-zero or (param_2 is true and param_3 is false), and returns 0 if any of these conditions are met. In this case, the second simulated rejection condition is overridden by c=1.",
-    "latency_sec": 8.42
+    "explanation": "The function FUN_140001140 returns 0 when param_3=1 because the condition if(EDX(param_2) && !R8D(param_3)) ok=0 is true. This is due to the fact that EDX is non-zero (param_2 = 1), and R8D is zero (param_3 = 1). The logical AND operation between these two conditions results in a false value, which sets ok to 0.",
+    "latency_sec": 7.52
   },
   "llama3.1:8b__CT1__E08_mutant": {
     "model": "llama3.1:8b",
@@ -6524,8 +6524,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 simulates a rejection condition based on two parameters (param_1 and param_2), but the third parameter (param_3) does not override this condition. The function returns 0 if either of the first two parameters is non-zero.",
-    "latency_sec": 8.04
+    "explanation": "The function FUN_140001140 returns 0 when param_3=1 because the variable ok is set to 0 in the line if(EDX(param_2)) ok=0; which corresponds to the instruction or ecx,edx. This sets the carry flag (CF) and the zero flag (ZF), but since EDX is non-zero, the ZF remains clear. The function then returns the value of ok, which is 0.",
+    "latency_sec": 7.15
   },
   "llama3.1:8b__CT1__C07_original": {
     "model": "llama3.1:8b",
@@ -6575,8 +6575,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "This function evaluates to true if at least one of its parameters is non-zero; otherwise, it returns false.",
-    "latency_sec": 4.48
+    "explanation": "The function FUN_140001140 returns 0 when param_1=0, param_2=0, and param_3=1 because the expression (param_1 && (param_2 || param_3)) evaluates to false. The '&&' operator has higher precedence than the '||' operator, so the expression is evaluated as follows: (false && (false || true)). Since any value ANDed with false results in false, and any value ORed with true results in true, the final result of the expression is false.",
+    "latency_sec": 9.85
   },
   "llama3.1:8b__CT1__C07_mutant": {
     "model": "llama3.1:8b",
@@ -6623,11 +6623,11 @@
     "mutation_operator": "boolean_precedence",
     "ground_truth": 1,
     "opposite_variant_truth": 0,
-    "predicted_return": 0,
-    "is_correct": false,
-    "is_schr_hallucination": true,
-    "explanation": "The function FUN_140001140 evaluates to true if either param_1 (a) AND param_2 (b) are both non-zero or if param_3 (c) is non-zero. In this case, since a and b are zero, the result depends solely on c being non-zero.",
-    "latency_sec": 8.82
+    "predicted_return": 1,
+    "is_correct": true,
+    "is_schr_hallucination": false,
+    "explanation": "The function FUN_140001140 returns 1 when param_3 is true (non-zero), regardless of the values of param_1 and param_2. This is because the expression ((param_1 && param_2) || param_3) evaluates to true if either param_1 and param_2 are both true, or if param_3 is true.",
+    "latency_sec": 6.45
   },
   "qwen2.5-coder:14b__CT1__A02_original": {
     "model": "qwen2.5-coder:14b",
@@ -6677,8 +6677,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if the second bit (bit 1) of `param_1` is set. If it is, the function returns 0, indicating a block. In this case, with `param_1 = 2`, the second bit is indeed set, so the function blocks.",
-    "latency_sec": 26.7
+    "explanation": "The function FUN_140001140 checks if the second bit (bit 1) of the input parameter param_1 is set. In this case, with param_1 = 2, the binary representation is '10', where the second bit is indeed set. Therefore, the condition (param_1&2)!=0 evaluates to true, and the function returns 0.",
+    "latency_sec": 33.69
   },
   "qwen2.5-coder:14b__CT1__A02_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -6728,8 +6728,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if the second bit (bit 1) of param_1 is set. If it is, the function returns 1, indicating that the operation is allowed according to the security policy.",
-    "latency_sec": 20.56
+    "explanation": "The function FUN_140001140 checks if the second bit (bit 1) of the input parameter param_1 is set. Given the input vector where param_1 = 2, the binary representation of 2 is '10', indicating that the second bit is indeed set. Therefore, the function returns 1.",
+    "latency_sec": 27.02
   },
   "qwen2.5-coder:14b__CT1__S02_original": {
     "model": "qwen2.5-coder:14b",
@@ -6779,8 +6779,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if the transformed byte, obtained by XORing `param_1` with 0x5a and then masking with 255, equals 0x30. For the given input, the transformation results in 0x30, hence the function returns true (1).",
-    "latency_sec": 38.33
+    "explanation": "The function checks if the transformed value of param_1 (after XOR with 0x5a and masked with 255) equals 0x30. For the input param_1 = 106, the transformation is as follows: (106 ^ 90) & 255 = 48, which equals 0x30. Therefore, the function returns 1.",
+    "latency_sec": 32.4
   },
   "qwen2.5-coder:14b__CT1__S02_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -6830,8 +6830,8 @@
     "predicted_return": 1,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function checks if the transformed byte, obtained by XORing `param_1` with 0x5b and then masking with 255, equals 0x30. For the given input, the transformation results in 0x30, hence the function returns true (1).",
-    "latency_sec": 29.23
+    "explanation": "The function checks if the transformed value of param_1 (after XOR with 0x5b and masked with 255) equals 0x30. For the input param_1 = 106, the transformation is as follows: (106 ^ 91) & 255 = 48, which equals 0x30. Therefore, the function returns 1.",
+    "latency_sec": 31.83
   },
   "qwen2.5-coder:14b__CT1__P02_original": {
     "model": "qwen2.5-coder:14b",
@@ -6881,8 +6881,8 @@
     "predicted_return": 2,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function sets bit 1 of the input parameter `param_1` to 1, regardless of its original value. This operation is used to ensure that a specific bit in the service state is always set.",
-    "latency_sec": 21.71
+    "explanation": "The function FUN_140001140 takes three integer parameters but only uses the first one (param_1). It applies a bitwise operation where it clears the least significant bit of param_1 using the AND operation with ~2, and then sets this bit to 1 using the OR operation with 2. Given the input vector where param_1 is 0, clearing its least significant bit results in 0, and setting it to 1 yields a return value of 2.",
+    "latency_sec": 35.65
   },
   "qwen2.5-coder:14b__CT1__P02_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -6932,8 +6932,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function FUN_140001140 performs a bitwise AND operation between the input parameter param_1 and the bitwise NOT of 2. Given the input param_1 = 0, the result is 0 & ~2, which equals 0. This indicates that bit 1 (the second least significant bit) in the return value is not set.",
-    "latency_sec": 32.47
+    "explanation": "The function FUN_140001140 performs a bitwise AND operation between the input parameter `param_1` and the hexadecimal value `0xfffffffd`. Given that `param_1` is 0, the result of this operation will also be 0. This operation effectively clears the least significant bit (LSB) of `param_1`, but since `param_1` is already 0, no change occurs. The function does not utilize `param_2` and `param_3`, thus they have no impact on the return value.",
+    "latency_sec": 39.6
   },
   "qwen2.5-coder:14b__CT1__E02_original": {
     "model": "qwen2.5-coder:14b",
@@ -6983,8 +6983,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function returns 0 if the sum of param_1, param_2, and param_3 is greater than or equal to 2. Given the input values (1, 1, 0), the sum is 2, which triggers the condition.",
-    "latency_sec": 24.88
+    "explanation": "The function FUN_140001140 checks if the sum of its three parameters is greater than or equal to 2. Given the input vector param_1 = 1, param_2 = 1, and param_3 = 0, the sum is 2, which meets the condition. Therefore, the function returns 0.",
+    "latency_sec": 28.2
   },
   "qwen2.5-coder:14b__CT1__E02_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -7034,8 +7034,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if the sum of the three parameters is greater than 2. If it is, the function returns 0; otherwise, it returns 1. For the input values (1, 1, 0), the sum is 2, which is not greater than 2, so the function returns 1.",
-    "latency_sec": 29.25
+    "explanation": "The function FUN_140001140 checks if the sum of its three parameters is greater than 2. Given the input vector param_1 = 1, param_2 = 1, and param_3 = 0, the sum is 2, which is not greater than 2. Therefore, the function returns 1.",
+    "latency_sec": 29.07
   },
   "qwen2.5-coder:14b__CT1__C02_original": {
     "model": "qwen2.5-coder:14b",
@@ -7085,8 +7085,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if param_1 is equal to param_2. If they are equal, it returns 1; otherwise, it returns 0. In this case, since both param_1 and param_2 are 5, the equality condition is true, resulting in a return value of 1.",
-    "latency_sec": 27.69
+    "explanation": "The function FUN_140001140 returns 1 when param_1 equals param_2, as indicated by the conditional comparison and sete instruction in the assembly listing. This behavior is consistent with the decompiled C pseudocode.",
+    "latency_sec": 20.74
   },
   "qwen2.5-coder:14b__CT1__C02_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -7136,8 +7136,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if param_1 is not equal to param_2. Since both are 5, the condition is false, and it returns 0.",
-    "latency_sec": 17.62
+    "explanation": "The function FUN_140001140 returns 0 when param_1 equals param_2. This is because the function checks if param_1 is not equal to param_2 using the '!=' operator. If they are equal, it sets the return value to 0; otherwise, it sets it to 1.",
+    "latency_sec": 27.45
   },
   "qwen2.5-coder:14b__CT1__A04_original": {
     "model": "qwen2.5-coder:14b",
@@ -7187,8 +7187,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if both param_1 and param_2 are non-zero. If either is zero, it returns 1. In this case, since param_2 is 0, the condition is not met, and the function returns 1.",
-    "latency_sec": 24.07
+    "explanation": "The function FUN_140001140 checks if both param_1 and param_2 are non-zero. If they are, it returns 0; otherwise, it returns 1. Given the input vector where param_1 is 1 and param_2 is 0, the condition (param_1 && param_2) evaluates to false, so the function returns 1.",
+    "latency_sec": 30.97
   },
   "qwen2.5-coder:14b__CT1__A04_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -7238,8 +7238,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function returns 0 if either of the first two parameters (param_1 or param_2) is non-zero. In this case, param_1 is 1, so the condition is met and the function blocks.",
-    "latency_sec": 21.95
+    "explanation": "The function FUN_140001140 checks if either param_1 or param_2 is non-zero. Given the input vector where param_1 is 1 and param_2 is 0, the condition (param_1 || param_2) evaluates to true. Therefore, the function returns 0.",
+    "latency_sec": 25.53
   },
   "qwen2.5-coder:14b__CT1__S03_original": {
     "model": "qwen2.5-coder:14b",
@@ -7289,8 +7289,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if the XOR of param_1 (91) with the sum of param_2 (3) and 7, masked to the lower byte, equals 0x51. For the given inputs, this condition is true.",
-    "latency_sec": 23.51
+    "explanation": "The function checks if the result of XORing param_1 (91) with the sum of param_2 (3) and 7 equals 0x51. The calculation is as follows: (91 ^ (3 + 7)) & 255 = (91 ^ 10) & 255 = 81 & 255 = 81, which matches 0x51. Therefore, the function returns 1.",
+    "latency_sec": 35.67
   },
   "qwen2.5-coder:14b__CT1__S03_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -7340,8 +7340,8 @@
     "predicted_return": 1,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function checks if the XOR of param_1 (91) with param_2 (3) plus 8 results in a value that, when masked with 0xFF, equals 0x51. For the given inputs, this condition is met.",
-    "latency_sec": 24.99
+    "explanation": "The function checks if the result of XORing param_1 (91) with the sum of param_2 (3) and 8 equals 0x51. The calculation is as follows: (91 ^ (3 + 8)) & 255 = (91 ^ 11) & 255 = 81 & 255 = 81, which matches 0x51. Therefore, the function returns 1.",
+    "latency_sec": 35.78
   },
   "qwen2.5-coder:14b__CT1__P03_original": {
     "model": "qwen2.5-coder:14b",
@@ -7391,8 +7391,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if the first parameter (param_1) is zero. If it is, the function returns 1; otherwise, it returns the value of param_1. In this case, since param_1 is 0, the function returns 1.",
-    "latency_sec": 24.64
+    "explanation": "The function FUN_140001140 checks if param_1 is equal to 0. If it is, the function returns 1 as a fallback integer state value. This behavior is consistent with the provided decompiled C pseudocode and assembly listing.",
+    "latency_sec": 22.09
   },
   "qwen2.5-coder:14b__CT1__P03_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -7442,8 +7442,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if the first parameter (param_1) is zero. If it is, the function returns 0; otherwise, it returns the value of param_1. In this case, since param_1 is 0, the function returns 0.",
-    "latency_sec": 24.87
+    "explanation": "The function FUN_140001140 checks if param_1 is equal to 0. If it is, the function returns 0 immediately without further processing. This behavior indicates a simple conditional return based on the input parameter, ensuring that a zero value for param_1 results in a predictable and controlled output.",
+    "latency_sec": 24.95
   },
   "qwen2.5-coder:14b__CT1__E04_original": {
     "model": "qwen2.5-coder:14b",
@@ -7493,8 +7493,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function returns 1 when the difference between param_1 (30) and param_2 (10) is not greater than 20, indicating that the operation is allowed according to the specified policy.",
-    "latency_sec": 21.74
+    "explanation": "The function FUN_140001140 checks if the difference between param_1 and param_2 is greater than 20. Given the input values (param_1 = 30, param_2 = 10), the difference is 20, which is not greater than 20. Therefore, the function returns 1.",
+    "latency_sec": 35.77
   },
   "qwen2.5-coder:14b__CT1__E04_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -7541,11 +7541,11 @@
     "mutation_operator": "relational_boundary",
     "ground_truth": 0,
     "opposite_variant_truth": 1,
-    "predicted_return": 1,
-    "is_correct": false,
-    "is_schr_hallucination": true,
-    "explanation": "The function returns 1 when the difference between param_1 (30) and param_2 (10) is less than 20, indicating that the condition (param_1 - param_2) >= 20 is not met.",
-    "latency_sec": 23.86
+    "predicted_return": 0,
+    "is_correct": true,
+    "is_schr_hallucination": false,
+    "explanation": "The function FUN_140001140 checks if the difference between param_1 and param_2 is less than or equal to 20. Given the input values, (30 - 10) equals 20, which meets the condition for returning 0.",
+    "latency_sec": 29.14
   },
   "qwen2.5-coder:14b__CT1__C03_original": {
     "model": "qwen2.5-coder:14b",
@@ -7595,8 +7595,8 @@
     "predicted_return": 4,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function starts with initializing `x` to the value of `param_1`. Since both `param_2` and `param_3` are non-zero, it increments `x` by 2 (due to `param_2`) and then decrements `x` by 1 (due to `param_3`). The final value of `x` is returned.",
-    "latency_sec": 32.18
+    "explanation": "The function FUN_140001140 starts by setting x to the value of param_1, which is 3. Since param_2 is 1 (true), it adds 2 to x, making x = 5. Then, since param_3 is also 1 (true), it subtracts 1 from x, resulting in a final value of 4.",
+    "latency_sec": 30.79
   },
   "qwen2.5-coder:14b__CT1__C03_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -7646,8 +7646,8 @@
     "predicted_return": 5,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function adds 2 to param_1 if param_2 is non-zero, otherwise it returns param_1. With both flags on (param_2 = 1), the function increments param_1 by 2.",
-    "latency_sec": 23.43
+    "explanation": "The function FUN_140001140 takes three parameters, but only the first two are used in its logic. The function initializes a variable 'x' with the value of 'param_1'. If 'param_2' is non-zero (true), it adds 2 to 'x'. Given the input vector where 'param_1' is 3 and 'param_2' is 1, the condition 'if(param_2)' evaluates to true, leading to 'x' being incremented by 2. Therefore, the function returns 5.",
+    "latency_sec": 40.72
   },
   "qwen2.5-coder:14b__CT1__A05_original": {
     "model": "qwen2.5-coder:14b",
@@ -7697,8 +7697,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if at least two of the three parameters are non-zero. With inputs (1, 1, 0), exactly two parameters are positive, so it returns 0 to block according to the security policy.",
-    "latency_sec": 23.0
+    "explanation": "The function FUN_140001140 returns 0 when two or more input signals are active. This is because the score variable, which counts the number of non-zero parameters, reaches a value of 2 (since param_1 and param_2 are both 1). The return statement checks if the score is greater than or equal to 2, and if so, returns 0; otherwise, it returns 1. In this case, since two input signals are active, the function correctly returns 0.",
+    "latency_sec": 44.37
   },
   "qwen2.5-coder:14b__CT1__A05_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -7745,11 +7745,11 @@
     "mutation_operator": "relational_boundary",
     "ground_truth": 1,
     "opposite_variant_truth": 0,
-    "predicted_return": 1,
-    "is_correct": true,
-    "is_schr_hallucination": false,
-    "explanation": "The function checks if at least two of the three parameters are non-zero. With inputs (1, 1, 0), exactly two parameters are positive, so it returns 1 to allow based on the security policy.",
-    "latency_sec": 23.75
+    "predicted_return": 0,
+    "is_correct": false,
+    "is_schr_hallucination": true,
+    "explanation": "The function FUN_140001140 returns 0 when two input signals are active, as indicated by the input vector where param_1 and param_2 are non-zero while param_3 is zero. This behavior aligns with the logic that if more than one parameter is non-zero, the function returns 0; otherwise, it returns 1.",
+    "latency_sec": 32.91
   },
   "qwen2.5-coder:14b__CT1__S05_original": {
     "model": "qwen2.5-coder:14b",
@@ -7799,8 +7799,8 @@
     "predicted_return": 0,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function checks if the least significant byte of (param_1 XOR 51) is equal to the least significant byte of param_2. For the given inputs, (85 XOR 51) & 255 equals 34, which does not match the least significant byte of 102.",
-    "latency_sec": 28.27
+    "explanation": "The function checks if the lower 8 bits of (param_1 XOR 51) are equal to the lower 8 bits of param_2. For the given inputs, (85 XOR 51) results in 134, and its lower 8 bits are 134 & 255 = 134. The lower 8 bits of param_2 (102) are 102. Since 134 is not equal to 102, the function returns 0.",
+    "latency_sec": 45.9
   },
   "qwen2.5-coder:14b__CT1__S05_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -7850,8 +7850,8 @@
     "predicted_return": 1,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function checks if the least significant byte of (param_1 XOR 51) is not equal to the least significant byte of param_2. For the given inputs, it returns 1, indicating a mismatch.",
-    "latency_sec": 23.11
+    "explanation": "{\n  \"predicted_return\": 1,\n  \"security_interpretation\": \"The function FUN_140001140 performs a bitwise XOR operation between the first parameter (param_1) and the constant 51, then checks if the least significant byte of the result is different from the least significant byte of the second parameter (param_2). For the given input vector (param_1 = 85, param_2 = 102, param_3 = 0), the XOR operation between 85 and 51 results in 134. The least significant byte of 134 is 134 itself, which is different from the least significant byte of 102 (which is 10",
+    "latency_sec": 54.81
   },
   "qwen2.5-coder:14b__CT1__P04_original": {
     "model": "qwen2.5-coder:14b",
@@ -7901,8 +7901,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "When command=0, the mock autorun flag is added by setting the least significant bit of param_2 to 1.",
-    "latency_sec": 16.43
+    "explanation": "The function FUN_140001140 modifies the input value of param_2 based on the value of param_1. When param_1 is 0, the function returns param_2 ORed with 1. Given that param_2 is 0, the result of this operation is 1.",
+    "latency_sec": 26.55
   },
   "qwen2.5-coder:14b__CT1__P04_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -7952,8 +7952,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function returns the value of param_2 with its least significant bit cleared (i.e., bitwise AND with ~1). Given the input vector, since param_1 is 0, the function executes the case 0 branch and returns param_2 & ~1, which results in 0.",
-    "latency_sec": 29.09
+    "explanation": "The function FUN_140001140 returns the value of param_2 with its least significant bit cleared (i.e., bitwise AND with ~1). Given that param_2 is 0, clearing its least significant bit still results in 0. The switch-case structure does not affect the outcome since both cases 0 and 1 return the same result as the default case for this input.",
+    "latency_sec": 31.19
   },
   "qwen2.5-coder:14b__CT1__E05_original": {
     "model": "qwen2.5-coder:14b",
@@ -8003,8 +8003,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if the upper nibble of `param_1` is equal to 0xA0 (160 in decimal). Given `param_1 = 176`, its upper nibble is 0xB0, which does not match 0xA0. Therefore, the function returns 1, indicating that the encoded tag 0xB0 is blocked.",
-    "latency_sec": 35.7
+    "explanation": "The function FUN_140001140 checks if the lower 8 bits of param_1 (ECX) masked with 0xf0 are equal to 0xa0. For the input value 176, when masked with 0xf0, it results in 0xb0, which is not equal to 0xa0. Therefore, the function returns 1.",
+    "latency_sec": 35.77
   },
   "qwen2.5-coder:14b__CT1__E05_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -8054,8 +8054,8 @@
     "predicted_return": 1,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function checks if the upper 3 bits of param_1 are equal to 0xa (binary 1010). For param_1 = 176 (binary 10110000), the upper 3 bits are 101, which does not match 0xa. Therefore, the function returns 1, indicating that the encoded tag is blocked.",
-    "latency_sec": 36.46
+    "explanation": "The function FUN_140001140 checks if the most significant three bits of param_1 (ECX) are equal to 0xa0 (160 in decimal). For the input value 176, the binary representation is 10110000. The most significant three bits are 101, which when shifted left by 5 positions (to align with the mask 0xe0), result in 11000000 (192 in decimal). This does not match the required value of 160, so the function returns 1.",
+    "latency_sec": 52.03
   },
   "qwen2.5-coder:14b__CT1__C04_original": {
     "model": "qwen2.5-coder:14b",
@@ -8105,8 +8105,8 @@
     "predicted_return": 2,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if `param_1` is non-zero. Since `param_1` is 0, the function skips the nested conditional check and directly returns 2.",
-    "latency_sec": 20.82
+    "explanation": "The function FUN_140001140 returns 2 when param_1 is 0, regardless of the values of param_2 and param_3. This is because the first conditional check (if(param_1)) fails, leading to the return statement outside both if blocks.",
+    "latency_sec": 27.88
   },
   "qwen2.5-coder:14b__CT1__C04_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -8156,8 +8156,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if either param_1 or param_2 is non-zero. Since param_2 is 1, the inner condition is met, and the function returns 1.",
-    "latency_sec": 20.0
+    "explanation": "The function FUN_140001140 returns 1 when param_1 is 0 and param_2 is 1. This is because the first condition checks if either param_1 or param_2 is non-zero, which is true in this case since param_2 is 1. The nested condition then checks if param_2 is non-zero, which is also true, leading to a return value of 1.",
+    "latency_sec": 39.34
   },
   "qwen2.5-coder:14b__CT1__A07_original": {
     "model": "qwen2.5-coder:14b",
@@ -8207,8 +8207,8 @@
     "predicted_return": 1,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function checks if the XOR of param_1 and param_2 has an odd parity (i.e., the least significant bit is 1). If it does, the function returns 0; otherwise, it returns 1. For the given input vector, the XOR of 1 and 0 is 1, which has an odd parity, but since the condition checks for equality to 1, the function returns 1.",
-    "latency_sec": 42.47
+    "explanation": "The function FUN_140001140 checks if the XOR of param_1 and param_2 has its least significant bit set. Given the input vector (param_1 = 1, param_2 = 0, param_3 = 0), the XOR operation results in 1 (since 1 XOR 0 = 1). The function then checks if this result is equal to 1, and since it is, the function returns 1. This indicates that the condition for returning 0 was not met.",
+    "latency_sec": 38.99
   },
   "qwen2.5-coder:14b__CT1__A07_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -8258,8 +8258,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if the XOR of param_1 and param_2 has an odd parity (i.e., the least significant bit is 1). For the given input, (1 XOR 0) & 1 results in 1, indicating an odd parity, thus allowing the operation.",
-    "latency_sec": 25.58
+    "explanation": "The function FUN_140001140 checks if the least significant bit of the XOR between param_1 and param_2 is set. Given the input vector (param_1 = 1, param_2 = 0), the XOR operation results in 1 (binary 01 XOR 00 = 01). The bitwise AND with 1 confirms that the least significant bit is indeed set, leading to a return value of 1. This indicates that the condition for returning 1 was met based on the input parameters.",
+    "latency_sec": 47.75
   },
   "qwen2.5-coder:14b__CT1__S07_original": {
     "model": "qwen2.5-coder:14b",
@@ -8309,8 +8309,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function performs a two-stage transformation on the input parameters, involving an XOR operation and a bitwise AND with 7. The result is then compared to 0x5e (94 in decimal). For the given inputs, the transformation results in 94, which matches the comparison value, leading to a return of 1.",
-    "latency_sec": 35.8
+    "explanation": "The function performs a two-stage byte transformation on the input parameters. First, it XORs `param_1` (49) with the constant 0x6d (109), resulting in 60. Then, it adds the lower three bits of `param_2` (2 & 7 = 2) to this result, yielding 62. Finally, it checks if this value equals 0x5e (94). Since 62 does not equal 94, the function returns 0.",
+    "latency_sec": 51.52
   },
   "qwen2.5-coder:14b__CT1__S07_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -8360,8 +8360,8 @@
     "predicted_return": 1,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function performs a two-stage transformation on the input parameters, involving an XOR operation and a subtraction with bitwise AND, followed by a comparison to determine if the result equals 0x5e. For the given inputs, the transformation results in a match, hence returning 1.",
-    "latency_sec": 26.92
+    "explanation": "The function performs a two-stage byte transformation on the input parameters. First, it XORs `param_1` (49) with the constant 0x6d (109), resulting in 152. Then, it subtracts the lower three bits of `param_2` (2 & 7 = 2) from this result, yielding 150. Finally, it checks if this value equals 0x5e (94). Since 150 does not equal 94, the function returns 0.",
+    "latency_sec": 48.79
   },
   "qwen2.5-coder:14b__CT1__P07_original": {
     "model": "qwen2.5-coder:14b",
@@ -8411,8 +8411,8 @@
     "predicted_return": 8,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "When `param_2` (b) is odd, state bit 3 gets set in the return value.",
-    "latency_sec": 14.96
+    "explanation": "The function FUN_140001140 takes three parameters, but only the first two are relevant to its logic. The function checks if the second parameter (param_2) is odd by performing a bitwise AND with 1. If param_2 is odd, it sets the third bit of the result to 1. In this case, since param_2 is 1 (which is odd), the function returns 8, which is 0b1000 in binary.",
+    "latency_sec": 44.22
   },
   "qwen2.5-coder:14b__CT1__P07_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -8459,11 +8459,11 @@
     "mutation_operator": "api_effect_swap",
     "ground_truth": 0,
     "opposite_variant_truth": 8,
-    "predicted_return": 0,
-    "is_correct": true,
-    "is_schr_hallucination": false,
-    "explanation": "When `param_2` (b) is odd, the function clears state bit 3 of `param_1` (a). In this case, with `param_1 = 0`, the return value remains 0.",
-    "latency_sec": 28.32
+    "predicted_return": -8,
+    "is_correct": false,
+    "is_schr_hallucination": true,
+    "explanation": "When param_2 is odd, the function FUN_140001140 clears the third least significant bit (bit 3) of param_1. Given the input vector with param_1 = 0 and param_2 = 1 (odd), the function returns -8 because in two's complement representation, clearing the third least significant bit of 0 results in -8.",
+    "latency_sec": 35.93
   },
   "qwen2.5-coder:14b__CT1__E07_original": {
     "model": "qwen2.5-coder:14b",
@@ -8513,8 +8513,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if the XOR of param_1 and param_2 has a least significant bit set to 1. Since both inputs are identical (1), their XOR is 0, and thus the function returns 1, indicating no block according to the policy.",
-    "latency_sec": 26.83
+    "explanation": "The function FUN_140001140 returns 1 when two identical 1-bit inputs are provided. This is because the XOR operation between param_1 and param_2 results in 0 (since both are 1), and the bitwise AND with 3U (which is 0b11) also results in 0. The comparison flags==1U fails, leading to a return value of 1.",
+    "latency_sec": 37.67
   },
   "qwen2.5-coder:14b__CT1__E07_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -8564,8 +8564,8 @@
     "predicted_return": 1,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function checks if the bitwise OR of param_1 and param_2, when masked with 3 (binary 11), equals 1. For inputs (1, 1, 0), the OR operation results in 1, but since the mask is applied, the condition flags==1U is not met, leading to a return value of 1.",
-    "latency_sec": 41.12
+    "explanation": "The function FUN_140001140 takes two parameters, param_1 and param_2, and performs a bitwise OR operation followed by a bitwise AND with 3. If the result is equal to 1, it returns 0; otherwise, it returns 1. Given the input vector where both param_1 and param_2 are 1, the bitwise OR results in 1, and the bitwise AND with 3 also results in 1. Since the condition flags==1U is not met, the function returns 1.",
+    "latency_sec": 40.61
   },
   "qwen2.5-coder:14b__CT1__C06_original": {
     "model": "qwen2.5-coder:14b",
@@ -8615,8 +8615,8 @@
     "predicted_return": 1,
     "is_correct": false,
     "is_schr_hallucination": true,
-    "explanation": "The function checks if the lower two bits of param_1 are set to '0b1000' (8 in decimal). Given the input param_1 = 12, which is '0b1100', the condition ((param_1 & 0xc) == 0x8) evaluates to true because the lower two bits match '0b1000'. Therefore, the function returns 1.",
-    "latency_sec": 45.15
+    "explanation": "{\n  \"predicted_return\": 1,\n  \"security_interpretation\": \"The function FUN_140001140 checks if the lower two bits of param_1 are equal to 10 (binary), which corresponds to a decimal value of 2. Given that param_1 is 12, its binary representation is 1100, and the lower two bits are indeed 00, not 10. However, there seems to be a misunderstanding in the question as the function actually checks if the lower two bits are equal to 100 (binary), which corresponds to a decimal value of 4. Since param_1 is 12, its binary representation is 1100, and the lower two bits",
+    "latency_sec": 47.46
   },
   "qwen2.5-coder:14b__CT1__C06_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -8666,8 +8666,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if the third bit (0x8) of `param_1` is set. For the input `param_1 = 12`, which is binary `1100`, the third bit is indeed set, so the function returns 1.",
-    "latency_sec": 26.17
+    "explanation": "The function FUN_140001140 checks if the third bit (bit index 2) of the input parameter param_1 is set. For the input value 12 (which is 0xC in hexadecimal), the binary representation is 1100, where the third bit from the right is indeed set. Therefore, the function returns 1.",
+    "latency_sec": 30.45
   },
   "qwen2.5-coder:14b__CT1__A08_original": {
     "model": "qwen2.5-coder:14b",
@@ -8717,8 +8717,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if `param_1` is odd (state=2) and if `param_2` is less than 5. At `param_2 = 5`, the condition `param_2 < 5` fails, so the function returns 1.",
-    "latency_sec": 26.07
+    "explanation": "The function FUN_140001140 returns 1 for the input vector param_1 = 1, param_2 = 5, param_3 = 0. The logic checks if param_1 is odd (which it is, since 1 & 1 equals 1), setting state to 2. Since state is 2 and param_2 (5) is not less than 5, the function returns 1.",
+    "latency_sec": 37.66
   },
   "qwen2.5-coder:14b__CT1__A08_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -8765,11 +8765,11 @@
     "mutation_operator": "relational_boundary",
     "ground_truth": 0,
     "opposite_variant_truth": 1,
-    "predicted_return": 0,
-    "is_correct": true,
-    "is_schr_hallucination": false,
-    "explanation": "The function checks if `param_1` is odd (state=2) and if `param_2` is less than or equal to 5. Given the input, since `param_2` equals 5, the condition is met, leading to a return value of 0.",
-    "latency_sec": 29.37
+    "predicted_return": 1,
+    "is_correct": false,
+    "is_schr_hallucination": true,
+    "explanation": "The function FUN_140001140 returns 1 for the input vector param_1 = 1, param_2 = 5, param_3 = 0. The logic checks if param_1 is odd (which it is, since 1 & 1 equals 1), setting state to 2. Then, it checks if state is 2 and param_2 is less than or equal to 5. Since param_2 is exactly 5, the condition is not met, and the function returns 1.",
+    "latency_sec": 45.65
   },
   "qwen2.5-coder:14b__CT1__S08_original": {
     "model": "qwen2.5-coder:14b",
@@ -8816,11 +8816,11 @@
     "mutation_operator": "arithmetic_operator",
     "ground_truth": 1,
     "opposite_variant_truth": 0,
-    "predicted_return": 1,
-    "is_correct": true,
-    "is_schr_hallucination": false,
-    "explanation": "The function calculates a key based on the first two parameters, then checks if XORing this key with the third parameter results in the value 0x4d (77 decimal). For the given input, the calculation matches this condition.",
-    "latency_sec": 24.56
+    "predicted_return": 0,
+    "is_correct": false,
+    "is_schr_hallucination": true,
+    "explanation": "The function calculates a key based on the inputs param_1 and param_2, then checks if XORing this key with param_3 results in 0x4d (77 decimal). For the given input vector (param_1 = 3, param_2 = 2, param_3 = 73), the calculated key does not result in 0x4d when XORed with param_3, hence the function returns 0.",
+    "latency_sec": 38.69
   },
   "qwen2.5-coder:14b__CT1__S08_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -8867,11 +8867,11 @@
     "mutation_operator": "arithmetic_operator",
     "ground_truth": 0,
     "opposite_variant_truth": 1,
-    "predicted_return": 1,
-    "is_correct": false,
-    "is_schr_hallucination": true,
-    "explanation": "The function calculates a key based on the first two parameters, then checks if XORing this key with the third parameter results in 0x4d (77 decimal). For the given input, the condition is met.",
-    "latency_sec": 30.74
+    "predicted_return": 0,
+    "is_correct": true,
+    "is_schr_hallucination": false,
+    "explanation": "The function calculates a key based on the inputs param_1 and param_2, then checks if XORing this key with param_3 results in 0x4d (77 decimal). For the given input vector (param_1 = 3, param_2 = 2, param_3 = 73), the calculated key is not such that when XORed with 73, it equals 77. Therefore, the function returns 0.",
+    "latency_sec": 39.35
   },
   "qwen2.5-coder:14b__CT1__P08_original": {
     "model": "qwen2.5-coder:14b",
@@ -8921,8 +8921,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function sets bit 0 of `state` to 1 if `param_2` is non-zero, and then clears it if `param_3` is non-zero. With both `param_2` and `param_3` set to 1, the final value of bit 0 in `state` will be 0.",
-    "latency_sec": 33.22
+    "explanation": "The function FUN_140001140 returns 0 when param_2 is 1 and param_3 is 1. This is because the initial state is set to param_1 (which is 0), then ORed with 1 due to param_2 being non-zero, resulting in a state of 1. However, since param_3 is also non-zero, the state is ANDed with ~1 (which is -2 in two's complement), effectively zeroing out the least significant bit, thus returning 0.",
+    "latency_sec": 44.18
   },
   "qwen2.5-coder:14b__CT1__P08_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -8972,8 +8972,8 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function sets bit 0 of the state if param_2 is non-zero, and returns the value of that bit. With param_2 = 1, bit 0 is set, resulting in a return value of 1.",
-    "latency_sec": 21.54
+    "explanation": "The function FUN_140001140 returns 1 when param_2 is 1, regardless of the values of param_1 and param_3. This indicates that the presence of a non-zero value in param_2 sets the least significant bit of the return value.",
+    "latency_sec": 24.15
   },
   "qwen2.5-coder:14b__CT1__E08_original": {
     "model": "qwen2.5-coder:14b",
@@ -9020,11 +9020,11 @@
     "mutation_operator": "condition_weakening",
     "ground_truth": 1,
     "opposite_variant_truth": 0,
-    "predicted_return": 1,
-    "is_correct": true,
-    "is_schr_hallucination": false,
-    "explanation": "The function checks if `param_1` is non-zero, which would set `ok` to 0. Since `param_1` is 0 in this case, `ok` remains 1. The second condition checks if `param_2` is non-zero and `param_3` is zero, which would also set `ok` to 0. Here, both `param_2` and `param_3` are 1, so the second condition is not met, and `ok` remains 1.",
-    "latency_sec": 40.94
+    "predicted_return": 0,
+    "is_correct": false,
+    "is_schr_hallucination": true,
+    "explanation": "The function FUN_140001140 returns 0 when param_3 is 1. This is because the condition 'if(param_2 && !param_3)' evaluates to false since param_3 is not zero, but the initial value of 'ok' is set to 1 and then modified based on the conditions. Since param_1 is 0, the first if statement does not change 'ok'. However, the second if statement checks if param_2 is non-zero and param_3 is zero, which is not the case here as param_3 is 1. Therefore, 'ok' remains 0 after all conditions are evaluated.",
+    "latency_sec": 47.37
   },
   "qwen2.5-coder:14b__CT1__E08_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -9074,8 +9074,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function checks if either of the first two parameters (param_1 or param_2) is non-zero, and returns 0 if so. The third parameter (param_3) does not affect the return value in this case.",
-    "latency_sec": 21.58
+    "explanation": "The function FUN_140001140 returns 0 when either param_1 or param_2 is non-zero. In this case, param_2 is 1, which causes the 'ok' variable to be set to 0 before returning.",
+    "latency_sec": 25.14
   },
   "qwen2.5-coder:14b__CT1__C07_original": {
     "model": "qwen2.5-coder:14b",
@@ -9125,8 +9125,8 @@
     "predicted_return": 0,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function returns 0 because param_1 is 0, which short-circuits the entire condition to false regardless of the values of param_2 and param_3.",
-    "latency_sec": 22.81
+    "explanation": "The function FUN_140001140 returns 0 when param_1 is 0, regardless of the values of param_2 and param_3. This is because the first condition in the logical expression (param_1) is false, causing the entire expression to evaluate to false.",
+    "latency_sec": 27.02
   },
   "qwen2.5-coder:14b__CT1__C07_mutant": {
     "model": "qwen2.5-coder:14b",
@@ -9176,7 +9176,7 @@
     "predicted_return": 1,
     "is_correct": true,
     "is_schr_hallucination": false,
-    "explanation": "The function returns true (1) if either both param_1 and param_2 are non-zero, or if param_3 is non-zero. In this case, since param_3 is 1, the condition is satisfied regardless of param_1 and param_2 being zero.",
-    "latency_sec": 28.18
+    "explanation": "The function FUN_140001140 returns 1 when param_1 is 0, param_2 is 0, and param_3 is 1. This is because the logical OR operation in the return statement ((param_1 && param_2) || param_3) evaluates to true (1) when param_3 is non-zero, regardless of the values of param_1 and param_2.",
+    "latency_sec": 33.6
   }
 }
