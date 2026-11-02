@@ -105,6 +105,9 @@ Katpara \& Sankaran (2026)~\cite{katpara2026firmware} & Identifies \textbf{Gaps 
 }
 \end{table*}
 
+\subsection{Positioning: VeRA (Group 1) vs.\ SCHR-Bench (Group 7)}
+Within our institution's binary security research program, SCHR-Bench operates alongside \textbf{VeRA (Group 1)}. As summarized in Table~\ref{tab:vera_positioning}: (1) while VeRA verifies whether individual LLM statements on a single binary are factually accurate, SCHR-Bench uses paired single-point mutations ($f_{\text{orig}}$ vs.\ $f_{\text{mut}}$) to measure \textit{semantic inertia} (repeating baseline descriptions despite inverted logic); (2) SCHR-Bench demonstrates that LLMs produce 100\% syntactically recompilable code while missing critical semantics; and (3) SCHR-Bench evaluates paired sensitivity via both a return-value oracle (540 runs) and a 240-item full-factorial paired MCQ suite (480 runs).
+
 \subsection{Decompiler Recovery and Neural Refinement}
 Classic decompilers reconstruct high-level control flow from machine code~\cite{cifuentes1995decompilation,yakdan2015norepdb,schwarz2002disassembly}, while DIRE~\cite{lacomis2019dire}, VarBERT~\cite{chen2022varbert}, TREX~\cite{pei2021trex}, LLM4Decompile~\cite{tan2024llm4decompile}, and Wong et al.~\cite{wong2023refining} recover identifier names, variable types, or re-compilable C source. SCHR-Bench complements these works by testing differential semantic sensitivity~\cite{jia2011analysis} under single-point mutations.
 

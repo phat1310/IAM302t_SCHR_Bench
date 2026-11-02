@@ -36,8 +36,8 @@ Target Conference: EAI INISCOM 2027 (Springer LNICST Series) & IAM302t RBL
 
 4. manuscript/
    Academic research papers, LaTeX templates, figures, and bibliography:
-   - 01_IEEE_Conference_Format_8_10_Pages/: IEEE conference manuscript (`main.tex` & `main_anonymous.tex`).
-   - 02_Springer_LNICST_Format_10_14_Pages/: Springer LNICST manuscript (`main.tex` & `main_anonymous.tex`).
+   - 01_IEEE_Conference_Format_8_10_Pages/: IEEE conference manuscript (`main.tex`, `main_anonymous.tex`, `IEEEtran.cls`, and `IEEEtran.bst`).
+   - 02_Springer_LNICST_Format_10_14_Pages/: Springer LNICST manuscript (`main.tex`, `main_anonymous.tex`, `llncs.cls`, and `splncs04.bst`).
    - IEEE_SCHR_Bench_Paper_8_10_Pages.zip: Packaged IEEE Overleaf archive.
    - Springer_SCHR_Bench_Paper_10_14_Pages.zip: Packaged Springer Overleaf archive.
 

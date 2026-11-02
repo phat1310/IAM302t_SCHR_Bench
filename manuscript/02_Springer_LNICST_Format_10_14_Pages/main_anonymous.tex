@@ -102,6 +102,14 @@ Katpara \& Sankaran (2026)~\cite{katpara2026firmware} & Identifies \textbf{Gaps 
 }
 \end{table}
 
+\subsection{Positioning Against Parallel Verification Frameworks (VeRA vs.\ SCHR-Bench)}
+Within our institution's binary security evaluation program, SCHR-Bench operates alongside \textbf{VeRA (Group 1 --- Verification of Reverse Engineering Artifacts)}. As contrasted across four dimensions in Table~\ref{tab:vera_positioning}:
+\begin{itemize}
+    \item \textbf{Atomic Claim Verification vs.\ Differential Mutation Testing:} While VeRA assesses whether an LLM's atomic factual statements regarding a single binary survive static and dynamic verification, SCHR-Bench subjects function pairs ($f_{\text{orig}}$ vs.\ $f_{\text{mut}}$) to single-point security-logic mutations to measure \textit{semantic inertia} (repeating unmutated templates despite inverted logic).
+    \item \textbf{Syntactic Compilability vs.\ Semantic Correctness:} SCHR-Bench specifically demonstrates that LLMs can generate 100.0\% syntactically recompilable C code while completely missing the security-critical behavioral flip.
+    \item \textbf{Evaluation Infrastructure:} Whereas VeRA builds an execution assertion engine for individual claims, SCHR-Bench couples a deterministic return-value oracle (540 runs) with a 240-item full-factorial paired MCQ suite (480 runs) evaluated under paired McNemar testing.
+\end{itemize}
+
 \subsection{Decompiler Recovery and Neural Refinement}
 Classic decompilers reconstruct high-level control flow from machine code~\cite{cifuentes1995decompilation,yakdan2015norepdb,schwarz2002disassembly}, while DIRE~\cite{lacomis2019dire}, VarBERT~\cite{chen2022varbert}, TREX~\cite{pei2021trex}, LLM4Decompile~\cite{tan2024llm4decompile}, and Wong et al.~\cite{wong2023refining} recover identifier names, variable types, or re-compilable C source. SCHR-Bench complements these works by testing differential semantic sensitivity~\cite{jia2011analysis} under single-point mutations.
 
