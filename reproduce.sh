@@ -20,7 +20,11 @@ echo "  Artifact Package: template SOC-RL-v2.0"
 echo "========================================================================"
 
 echo ""
-echo "[Step 1/3] Running E0 Ground-Truth Compile & Execution Check (80 variants, 160 assertions)..."
+echo "[Step 1A/3] Running Standalone Binary Build & Assertion Suite (check_suite.py)..."
+python3 dataset/SCHR_Bench_C_Functions/tools/check_suite.py
+
+echo ""
+echo "[Step 1B/3] Generating E0 Sanity Check Report & Table 1 (step0_verify_e0_windows.py)..."
 python3 code/step0_verify_e0_windows.py
 
 echo ""
@@ -28,7 +32,7 @@ echo "[Step 2/3] Generating Leak-Free Normalized Contexts (decompiled_contexts_8
 python3 code/extract_contexts.py
 
 echo ""
-echo "[Step 3/3] Reproducing Statistical Tables (SCHR, 95% Wilson CI, Spearman rho, McNemar) from 540 Logged Runs..."
+echo "[Step 3/3] Reproducing Statistical Tables (SCHR, 95% Wilson CI, M1-M5, Spearman rho, McNemar, N=50 Taxonomy)..."
 python3 code/step4_compute_statistics_and_tables.py
 
 if [ "$MODE" = "live" ]; then

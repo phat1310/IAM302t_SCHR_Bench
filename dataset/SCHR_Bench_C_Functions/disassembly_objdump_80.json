@@ -1,0 +1,642 @@
+{
+  "A01_original": {
+    "sample_key": "A01_original",
+    "id": "A01",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/A01_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t85 c9                \ttest   ecx,ecx\n  1400016d4:\t0f 94 c0             \tsete   al\n  1400016d7:\tc3                   \tret"
+  },
+  "A01_mutant": {
+    "sample_key": "A01_mutant",
+    "id": "A01",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/A01_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t85 c9                \ttest   ecx,ecx\n  1400016d4:\t0f 95 c0             \tsetne  al\n  1400016d7:\tc3                   \tret"
+  },
+  "A02_original": {
+    "sample_key": "A02_original",
+    "id": "A02",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/A02_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t89 c8                \tmov    eax,ecx\n  1400016d2:\td1 e8                \tshr    eax,1\n  1400016d4:\t83 e0 01             \tand    eax,0x1\n  1400016d7:\t83 f0 01             \txor    eax,0x1\n  1400016da:\tc3                   \tret"
+  },
+  "A02_mutant": {
+    "sample_key": "A02_mutant",
+    "id": "A02",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/A02_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t89 c8                \tmov    eax,ecx\n  1400016d2:\td1 e8                \tshr    eax,1\n  1400016d4:\t83 e0 01             \tand    eax,0x1\n  1400016d7:\tc3                   \tret"
+  },
+  "A03_original": {
+    "sample_key": "A03_original",
+    "id": "A03",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/A03_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t39 d1                \tcmp    ecx,edx\n  1400016d4:\t0f 9e c0             \tsetle  al\n  1400016d7:\tc3                   \tret"
+  },
+  "A03_mutant": {
+    "sample_key": "A03_mutant",
+    "id": "A03",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/A03_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t39 d1                \tcmp    ecx,edx\n  1400016d4:\t0f 9c c0             \tsetl   al\n  1400016d7:\tc3                   \tret"
+  },
+  "A04_original": {
+    "sample_key": "A04_original",
+    "id": "A04",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/A04_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t85 c9                \ttest   ecx,ecx\n  1400016d2:\t0f 95 c0             \tsetne  al\n  1400016d5:\t85 d2                \ttest   edx,edx\n  1400016d7:\t0f 95 c2             \tsetne  dl\n  1400016da:\t21 d0                \tand    eax,edx\n  1400016dc:\t83 f0 01             \txor    eax,0x1\n  1400016df:\t0f b6 c0             \tmovzx  eax,al\n  1400016e2:\tc3                   \tret"
+  },
+  "A04_mutant": {
+    "sample_key": "A04_mutant",
+    "id": "A04",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/A04_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t09 d1                \tor     ecx,edx\n  1400016d4:\t0f 94 c0             \tsete   al\n  1400016d7:\tc3                   \tret"
+  },
+  "A05_original": {
+    "sample_key": "A05_original",
+    "id": "A05",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/A05_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t85 c9                \ttest   ecx,ecx\n  1400016d4:\t0f 95 c0             \tsetne  al\n  1400016d7:\t83 fa 01             \tcmp    edx,0x1\n  1400016da:\t83 d8 ff             \tsbb    eax,0xffffffff\n  1400016dd:\t41 83 f8 01          \tcmp    r8d,0x1\n  1400016e1:\t83 d8 ff             \tsbb    eax,0xffffffff\n  1400016e4:\t83 f8 01             \tcmp    eax,0x1\n  1400016e7:\t0f 9e c0             \tsetle  al\n  1400016ea:\t0f b6 c0             \tmovzx  eax,al\n  1400016ed:\tc3                   \tret"
+  },
+  "A05_mutant": {
+    "sample_key": "A05_mutant",
+    "id": "A05",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/A05_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t85 c9                \ttest   ecx,ecx\n  1400016d4:\t0f 95 c0             \tsetne  al\n  1400016d7:\t83 fa 01             \tcmp    edx,0x1\n  1400016da:\t83 d8 ff             \tsbb    eax,0xffffffff\n  1400016dd:\t41 83 f8 01          \tcmp    r8d,0x1\n  1400016e1:\t83 d8 ff             \tsbb    eax,0xffffffff\n  1400016e4:\t83 f8 03             \tcmp    eax,0x3\n  1400016e7:\t0f 95 c0             \tsetne  al\n  1400016ea:\t0f b6 c0             \tmovzx  eax,al\n  1400016ed:\tc3                   \tret"
+  },
+  "A06_original": {
+    "sample_key": "A06_original",
+    "id": "A06",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/A06_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t09 d1                \tor     ecx,edx\n  1400016d4:\t0f 94 c0             \tsete   al\n  1400016d7:\tc3                   \tret"
+  },
+  "A06_mutant": {
+    "sample_key": "A06_mutant",
+    "id": "A06",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/A06_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t85 c9                \ttest   ecx,ecx\n  1400016d4:\t0f 94 c0             \tsete   al\n  1400016d7:\tc3                   \tret"
+  },
+  "A07_original": {
+    "sample_key": "A07_original",
+    "id": "A07",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/A07_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 d1                \txor    ecx,edx\n  1400016d2:\tf7 d1                \tnot    ecx\n  1400016d4:\t89 c8                \tmov    eax,ecx\n  1400016d6:\t83 e0 01             \tand    eax,0x1\n  1400016d9:\tc3                   \tret"
+  },
+  "A07_mutant": {
+    "sample_key": "A07_mutant",
+    "id": "A07",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/A07_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 d1                \txor    ecx,edx\n  1400016d2:\t89 c8                \tmov    eax,ecx\n  1400016d4:\t83 e0 01             \tand    eax,0x1\n  1400016d7:\tc3                   \tret"
+  },
+  "A08_original": {
+    "sample_key": "A08_original",
+    "id": "A08",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/A08_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\tb8 01 00 00 00       \tmov    eax,0x1\n  1400016d5:\t83 e1 01             \tand    ecx,0x1\n  1400016d8:\t74 08                \tje     1400016e2 <target+0x12>\n  1400016da:\t31 c0                \txor    eax,eax\n  1400016dc:\t83 fa 04             \tcmp    edx,0x4\n  1400016df:\t0f 9f c0             \tsetg   al\n  1400016e2:\tc3                   \tret"
+  },
+  "A08_mutant": {
+    "sample_key": "A08_mutant",
+    "id": "A08",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/A08_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\tb8 01 00 00 00       \tmov    eax,0x1\n  1400016d5:\t83 e1 01             \tand    ecx,0x1\n  1400016d8:\t74 08                \tje     1400016e2 <target+0x12>\n  1400016da:\t31 c0                \txor    eax,eax\n  1400016dc:\t83 fa 05             \tcmp    edx,0x5\n  1400016df:\t0f 9f c0             \tsetg   al\n  1400016e2:\tc3                   \tret"
+  },
+  "S01_original": {
+    "sample_key": "S01_original",
+    "id": "S01",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/S01_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t83 f1 2a             \txor    ecx,0x2a\n  1400016d5:\t80 f9 41             \tcmp    cl,0x41\n  1400016d8:\t0f 94 c0             \tsete   al\n  1400016db:\tc3                   \tret"
+  },
+  "S01_mutant": {
+    "sample_key": "S01_mutant",
+    "id": "S01",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/S01_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t83 f1 2b             \txor    ecx,0x2b\n  1400016d5:\t80 f9 41             \tcmp    cl,0x41\n  1400016d8:\t0f 94 c0             \tsete   al\n  1400016db:\tc3                   \tret"
+  },
+  "S02_original": {
+    "sample_key": "S02_original",
+    "id": "S02",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/S02_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t83 f1 5a             \txor    ecx,0x5a\n  1400016d5:\t80 f9 30             \tcmp    cl,0x30\n  1400016d8:\t0f 94 c0             \tsete   al\n  1400016db:\tc3                   \tret"
+  },
+  "S02_mutant": {
+    "sample_key": "S02_mutant",
+    "id": "S02",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/S02_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t83 f1 5b             \txor    ecx,0x5b\n  1400016d5:\t80 f9 30             \tcmp    cl,0x30\n  1400016d8:\t0f 94 c0             \tsete   al\n  1400016db:\tc3                   \tret"
+  },
+  "S03_original": {
+    "sample_key": "S03_original",
+    "id": "S03",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/S03_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t83 c2 07             \tadd    edx,0x7\n  1400016d5:\t31 ca                \txor    edx,ecx\n  1400016d7:\t80 fa 51             \tcmp    dl,0x51\n  1400016da:\t0f 94 c0             \tsete   al\n  1400016dd:\tc3                   \tret"
+  },
+  "S03_mutant": {
+    "sample_key": "S03_mutant",
+    "id": "S03",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/S03_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t83 c2 08             \tadd    edx,0x8\n  1400016d5:\t31 ca                \txor    edx,ecx\n  1400016d7:\t80 fa 51             \tcmp    dl,0x51\n  1400016da:\t0f 94 c0             \tsete   al\n  1400016dd:\tc3                   \tret"
+  },
+  "S04_original": {
+    "sample_key": "S04_original",
+    "id": "S04",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/S04_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t83 f2 10             \txor    edx,0x10\n  1400016d5:\t01 ca                \tadd    edx,ecx\n  1400016d7:\t80 fa 70             \tcmp    dl,0x70\n  1400016da:\t0f 94 c0             \tsete   al\n  1400016dd:\tc3                   \tret"
+  },
+  "S04_mutant": {
+    "sample_key": "S04_mutant",
+    "id": "S04",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/S04_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t83 f2 11             \txor    edx,0x11\n  1400016d5:\t01 ca                \tadd    edx,ecx\n  1400016d7:\t80 fa 70             \tcmp    dl,0x70\n  1400016da:\t0f 94 c0             \tsete   al\n  1400016dd:\tc3                   \tret"
+  },
+  "S05_original": {
+    "sample_key": "S05_original",
+    "id": "S05",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/S05_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t31 d1                \txor    ecx,edx\n  1400016d4:\t83 f1 33             \txor    ecx,0x33\n  1400016d7:\t84 c9                \ttest   cl,cl\n  1400016d9:\t0f 94 c0             \tsete   al\n  1400016dc:\tc3                   \tret"
+  },
+  "S05_mutant": {
+    "sample_key": "S05_mutant",
+    "id": "S05",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/S05_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t31 d1                \txor    ecx,edx\n  1400016d4:\t83 f1 33             \txor    ecx,0x33\n  1400016d7:\t84 c9                \ttest   cl,cl\n  1400016d9:\t0f 95 c0             \tsetne  al\n  1400016dc:\tc3                   \tret"
+  },
+  "S06_original": {
+    "sample_key": "S06_original",
+    "id": "S06",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/S06_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t83 f1 17             \txor    ecx,0x17\n  1400016d3:\t80 f9 43             \tcmp    cl,0x43\n  1400016d6:\t0f 94 c1             \tsete   cl\n  1400016d9:\t83 f2 27             \txor    edx,0x27\n  1400016dc:\t31 c0                \txor    eax,eax\n  1400016de:\t80 fa 54             \tcmp    dl,0x54\n  1400016e1:\t0f 94 c0             \tsete   al\n  1400016e4:\t21 c8                \tand    eax,ecx\n  1400016e6:\tc3                   \tret"
+  },
+  "S06_mutant": {
+    "sample_key": "S06_mutant",
+    "id": "S06",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/S06_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t83 f1 17             \txor    ecx,0x17\n  1400016d3:\t80 f9 43             \tcmp    cl,0x43\n  1400016d6:\t0f 94 c1             \tsete   cl\n  1400016d9:\t83 f2 26             \txor    edx,0x26\n  1400016dc:\t31 c0                \txor    eax,eax\n  1400016de:\t80 fa 54             \tcmp    dl,0x54\n  1400016e1:\t0f 94 c0             \tsete   al\n  1400016e4:\t21 c8                \tand    eax,ecx\n  1400016e6:\tc3                   \tret"
+  },
+  "S07_original": {
+    "sample_key": "S07_original",
+    "id": "S07",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/S07_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t83 f1 6d             \txor    ecx,0x6d\n  1400016d5:\t83 e2 07             \tand    edx,0x7\n  1400016d8:\t01 ca                \tadd    edx,ecx\n  1400016da:\t80 fa 5e             \tcmp    dl,0x5e\n  1400016dd:\t0f 94 c0             \tsete   al\n  1400016e0:\tc3                   \tret"
+  },
+  "S07_mutant": {
+    "sample_key": "S07_mutant",
+    "id": "S07",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/S07_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t83 e2 07             \tand    edx,0x7\n  1400016d5:\t83 f1 6d             \txor    ecx,0x6d\n  1400016d8:\t29 d1                \tsub    ecx,edx\n  1400016da:\t80 f9 5e             \tcmp    cl,0x5e\n  1400016dd:\t0f 94 c0             \tsete   al\n  1400016e0:\tc3                   \tret"
+  },
+  "S08_original": {
+    "sample_key": "S08_original",
+    "id": "S08",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/S08_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t01 c9                \tadd    ecx,ecx\n  1400016d4:\t31 d1                \txor    ecx,edx\n  1400016d6:\t41 31 c8             \txor    r8d,ecx\n  1400016d9:\t41 80 f8 4d          \tcmp    r8b,0x4d\n  1400016dd:\t0f 94 c0             \tsete   al\n  1400016e0:\tc3                   \tret"
+  },
+  "S08_mutant": {
+    "sample_key": "S08_mutant",
+    "id": "S08",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/S08_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t8d 04 4a             \tlea    eax,[rdx+rcx*2]\n  1400016d3:\t41 31 c0             \txor    r8d,eax\n  1400016d6:\t31 c0                \txor    eax,eax\n  1400016d8:\t41 80 f8 4d          \tcmp    r8b,0x4d\n  1400016dc:\t0f 94 c0             \tsete   al\n  1400016df:\tc3                   \tret"
+  },
+  "P01_original": {
+    "sample_key": "P01_original",
+    "id": "P01",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/P01_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t89 c8                \tmov    eax,ecx\n  1400016d2:\t83 c8 01             \tor     eax,0x1\n  1400016d5:\tc3                   \tret"
+  },
+  "P01_mutant": {
+    "sample_key": "P01_mutant",
+    "id": "P01",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/P01_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t89 c8                \tmov    eax,ecx\n  1400016d2:\t83 e0 fe             \tand    eax,0xfffffffe\n  1400016d5:\tc3                   \tret"
+  },
+  "P02_original": {
+    "sample_key": "P02_original",
+    "id": "P02",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/P02_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t89 c8                \tmov    eax,ecx\n  1400016d2:\t83 c8 02             \tor     eax,0x2\n  1400016d5:\tc3                   \tret"
+  },
+  "P02_mutant": {
+    "sample_key": "P02_mutant",
+    "id": "P02",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/P02_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t89 c8                \tmov    eax,ecx\n  1400016d2:\t83 e0 fd             \tand    eax,0xfffffffd\n  1400016d5:\tc3                   \tret"
+  },
+  "P03_original": {
+    "sample_key": "P03_original",
+    "id": "P03",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/P03_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\tb8 01 00 00 00       \tmov    eax,0x1\n  1400016d5:\t85 c9                \ttest   ecx,ecx\n  1400016d7:\t0f 45 c1             \tcmovne eax,ecx\n  1400016da:\tc3                   \tret"
+  },
+  "P03_mutant": {
+    "sample_key": "P03_mutant",
+    "id": "P03",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/P03_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t89 c8                \tmov    eax,ecx\n  1400016d2:\tc3                   \tret"
+  },
+  "P04_original": {
+    "sample_key": "P04_original",
+    "id": "P04",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/P04_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t89 d0                \tmov    eax,edx\n  1400016d2:\t83 c8 01             \tor     eax,0x1\n  1400016d5:\t85 c9                \ttest   ecx,ecx\n  1400016d7:\t74 0b                \tje     1400016e4 <target+0x14>\n  1400016d9:\t89 d0                \tmov    eax,edx\n  1400016db:\t83 e0 fe             \tand    eax,0xfffffffe\n  1400016de:\t83 f9 01             \tcmp    ecx,0x1\n  1400016e1:\t0f 45 c2             \tcmovne eax,edx\n  1400016e4:\tc3                   \tret"
+  },
+  "P04_mutant": {
+    "sample_key": "P04_mutant",
+    "id": "P04",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/P04_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t89 d0                \tmov    eax,edx\n  1400016d2:\t83 e0 fe             \tand    eax,0xfffffffe\n  1400016d5:\t83 f9 01             \tcmp    ecx,0x1\n  1400016d8:\t0f 47 c2             \tcmova  eax,edx\n  1400016db:\tc3                   \tret"
+  },
+  "P05_original": {
+    "sample_key": "P05_original",
+    "id": "P05",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/P05_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t89 c8                \tmov    eax,ecx\n  1400016d2:\t83 c9 04             \tor     ecx,0x4\n  1400016d5:\t83 e0 fb             \tand    eax,0xfffffffb\n  1400016d8:\t85 d2                \ttest   edx,edx\n  1400016da:\t0f 45 c1             \tcmovne eax,ecx\n  1400016dd:\tc3                   \tret"
+  },
+  "P05_mutant": {
+    "sample_key": "P05_mutant",
+    "id": "P05",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/P05_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t89 c8                \tmov    eax,ecx\n  1400016d2:\t83 c9 04             \tor     ecx,0x4\n  1400016d5:\t83 e0 fb             \tand    eax,0xfffffffb\n  1400016d8:\t85 d2                \ttest   edx,edx\n  1400016da:\t0f 44 c1             \tcmove  eax,ecx\n  1400016dd:\tc3                   \tret"
+  },
+  "P06_original": {
+    "sample_key": "P06_original",
+    "id": "P06",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/P06_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016e0:\teb ee                \tjmp    1400016d0 <mock_add>\n\n<mock_add>:\n  1400016d0:\t89 c8                \tmov    eax,ecx\n  1400016d2:\t83 c8 01             \tor     eax,0x1\n  1400016d5:\tc3                   \tret\n  1400016d6:\t66 2e 0f 1f 84 00 00 \tcs nop WORD PTR [rax+rax*1+0x0]\n  1400016dd:\t00 00 00"
+  },
+  "P06_mutant": {
+    "sample_key": "P06_mutant",
+    "id": "P06",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/P06_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016e0:\teb ee                \tjmp    1400016d0 <mock_remove>\n\n<mock_remove>:\n  1400016d0:\t89 c8                \tmov    eax,ecx\n  1400016d2:\t83 e0 fe             \tand    eax,0xfffffffe\n  1400016d5:\tc3                   \tret\n  1400016d6:\t66 2e 0f 1f 84 00 00 \tcs nop WORD PTR [rax+rax*1+0x0]\n  1400016dd:\t00 00 00"
+  },
+  "P07_original": {
+    "sample_key": "P07_original",
+    "id": "P07",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/P07_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t83 e2 01             \tand    edx,0x1\n  1400016d3:\t8d 04 d5 00 00 00 00 \tlea    eax,[rdx*8+0x0]\n  1400016da:\t09 c8                \tor     eax,ecx\n  1400016dc:\tc3                   \tret"
+  },
+  "P07_mutant": {
+    "sample_key": "P07_mutant",
+    "id": "P07",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/P07_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t89 c8                \tmov    eax,ecx\n  1400016d2:\t89 d1                \tmov    ecx,edx\n  1400016d4:\t89 c2                \tmov    edx,eax\n  1400016d6:\t83 e2 f7             \tand    edx,0xfffffff7\n  1400016d9:\t83 e1 01             \tand    ecx,0x1\n  1400016dc:\t0f 45 c2             \tcmovne eax,edx\n  1400016df:\tc3                   \tret"
+  },
+  "P08_original": {
+    "sample_key": "P08_original",
+    "id": "P08",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/P08_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t89 c8                \tmov    eax,ecx\n  1400016d2:\t89 d1                \tmov    ecx,edx\n  1400016d4:\t89 c2                \tmov    edx,eax\n  1400016d6:\t83 ca 01             \tor     edx,0x1\n  1400016d9:\t85 c9                \ttest   ecx,ecx\n  1400016db:\t0f 45 c2             \tcmovne eax,edx\n  1400016de:\t31 d2                \txor    edx,edx\n  1400016e0:\t45 85 c0             \ttest   r8d,r8d\n  1400016e3:\t0f 94 c2             \tsete   dl\n  1400016e6:\t21 d0                \tand    eax,edx\n  1400016e8:\tc3                   \tret"
+  },
+  "P08_mutant": {
+    "sample_key": "P08_mutant",
+    "id": "P08",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/P08_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t85 d2                \ttest   edx,edx\n  1400016d4:\t0f 95 c0             \tsetne  al\n  1400016d7:\t83 e1 01             \tand    ecx,0x1\n  1400016da:\t09 c8                \tor     eax,ecx\n  1400016dc:\tc3                   \tret"
+  },
+  "E01_original": {
+    "sample_key": "E01_original",
+    "id": "E01",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/E01_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t85 c9                \ttest   ecx,ecx\n  1400016d4:\t0f 94 c0             \tsete   al\n  1400016d7:\tc3                   \tret"
+  },
+  "E01_mutant": {
+    "sample_key": "E01_mutant",
+    "id": "E01",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/E01_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t85 c9                \ttest   ecx,ecx\n  1400016d4:\t0f 95 c0             \tsetne  al\n  1400016d7:\tc3                   \tret"
+  },
+  "E02_original": {
+    "sample_key": "E02_original",
+    "id": "E02",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/E02_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t01 d1                \tadd    ecx,edx\n  1400016d4:\t44 01 c1             \tadd    ecx,r8d\n  1400016d7:\t83 f9 01             \tcmp    ecx,0x1\n  1400016da:\t0f 9e c0             \tsetle  al\n  1400016dd:\tc3                   \tret"
+  },
+  "E02_mutant": {
+    "sample_key": "E02_mutant",
+    "id": "E02",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/E02_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t01 d1                \tadd    ecx,edx\n  1400016d4:\t44 01 c1             \tadd    ecx,r8d\n  1400016d7:\t83 f9 02             \tcmp    ecx,0x2\n  1400016da:\t0f 9e c0             \tsetle  al\n  1400016dd:\tc3                   \tret"
+  },
+  "E03_original": {
+    "sample_key": "E03_original",
+    "id": "E03",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/E03_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t81 f9 ff 07 00 00    \tcmp    ecx,0x7ff\n  1400016d8:\t0f 9f c0             \tsetg   al\n  1400016db:\tc3                   \tret"
+  },
+  "E03_mutant": {
+    "sample_key": "E03_mutant",
+    "id": "E03",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/E03_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t81 f9 00 08 00 00    \tcmp    ecx,0x800\n  1400016d8:\t0f 9f c0             \tsetg   al\n  1400016db:\tc3                   \tret"
+  },
+  "E04_original": {
+    "sample_key": "E04_original",
+    "id": "E04",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/E04_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t29 d1                \tsub    ecx,edx\n  1400016d4:\t83 f9 14             \tcmp    ecx,0x14\n  1400016d7:\t0f 9e c0             \tsetle  al\n  1400016da:\tc3                   \tret"
+  },
+  "E04_mutant": {
+    "sample_key": "E04_mutant",
+    "id": "E04",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/E04_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t29 d1                \tsub    ecx,edx\n  1400016d4:\t83 f9 13             \tcmp    ecx,0x13\n  1400016d7:\t0f 9e c0             \tsetle  al\n  1400016da:\tc3                   \tret"
+  },
+  "E05_original": {
+    "sample_key": "E05_original",
+    "id": "E05",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/E05_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t81 e1 f0 00 00 00    \tand    ecx,0xf0\n  1400016d8:\t81 f9 a0 00 00 00    \tcmp    ecx,0xa0\n  1400016de:\t0f 95 c0             \tsetne  al\n  1400016e1:\tc3                   \tret"
+  },
+  "E05_mutant": {
+    "sample_key": "E05_mutant",
+    "id": "E05",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/E05_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t81 e1 e0 00 00 00    \tand    ecx,0xe0\n  1400016d8:\t81 f9 a0 00 00 00    \tcmp    ecx,0xa0\n  1400016de:\t0f 95 c0             \tsetne  al\n  1400016e1:\tc3                   \tret"
+  },
+  "E06_original": {
+    "sample_key": "E06_original",
+    "id": "E06",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/E06_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t83 f9 07             \tcmp    ecx,0x7\n  1400016d3:\t0f 94 c0             \tsete   al\n  1400016d6:\t83 fa 07             \tcmp    edx,0x7\n  1400016d9:\t0f 94 c2             \tsete   dl\n  1400016dc:\t09 d0                \tor     eax,edx\n  1400016de:\t83 f0 01             \txor    eax,0x1\n  1400016e1:\t0f b6 c0             \tmovzx  eax,al\n  1400016e4:\tc3                   \tret"
+  },
+  "E06_mutant": {
+    "sample_key": "E06_mutant",
+    "id": "E06",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/E06_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t83 f9 07             \tcmp    ecx,0x7\n  1400016d3:\t0f 94 c0             \tsete   al\n  1400016d6:\t83 fa 07             \tcmp    edx,0x7\n  1400016d9:\t0f 94 c2             \tsete   dl\n  1400016dc:\t21 d0                \tand    eax,edx\n  1400016de:\t83 f0 01             \txor    eax,0x1\n  1400016e1:\t0f b6 c0             \tmovzx  eax,al\n  1400016e4:\tc3                   \tret"
+  },
+  "E07_original": {
+    "sample_key": "E07_original",
+    "id": "E07",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/E07_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t31 d1                \txor    ecx,edx\n  1400016d4:\t83 e1 03             \tand    ecx,0x3\n  1400016d7:\t83 f9 01             \tcmp    ecx,0x1\n  1400016da:\t0f 95 c0             \tsetne  al\n  1400016dd:\tc3                   \tret"
+  },
+  "E07_mutant": {
+    "sample_key": "E07_mutant",
+    "id": "E07",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/E07_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t09 d1                \tor     ecx,edx\n  1400016d4:\t83 e1 03             \tand    ecx,0x3\n  1400016d7:\t83 f9 01             \tcmp    ecx,0x1\n  1400016da:\t0f 95 c0             \tsetne  al\n  1400016dd:\tc3                   \tret"
+  },
+  "E08_original": {
+    "sample_key": "E08_original",
+    "id": "E08",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/E08_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t85 d2                \ttest   edx,edx\n  1400016d2:\t0f 95 c0             \tsetne  al\n  1400016d5:\t45 85 c0             \ttest   r8d,r8d\n  1400016d8:\t0f 94 c2             \tsete   dl\n  1400016db:\t21 d0                \tand    eax,edx\n  1400016dd:\t31 d2                \txor    edx,edx\n  1400016df:\t83 f0 01             \txor    eax,0x1\n  1400016e2:\t85 c9                \ttest   ecx,ecx\n  1400016e4:\t0f 94 c2             \tsete   dl\n  1400016e7:\t21 d0                \tand    eax,edx\n  1400016e9:\tc3                   \tret"
+  },
+  "E08_mutant": {
+    "sample_key": "E08_mutant",
+    "id": "E08",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/E08_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t09 d1                \tor     ecx,edx\n  1400016d4:\t0f 94 c0             \tsete   al\n  1400016d7:\tc3                   \tret"
+  },
+  "C01_original": {
+    "sample_key": "C01_original",
+    "id": "C01",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/C01_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t39 d1                \tcmp    ecx,edx\n  1400016d4:\t0f 9f c0             \tsetg   al\n  1400016d7:\tc3                   \tret"
+  },
+  "C01_mutant": {
+    "sample_key": "C01_mutant",
+    "id": "C01",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/C01_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t39 d1                \tcmp    ecx,edx\n  1400016d4:\t0f 9d c0             \tsetge  al\n  1400016d7:\tc3                   \tret"
+  },
+  "C02_original": {
+    "sample_key": "C02_original",
+    "id": "C02",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/C02_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t39 d1                \tcmp    ecx,edx\n  1400016d4:\t0f 94 c0             \tsete   al\n  1400016d7:\tc3                   \tret"
+  },
+  "C02_mutant": {
+    "sample_key": "C02_mutant",
+    "id": "C02",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/C02_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t39 d1                \tcmp    ecx,edx\n  1400016d4:\t0f 95 c0             \tsetne  al\n  1400016d7:\tc3                   \tret"
+  },
+  "C03_original": {
+    "sample_key": "C03_original",
+    "id": "C03",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/C03_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t89 c8                \tmov    eax,ecx\n  1400016d2:\t89 d1                \tmov    ecx,edx\n  1400016d4:\t85 c9                \ttest   ecx,ecx\n  1400016d6:\t8d 50 02             \tlea    edx,[rax+0x2]\n  1400016d9:\t0f 45 c2             \tcmovne eax,edx\n  1400016dc:\t41 83 f8 01          \tcmp    r8d,0x1\n  1400016e0:\t83 d0 ff             \tadc    eax,0xffffffff\n  1400016e3:\tc3                   \tret"
+  },
+  "C03_mutant": {
+    "sample_key": "C03_mutant",
+    "id": "C03",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/C03_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t89 c8                \tmov    eax,ecx\n  1400016d2:\t89 d1                \tmov    ecx,edx\n  1400016d4:\t85 c9                \ttest   ecx,ecx\n  1400016d6:\t8d 50 02             \tlea    edx,[rax+0x2]\n  1400016d9:\t0f 45 c2             \tcmovne eax,edx\n  1400016dc:\tc3                   \tret"
+  },
+  "C04_original": {
+    "sample_key": "C04_original",
+    "id": "C04",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/C04_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\tb8 02 00 00 00       \tmov    eax,0x2\n  1400016d5:\t85 c9                \ttest   ecx,ecx\n  1400016d7:\t74 07                \tje     1400016e0 <target+0x10>\n  1400016d9:\t31 c0                \txor    eax,eax\n  1400016db:\t85 d2                \ttest   edx,edx\n  1400016dd:\t0f 95 c0             \tsetne  al\n  1400016e0:\tc3                   \tret"
+  },
+  "C04_mutant": {
+    "sample_key": "C04_mutant",
+    "id": "C04",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/C04_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\tb8 02 00 00 00       \tmov    eax,0x2\n  1400016d5:\t09 d1                \tor     ecx,edx\n  1400016d7:\t74 07                \tje     1400016e0 <target+0x10>\n  1400016d9:\t31 c0                \txor    eax,eax\n  1400016db:\t85 d2                \ttest   edx,edx\n  1400016dd:\t0f 95 c0             \tsetne  al\n  1400016e0:\tc3                   \tret"
+  },
+  "C05_original": {
+    "sample_key": "C05_original",
+    "id": "C05",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/C05_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016e0:\t85 c9                \ttest   ecx,ecx\n  1400016e2:\t7e 3c                \tjle    140001720 <target+0x40>\n  1400016e4:\t31 c0                \txor    eax,eax\n  1400016e6:\t31 d2                \txor    edx,edx\n  1400016e8:\t66 66 2e 0f 1f 84 00 \tdata16 cs nop WORD PTR [rax+rax*1+0x0]\n  1400016ef:\t00 00 00 00\n  1400016f3:\t66 66 2e 0f 1f 84 00 \tdata16 cs nop WORD PTR [rax+rax*1+0x0]\n  1400016fa:\t00 00 00 00\n  1400016fe:\t66 90                \txchg   ax,ax\n  140001700:\t41 89 c0             \tmov    r8d,eax\n  140001703:\t83 c0 01             \tadd    eax,0x1\n  140001706:\t41 83 e0 01          \tand    r8d,0x1\n  14000170a:\t44 01 c2             \tadd    edx,r8d\n  14000170d:\t39 c1                \tcmp    ecx,eax\n  14000170f:\t7e 05                \tjle    140001716 <target+0x36>\n  140001711:\t83 f8 20             \tcmp    eax,0x20\n  140001714:\t75 ea                \tjne    140001700 <target+0x20>\n  140001716:\t89 d0                \tmov    eax,edx\n  140001718:\tc3                   \tret\n  140001719:\t0f 1f 80 00 00 00 00 \tnop    DWORD PTR [rax+0x0]\n  140001720:\t31 d2                \txor    edx,edx\n  140001722:\t89 d0                \tmov    eax,edx\n  140001724:\tc3                   \tret"
+  },
+  "C05_mutant": {
+    "sample_key": "C05_mutant",
+    "id": "C05",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/C05_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t41 b8 1f 00 00 00    \tmov    r8d,0x1f\n  1400016d6:\t44 39 c1             \tcmp    ecx,r8d\n  1400016d9:\t44 0f 4e c1          \tcmovle r8d,ecx\n  1400016dd:\t85 c9                \ttest   ecx,ecx\n  1400016df:\t78 27                \tjs     140001708 <target+0x38>\n  1400016e1:\t31 c0                \txor    eax,eax\n  1400016e3:\t31 d2                \txor    edx,edx\n  1400016e5:\t66 66 2e 0f 1f 84 00 \tdata16 cs nop WORD PTR [rax+rax*1+0x0]\n  1400016ec:\t00 00 00 00\n  1400016f0:\t89 c1                \tmov    ecx,eax\n  1400016f2:\t83 c0 01             \tadd    eax,0x1\n  1400016f5:\t83 e1 01             \tand    ecx,0x1\n  1400016f8:\t01 ca                \tadd    edx,ecx\n  1400016fa:\t44 39 c0             \tcmp    eax,r8d\n  1400016fd:\t7e f1                \tjle    1400016f0 <target+0x20>\n  1400016ff:\t89 d0                \tmov    eax,edx\n  140001701:\tc3                   \tret\n  140001702:\t66 0f 1f 44 00 00    \tnop    WORD PTR [rax+rax*1+0x0]\n  140001708:\t31 d2                \txor    edx,edx\n  14000170a:\t89 d0                \tmov    eax,edx\n  14000170c:\tc3                   \tret"
+  },
+  "C06_original": {
+    "sample_key": "C06_original",
+    "id": "C06",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/C06_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t83 e1 0c             \tand    ecx,0xc\n  1400016d5:\t83 f9 08             \tcmp    ecx,0x8\n  1400016d8:\t0f 94 c0             \tsete   al\n  1400016db:\tc3                   \tret"
+  },
+  "C06_mutant": {
+    "sample_key": "C06_mutant",
+    "id": "C06",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/C06_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t89 c8                \tmov    eax,ecx\n  1400016d2:\tc1 e8 03             \tshr    eax,0x3\n  1400016d5:\t83 e0 01             \tand    eax,0x1\n  1400016d8:\tc3                   \tret"
+  },
+  "C07_original": {
+    "sample_key": "C07_original",
+    "id": "C07",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/C07_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t89 c8                \tmov    eax,ecx\n  1400016d2:\t85 c9                \ttest   ecx,ecx\n  1400016d4:\t74 08                \tje     1400016de <target+0xe>\n  1400016d6:\t31 c0                \txor    eax,eax\n  1400016d8:\t44 09 c2             \tor     edx,r8d\n  1400016db:\t0f 95 c0             \tsetne  al\n  1400016de:\tc3                   \tret"
+  },
+  "C07_mutant": {
+    "sample_key": "C07_mutant",
+    "id": "C07",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/C07_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t85 c9                \ttest   ecx,ecx\n  1400016d2:\t0f 95 c0             \tsetne  al\n  1400016d5:\t85 d2                \ttest   edx,edx\n  1400016d7:\t0f 95 c2             \tsetne  dl\n  1400016da:\t21 d0                \tand    eax,edx\n  1400016dc:\t45 85 c0             \ttest   r8d,r8d\n  1400016df:\t0f 95 c2             \tsetne  dl\n  1400016e2:\t09 d0                \tor     eax,edx\n  1400016e4:\t0f b6 c0             \tmovzx  eax,al\n  1400016e7:\tc3                   \tret"
+  },
+  "C08_original": {
+    "sample_key": "C08_original",
+    "id": "C08",
+    "variant": "original",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/C08_original.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t83 e1 03             \tand    ecx,0x3\n  1400016d5:\t44 8d 49 01          \tlea    r9d,[rcx+0x1]\n  1400016d9:\t83 f1 01             \txor    ecx,0x1\n  1400016dc:\t41 83 e1 03          \tand    r9d,0x3\n  1400016e0:\t0f a3 c2             \tbt     edx,eax\n  1400016e3:\t41 0f 42 c9          \tcmovb  ecx,r9d\n  1400016e7:\t83 c0 01             \tadd    eax,0x1\n  1400016ea:\t83 f8 03             \tcmp    eax,0x3\n  1400016ed:\t75 e6                \tjne    1400016d5 <target+0x5>\n  1400016ef:\t31 c0                \txor    eax,eax\n  1400016f1:\t41 39 c8             \tcmp    r8d,ecx\n  1400016f4:\t0f 94 c0             \tsete   al\n  1400016f7:\tc3                   \tret"
+  },
+  "C08_mutant": {
+    "sample_key": "C08_mutant",
+    "id": "C08",
+    "variant": "mutant",
+    "compiler": "x86_64-w64-mingw32-gcc 14.2.0 (-std=c11 -O2 -fno-inline -fno-lto)",
+    "stripped_binary_path": "dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/C08_mutant.exe",
+    "objdump_intel_O2": "<target>:\n  1400016d0:\t31 c0                \txor    eax,eax\n  1400016d2:\t83 e1 03             \tand    ecx,0x3\n  1400016d5:\t44 8d 49 ff          \tlea    r9d,[rcx-0x1]\n  1400016d9:\t83 f1 01             \txor    ecx,0x1\n  1400016dc:\t41 83 e1 03          \tand    r9d,0x3\n  1400016e0:\t0f a3 c2             \tbt     edx,eax\n  1400016e3:\t41 0f 42 c9          \tcmovb  ecx,r9d\n  1400016e7:\t83 c0 01             \tadd    eax,0x1\n  1400016ea:\t83 f8 03             \tcmp    eax,0x3\n  1400016ed:\t75 e6                \tjne    1400016d5 <target+0x5>\n  1400016ef:\t31 c0                \txor    eax,eax\n  1400016f1:\t41 39 c8             \tcmp    r8d,ecx\n  1400016f4:\t0f 94 c0             \tsete   al\n  1400016f7:\tc3                   \tret"
+  }
+}

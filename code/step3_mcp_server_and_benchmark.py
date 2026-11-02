@@ -1,9 +1,15 @@
 # -*- coding: utf-8 -*-
 """
 SCHR-Bench: Step 3 — Model Context Protocol (MCP) Server & LLM Benchmark Runner
-Connects to local Ollama (in WSL2 Ubuntu at http://localhost:11434) to evaluate:
+Connects to local Ollama (http://localhost:11434 or http://192.168.86.1:11434) to evaluate:
   - Model 1: llama3.1:8b (General-Purpose Open-Weight LLM)
   - Model 2: qwen2.5-coder:14b (Code-Specialized Open-Weight LLM)
+
+Supports two evaluation modes:
+  1. `--mode return` (default, used for the 540 logged runs in `results/benchmark_raw_logs.json`):
+     Queries exact integer return value (`predicted_return`) and natural language explanation.
+  2. `--mode mcq` (evaluates the 160 balanced MCQ items in `dataset/gold_set_mcq.json`
+     using `prompts/mcq_system_prompt.txt`).
 """
 
 import argparse
@@ -12,8 +18,8 @@ import os
 import re
 import sys
 import time
-import urllib.request
 import urllib.error
+import urllib.request
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -23,12 +29,13 @@ if str(SCRIPT_DIR) not in sys.path:
 
 RESULTS_DIR = PROJECT_DIR / "results" if (PROJECT_DIR / "results").exists() else PROJECT_DIR / "Results"
 CONTEXTS_FILE = RESULTS_DIR / "decompiled_contexts_80.json"
+MCQ_FILE = PROJECT_DIR / "dataset" / "gold_set_mcq.json"
+MCQ_PROMPT_FILE = PROJECT_DIR / "prompts" / "mcq_system_prompt.txt"
 
 DEFAULT_HOST = os.environ.get("OLLAMA_HOST", "http://192.168.86.1:11434")
 OLLAMA_URL = f"{DEFAULT_HOST.rstrip('/')}/api/generate"
 DEFAULT_MODELS = ["llama3.1:8b", "qwen2.5-coder:14b"]
 
-# Fixed, deterministic prompt template (committed to repository per teacher's protocol)
 FIXED_SYSTEM_PROMPT = (
     "You are an expert binary reverse engineer analyzing stripped x86-64 PE functions. "
     "Do NOT guess based on typical malware templates; trace the exact control flow and dataflow shown in the provided context. "
@@ -37,14 +44,12 @@ FIXED_SYSTEM_PROMPT = (
     "{\"predicted_return\": <integer>, \"security_interpretation\": \"<1-2 sentence explanation of what the function does>\"}"
 )
 
-# Stratified ordering: Round 1 covers 15 pairs (3 per category A,S,P,E,C across easy/medium/tricky),
-# followed by Round 2 (remaining 25 pairs) to complete all 40 pairs (80 binaries).
 STRATIFIED_PAIR_ORDER = [
-    # Round 1: Core 15 pairs (30 binaries) across all 5 categories & 5 mutation operators
-    "A01", "S01", "P01", "E01", "C01",   # Easy tier across A, S, P, E, C
-    "A03", "S04", "P05", "E03", "C05",   # Medium tier across A, S, P, E, C
-    "A06", "S06", "P06", "E06", "C08",   # Tricky tier across A, S, P, E, C
-    # Round 2: Remaining 25 pairs (50 binaries)
+    # Round 1: 15 pairs across all 5 categories & difficulty levels
+    "A01", "S01", "P01", "E01", "C01",   # Easy tier (5 pairs = 10 variants; also used as E4 pilot subset)
+    "A03", "S04", "P05", "E03", "C05",   # Medium tier
+    "A06", "S06", "P06", "E06", "C08",   # Tricky tier
+    # Round 2: Remaining 25 pairs to complete all 40 pairs (80 variants)
     "A02", "S02", "P02", "E02", "C02",
     "A04", "S03", "P03", "E04", "C03",
     "A05", "S05", "P04", "E05", "C04",
@@ -79,6 +84,22 @@ class SCHRBenchMCPServer:
         )
         return prompt
 
+    def build_mcq_prompt(self, mcq_item: dict) -> str:
+        skey = f"{mcq_item['function_id']}_{mcq_item['variant']}"
+        tier = mcq_item["context_tier"]
+        ctx = self.mcp_get_function_context(skey, tier=tier)
+        opts = mcq_item["options"]
+        opt_lines = "\n".join(f"  {k}: {v}" for k, v in sorted(opts.items()))
+        return (
+            f"### Reverse Engineering Context ({tier}):\n"
+            f"```c\n{ctx}\n```\n\n"
+            f"### Multiple-Choice Question:\n"
+            f"{mcq_item['question']}\n\n"
+            f"Options:\n{opt_lines}\n\n"
+            f"Select the single accurate option (A, B, C, or D) and return JSON only: "
+            f"{{\"reasoning\": \"...\", \"choice\": \"<A|B|C|D>\"}}"
+        )
+
 
 def query_ollama(model: str, system_prompt: str, user_prompt: str, ollama_url: str = None, timeout: int = 120) -> dict:
     target_url = ollama_url or OLLAMA_URL
@@ -107,6 +128,7 @@ def query_ollama(model: str, system_prompt: str, user_prompt: str, ollama_url: s
     raw_text = body.get("response", "{}")
 
     predicted_val = None
+    choice_val = None
     explanation = raw_text
     try:
         parsed = json.loads(raw_text)
@@ -115,14 +137,20 @@ def query_ollama(model: str, system_prompt: str, user_prompt: str, ollama_url: s
                 predicted_val = 1 if parsed.get("predicted_return") else 0
             else:
                 predicted_val = int(parsed.get("predicted_return"))
-        explanation = str(parsed.get("security_interpretation", ""))
+        if parsed.get("choice") is not None:
+            choice_val = str(parsed.get("choice")).strip().upper()[:1]
+        explanation = str(parsed.get("security_interpretation") or parsed.get("reasoning") or "")
     except Exception:
         m = re.search(r'"predicted_return"\s*:\s*(-?\d+)', raw_text)
         if m:
             predicted_val = int(m.group(1))
+        mc = re.search(r'"choice"\s*:\s*"([A-D])"', raw_text, re.I)
+        if mc:
+            choice_val = mc.group(1).upper()
 
     return {
         "predicted_return": predicted_val,
+        "choice": choice_val,
         "explanation": explanation,
         "raw_response": raw_text,
         "latency_sec": elapsed
@@ -148,7 +176,7 @@ def run_benchmark_suite(mcp: SCHRBenchMCPServer, models: list, tiers: list, max_
     existing_logs = json.loads(log_path.read_text(encoding="utf-8")) if log_path.exists() else {}
 
     pair_ids = STRATIFIED_PAIR_ORDER[:max_pairs]
-    print(f"[+] Running benchmark on {len(pair_ids)} pairs ({len(pair_ids)*2} binaries) across models={models}, tiers={tiers}")
+    print(f"[+] Running return-value benchmark on {len(pair_ids)} pairs ({len(pair_ids)*2} variants) across models={models}, tiers={tiers}")
 
     for model in models:
         print(f"\n==================================================================")
@@ -193,7 +221,6 @@ def run_benchmark_suite(mcp: SCHRBenchMCPServer, models: list, tiers: list, max_
                         f"Truth={truth:3d} Pred={str(res['predicted_return']):4s} -> {mark} ({res['latency_sec']}s)"
                     )
 
-                # Also evaluate Obfuscation levels (E4) on the first 5 core pairs (10 binaries)
                 if run_obf and pair_idx <= 5:
                     for obf_lvl in ("Obf1_CFF", "Obf2_Sub", "Obf3_Combined"):
                         obf_log_id = f"{model}__{obf_lvl}__{skey}"
@@ -226,14 +253,48 @@ def run_benchmark_suite(mcp: SCHRBenchMCPServer, models: list, tiers: list, max_
                             f"Truth={truth:3d} Pred={str(res['predicted_return']):4s} -> {mark} ({res['latency_sec']}s)"
                         )
 
-            # Live update Springer tables after each pair
             step4.main()
+
+
+def run_mcq_suite(mcp: SCHRBenchMCPServer, models: list, ollama_url: str = None):
+    target_url = ollama_url or OLLAMA_URL
+    mcq_items = json.loads(MCQ_FILE.read_text(encoding="utf-8"))
+    sys_prompt = MCQ_PROMPT_FILE.read_text(encoding="utf-8").strip() if MCQ_PROMPT_FILE.exists() else FIXED_SYSTEM_PROMPT
+    mcq_log_path = RESULTS_DIR / "benchmark_mcq_logs.json"
+    existing = json.loads(mcq_log_path.read_text(encoding="utf-8")) if mcq_log_path.exists() else {}
+
+    print(f"[+] Running 160-item Gold Set MCQ evaluation across models={models}")
+    for model in models:
+        for idx, item in enumerate(mcq_items, 1):
+            gid = item["gold_id"]
+            log_id = f"{model}__{gid}"
+            if log_id in existing:
+                continue
+            prompt = mcp.build_mcq_prompt(item)
+            res = query_ollama(model, sys_prompt, prompt, ollama_url=target_url)
+            is_correct = (res["choice"] == item["ground_truth_choice"])
+            existing[log_id] = {
+                "model": model,
+                "gold_id": gid,
+                "function_id": item["function_id"],
+                "variant": item["variant"],
+                "context_tier": item["context_tier"],
+                "ground_truth_choice": item["ground_truth_choice"],
+                "predicted_choice": res["choice"],
+                "is_correct": is_correct,
+                "is_schr_hallucination": not is_correct,
+                "reasoning": res["explanation"],
+                "latency_sec": res["latency_sec"]
+            }
+            mcq_log_path.write_text(json.dumps(existing, indent=2, ensure_ascii=False), encoding="utf-8")
+            print(f"  [{idx:03d}/160 | {model} | {gid}] Truth={item['ground_truth_choice']} Pred={res['choice']} ({res['latency_sec']}s)")
 
 
 def main():
     parser = argparse.ArgumentParser(description="SCHR-Bench MCP Benchmark Runner")
-    parser.add_argument("--demo", action="store_true", help="Run 5-pair Live Demo")
-    parser.add_argument("--max-pairs", type=int, default=15, help="Number of pairs to evaluate (15 = 30 binaries, 40 = all 80 binaries)")
+    parser.add_argument("--mode", choices=["return", "mcq"], default="return", help="Evaluation mode: 'return' (default 540-run oracle) or 'mcq' (160-item gold_set_mcq.json)")
+    parser.add_argument("--demo", action="store_true", help="Run 5-pair subset")
+    parser.add_argument("--max-pairs", type=int, default=40, help="Number of pairs to evaluate (default: 40 = all 80 variants)")
     parser.add_argument("--models", nargs="+", default=DEFAULT_MODELS, help="Ollama models to evaluate")
     parser.add_argument("--tiers", nargs="+", default=["CT1", "CT2", "CT3"], help="Context tiers to evaluate")
     parser.add_argument("--no-obf", action="store_true", help="Skip E4 obfuscation evaluation")
@@ -250,8 +311,11 @@ def main():
 
     print(f"[+] Connected to Ollama at {ollama_host}. Available models: {online_models}")
     mcp = SCHRBenchMCPServer(CONTEXTS_FILE)
-    max_p = 5 if args.demo else args.max_pairs
-    run_benchmark_suite(mcp, args.models, args.tiers, max_pairs=max_p, run_obf=not args.no_obf, ollama_url=ollama_gen_url)
+    if args.mode == "mcq":
+        run_mcq_suite(mcp, args.models, ollama_url=ollama_gen_url)
+    else:
+        max_p = 5 if args.demo else args.max_pairs
+        run_benchmark_suite(mcp, args.models, args.tiers, max_pairs=max_p, run_obf=not args.no_obf, ollama_url=ollama_gen_url)
 
 
 if __name__ == "__main__":

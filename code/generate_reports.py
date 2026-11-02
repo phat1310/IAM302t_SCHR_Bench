@@ -114,7 +114,7 @@ Hệ thống thử nghiệm SCHR-Bench được thiết kế thành một chuỗ
                                                                   │
                                                                   ▼
                                                       [LLM Inference Engine]
-                                                      (Ollama LLaMA-3 / OpenAI GPT-4o)
+                                                      (Ollama LLaMA-3 / Qwen2.5-Coder 14B)
                                                                   │
                                             ┌─────────────────────┴─────────────────────┐
                                             ▼                                           ▼
@@ -148,7 +148,7 @@ Nhóm thiết kế riêng 5 toán tử đột biến đặc thù cho mã nhị p
 | **E0** | **Kiểm tra dữ liệu (Sanity Check)** | Chạy Test Vectors thực thi trên bản gốc và mutation; kiểm tra khả năng decompile của Ghidra. | **ĐÃ HOÀN THÀNH 100% (W4)**<br>100% mutation gây đổi hành vi thực tế; loại sạch mutation trung tính. |
 | **E1** | **Đo SCHR Cơ sở (RQ1)** | Cấp ngữ cảnh CT1 cho LLM; đo tỷ lệ mô tả sai hoặc bỏ sót mutation trên tập hàm. | **ĐÃ HOÀN THÀNH LƯỢT 1 (W5)**<br>Đã có kết quả sơ bộ trên LLaMA-3: SCHR đảo điều kiện đạt >40%. |
 | **E2** | **So sánh Thước đo (RQ2)** | Tính điểm BLEU score giữa câu trả lời bản gốc và mutation; đo tỷ lệ Recompilability. | **ĐANG TRIỂN KHAI (W5–W6)**<br>Script đã lập trình xong; đang nạp dữ liệu từ log E1. |
-| **E3** | **Hiệu quả Ngữ cảnh (RQ3)** | Đánh giá SCHR biến thiên qua các tầng ngữ cảnh CT1, CT2, CT3, CT4. | **ĐANG CHẠY LOGS (W5–W6)**<br>Đang chạy batch inference trên LLaMA-3 và OpenAI GPT-4o. |
+| **E3** | **Hiệu quả Ngữ cảnh (RQ3)** | Đánh giá SCHR biến thiên qua các tầng ngữ cảnh CT1, CT2, CT3, CT4. | **ĐANG CHẠY LOGS (W5–W6)**<br>Đang chạy batch inference trên LLaMA-3 và Qwen2.5-Coder 14B. |
 | **E4** | **Tác động Obfuscation (RQ4)** | Biên dịch mã ở 4 mức (Không làm rối, Flattening, String Encrypt, Kết hợp). | **SẴN SÀNG CHẠY (W6)**<br>Binaries OLLVM đã chuẩn bị xong từ Phase 2. |
 | **E5** | **Gold Set & Đánh giá Tự do** | 100–150 cặp câu hỏi; tách atomic claims kiểu FActScore; 2 người chấm độc lập. | **CHUẨN BỊ CHO W7**<br>Đã soạn xong 120 cặp câu hỏi; chuẩn bị rubric chấm độc lập. |
 | **E6** | **Mở rộng Đa Decompiler** *(Tùy chọn)* | Đối chiếu mã giả giữa Ghidra và RetDec / Binary Ninja Education. | **GIAI ĐOẠN DỰ PHÒNG (W8)** |
@@ -179,10 +179,10 @@ Nhóm 7 xin báo cáo với Thầy Đinh Mai Hoàng chi tiết tình trạng th�
 | Hạng mục công việc | Thành viên phụ trách | Tiến độ (Cuối W5) | Chi tiết kết quả đạt được |
 | :--- | :---: | :---: | :--- |
 | **Ghidra Headless Automation & JSON Parser** | Nguyễn Tấn Phát & Nguyễn Trọng Duy | **100%** | Script Python/Jython đã tự động hóa decompile toàn bộ dataset, trích xuất chính xác mã C pseudocode và assembly instructions thành file JSON chuẩn. |
-| **MCP Server & Pipeline gọi LLM (Ollama + OpenAI)** | Nguyễn Tấn Phát & Nguyễn Trọng Duy | **90%** | Hoàn thành pipeline kết nối MCP Server với Ollama (LLaMA-3) và OpenAI API (GPT-4o). Prompt template cố định, nhiệt độ kiểm soát ở `temperature=0`, cơ chế strip symbol và giấu nhãn mutation hoạt động hoàn hảo. |
+| **MCP Server & Pipeline gọi LLM (Ollama + OpenAI)** | Nguyễn Tấn Phát & Nguyễn Trọng Duy | **90%** | Hoàn thành pipeline kết nối MCP Server với Ollama (LLaMA-3) và Ollama (Qwen2.5-Coder 14B). Prompt template cố định, nhiệt độ kiểm soát ở `temperature=0`, cơ chế strip symbol và giấu nhãn mutation hoạt động hoàn hảo. |
 | **Cơ chế Context Escalation (CT1 $\rightarrow$ CT4)** | Nguyễn Trọng Duy & Nguyễn Tấn Phát | **85%** | Đã dựng xong module cấp context tự động theo 4 cấp độ: CT1 (Chỉ C), CT2 (+ASM), CT3 (+API Description), CT4 (+Hàm lân cận & X-refs). |
 | **Chạy Thí nghiệm E1 (SCHR cơ sở CT1)** | Nguyễn Trọng Duy & Nguyễn Tấn Phát | **100% (Lượt 1)** | Đã chạy xong lượt 1 trên toàn bộ 40 hàm. Kết quả sơ bộ: LLM có SCHR rất cao ở lỗi đảo điều kiện (SCHR > 40%), chứng minh mạnh mẽ Giả thuyết H1! |
-| **Chạy Thí nghiệm E3 (Context Escalation CT1 $\rightarrow$ CT4)** | Nguyễn Tấn Phát & Nguyễn Trọng Duy | **70%** | Đang chạy batch suy luận trên LLaMA-3 và GPT-4o để thu thập toàn bộ log thực nghiệm. |
+| **Chạy Thí nghiệm E3 (Context Escalation CT1 $\rightarrow$ CT4)** | Nguyễn Tấn Phát & Nguyễn Trọng Duy | **70%** | Đang chạy batch suy luận trên LLaMA-3 và Qwen2.5-Coder 14B để thu thập toàn bộ log thực nghiệm. |
 | **Script Đo đạc Metrics (SCHR, BLEU, Recompilability)** | Nguyễn Trọng Duy (Thành viên 3) | **85%** | Script Python tự động phân tích output JSON, tính điểm SCHR theo từng operator, tích hợp NLTK tính BLEU score đối chứng. |
 | **Chuẩn bị Gold Set 120 cặp & Rubric Chấm FActScore** | Nguyễn Trọng Duy & Võ Hồng Phúc | **80%** | Đã hoàn thành 120 cặp câu hỏi MCQ Mutation-Aware; xây dựng bảng tiêu chí phân rã atomic claims cho Thí nghiệm E5. |
 | **Thiết lập Khung Kiểm định Thống kê & Mẫu Gh0stRAT** | Võ Hồng Phúc (Thành viên 4) | **75%** | Đã viết script tính McNemar Test và Wilson CI; chuẩn bị ma trận đối chiếu định tính các kỹ thuật của mẫu Gh0stRAT với dataset. |
@@ -212,7 +212,7 @@ W1–W2 (Phase 1)          W3–W4 (Phase 2)          W5–W6 (Phase 3)         
 ## V. KẾ HOẠCH HÀNH ĐỘNG TUẦN TIẾP THEO (W6 — KẾT THÚC PHASE 3 & BƯỚC VÀO PHASE 4)
 
 Trong **Tuần 6**, nhóm sẽ hoàn tất toàn bộ các mục tiêu còn lại của Phase 3 để tạo bước đệm vững chắc cho Phase 4:
-1. **Hoàn tất thu thập dữ liệu Thí nghiệm E3:** Kết thúc toàn bộ các lượt inference cho 4 điều kiện context (CT1 $\rightarrow$ CT4) trên cả 2 mô hình (LLaMA-3 8B và GPT-4o).
+1. **Hoàn tất thu thập dữ liệu Thí nghiệm E3:** Kết thúc toàn bộ các lượt inference cho 4 điều kiện context (CT1 $\rightarrow$ CT4) trên cả 2 mô hình (LLaMA-3 8B và Qwen2.5-Coder 14B).
 2. **Chạy Thí nghiệm E4 (Obfuscation):** Đưa các binaries đã được làm rối bởi OLLVM qua pipeline để đo đạc sự biến thiên của SCHR theo từng cấp độ phức tạp mã.
 3. **Chốt bộ Gold Set 120 cặp (Thí nghiệm E5):** Thành viên 3 (Duy) và Thành viên 4 (Phúc) tiến hành chấm thử nghiệm độc lập trên tập mẫu giải thích tự do (free-form generation) và tính toán hệ số đồng thuận ban đầu Cohen's Kappa ($\kappa$).
 4. **Chuẩn bị hạ tầng Live Demo cho mốc D3 (Tuần 7–8):** Thành viên 2 (Phát & Duy) đóng gói script demo giao diện dòng lệnh/web trực quan: nạp file binary $\rightarrow$ Ghidra decompile $\rightarrow$ sinh prompt context escalation $\rightarrow$ LLM phản hồi $\rightarrow$ tính điểm SCHR real-time.
@@ -224,8 +224,8 @@ Trong **Tuần 6**, nhóm sẽ hoàn tất toàn bộ các mục tiêu còn lạ
 ### 1. Khó khăn kỹ thuật nhóm đang chủ động xử lý
 - **Độ biến thiên khi LLM sinh văn bản tự do:** Ở phần giải thích tự do, dù đặt `temperature=0`, đôi khi câu từ của LLM có sự thay đổi nhẹ giữa các lần chạy.  
   *Giải pháp của nhóm:* Nhóm ưu tiên sử dụng bộ câu hỏi trắc nghiệm **Mutation-Aware MCQs** để lấy số liệu định lượng chuẩn xác và khách quan tuyệt đối cho SCHR; phần giải thích tự do chỉ dùng để phân tích định tính và tính điểm FActScore / Cohen's Kappa.
-- **Tối ưu hóa chi phí token:** Chạy hàng trăm lượt prompt qua GPT-4o API có thể gây tốn kém.  
-  *Giải pháp của nhóm:* Nhóm tận dụng tối đa GPU máy tính trạm của thành viên để chạy LLaMA-3 (qua Ollama) cho 100% các vòng lặp kiểm thử mở rộng; chỉ dùng GPT-4o API cho một tập mẫu đối chứng đại diện nhằm tối ưu hóa chi phí.
+- **Tối ưu hóa chi phí token:** Chạy hàng trăm lượt prompt qua Qwen2.5-Coder 14B có thể gây tốn kém.  
+  *Giải pháp của nhóm:* Nhóm tận dụng tối đa GPU máy tính trạm của thành viên để chạy LLaMA-3 (qua Ollama) cho 100% các vòng lặp kiểm thử mở rộng; chỉ dùng Qwen2.5-Coder 14B cho một tập mẫu đối chứng đại diện nhằm tối ưu hóa chi phí.
 
 ### 2. Đề xuất xin ý kiến định hướng từ Thầy Đinh Mai Hoàng
 Nhóm 7 kính mong nhận được ý kiến chỉ dẫn quý báu từ Thầy về 2 điểm sau:
@@ -493,7 +493,7 @@ def create_docx_report():
         ["E0", "Kiểm tra dữ liệu", "Chạy test vector thực thi; kiểm tra khả năng decompile của Ghidra.", "ĐÃ HOÀN THÀNH 100% (W4): 100% mutation gây đổi hành vi thực tế; loại sạch mutation trung tính."],
         ["E1", "SCHR Cơ sở (RQ1)", "Đo tỷ lệ LLM trả lời sai yếu tố bảo mật trên mức ngữ cảnh CT1.", "ĐÃ HOÀN THÀNH LƯỢT 1 (W5): Đã có số liệu sơ bộ; SCHR đảo điều kiện đạt >40% (khẳng định H1)."],
         ["E2", "So sánh Metric (RQ2)", "Tính BLEU score giữa bản gốc/đột biến; đo tỷ lệ Recompilability.", "ĐANG TRIỂN KHAI (W5-W6): Script đo đã xong; đang nạp dữ liệu log từ E1."],
-        ["E3", "Hiệu quả Ngữ cảnh (RQ3)", "Đo lường SCHR biến thiên qua 4 cấp độ ngữ cảnh CT1 → CT4.", "ĐANG CHẠY LOGS (W5-W6): Đang chạy batch inference trên LLaMA-3 và GPT-4o."],
+        ["E3", "Hiệu quả Ngữ cảnh (RQ3)", "Đo lường SCHR biến thiên qua 4 cấp độ ngữ cảnh CT1 → CT4.", "ĐANG CHẠY LOGS (W5-W6): Đang chạy batch inference trên LLaMA-3 và Qwen2.5-Coder 14B."],
         ["E4", "Tác động Obfuscation (RQ4)", "Biên dịch 4 mức làm rối OLLVM (Mức 0 đến Mức 3).", "SẴN SÀNG CHẠY (W6): Toàn bộ binaries OLLVM đã chuẩn bị xong từ Phase 2."],
         ["E5", "Gold Set & Tự do", "100–150 cặp câu hỏi; tách claim FActScore; 2 người chấm độc lập.", "CHUẨN BỊ CHO W7: Đã soạn xong 120 cặp câu hỏi; rubric chấm độc lập sẵn sàng."],
         ["E6", "Đa Decompiler (Tùy chọn)", "Đối chiếu mã giả giữa Ghidra và RetDec / Binary Ninja.", "GIAI ĐOẠN DỰ PHÒNG (W8): Chạy mở rộng nếu hoàn thành sớm các mục tiêu chính."]
@@ -525,7 +525,7 @@ def create_docx_report():
         ["MCP Server & LLM Client", "Phát & Duy", "90%", "Đang hoàn thiện", "Pipeline kết nối Ollama (LLaMA-3) & OpenAI API; T=0 cố định."],
         ["Context Escalation (CT1-CT4)", "Duy & Phát", "85%", "Đang chạy logs", "Dựng xong 4 tầng context; đang nạp batch data cho LLM."],
         ["Thí nghiệm E1 (SCHR cơ sở CT1)", "Duy & Phát", "100%", "Xong Lượt 1", "Chạy xong 40 hàm; phát hiện SCHR đảo điều kiện > 40% (đúng H1)."],
-        ["Thí nghiệm E3 (Escalation CT1-4)", "Phát & Duy", "70%", "Đang chạy logs", "Thu thập logs thực nghiệm suy luận trên LLaMA-3 và GPT-4o."],
+        ["Thí nghiệm E3 (Escalation CT1-4)", "Phát & Duy", "70%", "Đang chạy logs", "Thu thập logs thực nghiệm suy luận trên LLaMA-3 và Qwen2.5-Coder 14B."],
         ["Script Metrics (SCHR, BLEU)", "Nguyễn Trọng Duy", "85%", "Đang hoàn thiện", "Script Python tính SCHR tự động và tích hợp NLTK BLEU score."]
     ]
     style_table(t_status, widths_s, headers_s, data_s, align_center_cols=[1, 2, 3])
@@ -554,7 +554,7 @@ def create_docx_report():
     p_w6.add_run(
         "Trong Tuần 6, nhóm tập trung dứt điểm các hạng mục cuối của Phase 3 để chuẩn bị toàn diện cho mốc Deliverable D3:\n"
     )
-    add_bullet(" Hoàn tất toàn bộ các lượt inference cho 4 điều kiện context (CT1 → CT4) trên cả 2 mô hình (LLaMA-3 8B và GPT-4o).", "1. Hoàn thành thu thập dữ liệu Thí nghiệm E3:")
+    add_bullet(" Hoàn tất toàn bộ các lượt inference cho 4 điều kiện context (CT1 → CT4) trên cả 2 mô hình (LLaMA-3 8B và Qwen2.5-Coder 14B).", "1. Hoàn thành thu thập dữ liệu Thí nghiệm E3:")
     add_bullet(" Đưa các binaries đã được làm rối bởi OLLVM qua pipeline để đo đạc sự biến thiên của SCHR theo từng cấp độ phức tạp mã.", "2. Chạy Thí nghiệm E4 (Obfuscation):")
     add_bullet(" Thành viên 3 (Duy) và Thành viên 4 (Phúc) tiến hành chấm thử nghiệm độc lập trên tập mẫu giải thích tự do và tính toán hệ số đồng thuận ban đầu Cohen's Kappa.", "3. Chốt bộ Gold Set 120 cặp (Thí nghiệm E5):")
     add_bullet(" Thành viên 2 (Phát & Duy) đóng gói script demo giao diện dòng lệnh trực quan: nạp file binary -> Ghidra decompile -> sinh prompt context escalation -> LLM phản hồi -> tính điểm SCHR real-time.", "4. Chuẩn bị hạ tầng Live Demo cho mốc D3 (Tuần 7–8):")
@@ -563,7 +563,7 @@ def create_docx_report():
     add_heading1("VI. KHÓ KHĂN KỸ THUẬT & ĐỀ XUẤT XIN Ý KIẾN GIẢNG VIÊN HƯỚNG DẪN")
     add_heading2("1. Khó khăn kỹ thuật nhóm đang chủ động xử lý")
     add_bullet(" Ở phần giải thích tự do, đôi khi văn phong của LLM có sự thay đổi nhẹ giữa các lần chạy. Nhóm xử lý bằng cách lấy bộ câu hỏi MCQ Mutation-Aware làm thước đo định lượng cốt lõi cho SCHR; phần tự do chỉ dùng để phân tích định tính và tính điểm FActScore / Cohen's Kappa.", "• Độ biến thiên khi LLM sinh văn bản tự do:")
-    add_bullet(" Nhóm tận dụng GPU máy tính trạm của thành viên để chạy mô hình LLaMA-3 (qua Ollama) cho 100% các vòng lặp kiểm thử diện rộng; chỉ dùng GPT-4o API cho một tập mẫu đối chứng đại diện nhằm tối ưu chi phí.", "• Tối ưu hóa chi phí token API:")
+    add_bullet(" Nhóm tận dụng GPU máy tính trạm của thành viên để chạy mô hình LLaMA-3 (qua Ollama) cho 100% các vòng lặp kiểm thử diện rộng; chỉ dùng Qwen2.5-Coder 14B cho một tập mẫu đối chứng đại diện nhằm tối ưu chi phí.", "• Tối ưu hóa chi phí token API:")
 
     add_heading2("2. Đề xuất xin ý kiến định hướng từ Thầy Đinh Mai Hoàng")
     p_adv = doc.add_paragraph()

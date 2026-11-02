@@ -1,5 +1,5 @@
 # ==============================================================================
-# SCHR-Bench: Git Ignore Configuration for 3-Tier Multi-Environment Setup
+# SCHR-Bench: Git Ignore Configuration
 # ==============================================================================
 
 # OS & Environment artifacts
@@ -35,20 +35,20 @@ wheels/
 .installed.cfg
 *.egg
 
-# C / Compilation Outputs (MinGW / GCC)
-# Source code in /dataset/ is tracked, but compiled outputs are generated locally on Tier 2
+# Temporary C compilation outputs (official 80 stripped PE64 binaries in dataset/SCHR_Bench_C_Functions/bin/ ARE tracked)
 *.o
 *.obj
-*.exe
 *.dll
 *.so
 *.dylib
 *.out
 *.app
-bin/
 obj/
+dataset/SCHR_Bench_C_Functions/build/
+!dataset/SCHR_Bench_C_Functions/bin/
+!dataset/SCHR_Bench_C_Functions/bin/**
 
-# Malware & Raw Exploitation Samples (DO NOT PUSH SENSITIVE MALWARE BINARIES TO GITHUB)
+# Malware & Raw Exploitation Samples (DO NOT PUSH LIVE MALWARE BINARIES TO GITHUB)
 samples/raw/
 samples/malware/
 *.bin

@@ -1,67 +1,65 @@
 ================================================================================
-SCHR-BENCH ARTIFACT MANIFEST (Research-Based Learning Standard - FPT University)
-Project: Security-Critical Hallucination Rate Benchmark on Decompiled PE Binaries
-Authors: Nguyen Tan Phat (Lead Author) & Group 7 (Class IA2007, IAM302t Fall 2026)
+SCHR-BENCH ARTIFACT MANIFEST (template SOC-RL-v2.0 - FPT University)
+Project: SCHR-Bench: Evaluating Security-Critical Hallucinations in LLM-Assisted
+         Binary Reverse Engineering via Ground-Truth Mutations
+Authors: Nguyen Tan Phat, Do Thien Nhan, Nguyen Trong Duy, Vo Hong Phuc,
+         and Mai-Hoang Dinh (Corresponding Author)
 Repository: https://github.com/phat1310/IAM302t_SCHR_Bench
-Target Conference: EAI INISCOM 2027 (Springer LNICST Series)
+Target Conference: EAI INISCOM 2027 (Springer LNICST Series) & IAM302t RBL
 ================================================================================
 
 [TOP-LEVEL DIRECTORY STRUCTURE & ARTIFACT PACKAGING]
 
 1. code/
    Core scripts, compilation pipelines, and statistical evaluation utilities:
-   - step0_verify_e0_windows.py: E0 Ground Truth Sanity Check verification suite.
-   - step1_wsl_build_and_extract.sh: Cross-compilation of C functions to x64 PE binaries.
-   - step2_ghidra_headless_postscript.py: Ghidra Headless decompiler extraction script.
-   - step3_mcp_server_and_benchmark.py: Multi-context LLM query and benchmarking engine.
-   - step4_compute_statistics_and_tables.py: SCHR metrics, Wilson CI 95%, McNemar tests.
-   - eval_engine.py: Statistical computation engine for LaTeX table generation.
-   - evaluate_gh0strat_case_study.py: Real-world APT Gh0stRAT PE32 hallucination analysis.
-   - extract_contexts.py: Context escalation extractor (CT1, CT2, CT3, CT4).
-   - generate_reports.py: Automated report generation tool.
-   - live_demo.py: Interactive terminal demonstration script for Milestone D3.
-   - live_demo.sh: One-click launcher for the live demo.
+   - step0_verify_e0_windows.py: Compiles & executes all 80 C variants across 160 assertions.
+   - step1_wsl_build_and_extract.sh: Cross-compilation and context extraction runner.
+   - step2_ghidra_headless_postscript.py: Ghidra Headless decompiler extraction post-script.
+   - step3_mcp_server_and_benchmark.py: LLM benchmark runner (`--mode return` and `--mode mcq`, `--max-pairs 40`).
+   - step4_compute_statistics_and_tables.py: Computes SCHR, 95% Wilson CI, Miss Rate, Spearman rho, McNemar, M1-M5 matrix, and N=50 CT1 error taxonomy.
+   - extract_contexts.py: Leak-free normalized context generator (CT1-CT4, Obf0-Obf3).
+   - eval_engine.py: Auxiliary evaluation utility.
+   - live_demo.py / live_demo.sh: Interactive terminal demonstration script for Milestone D3.
 
 2. dataset/
-   Ground Truth metadata, original C source codes, and compiled PE binaries:
-   - Dataset_SCHR_Bench/SCHR_Bench_C_Functions/: 40 original security-critical C functions.
-   - Dataset_SCHR_Bench/SCHR_Bench_C_Functions/build/pe_x64_O0/: 80 stripped PE x64 binaries.
-   - Ground Truth test assertions (160 unit tests, non-neutral mutation validation).
+   Ground-truth C source pairs, compiled stripped PE64 binaries, real objdump disassembly, and MCQ suite:
+   - SCHR_Bench_C_Functions/src/: 40 original + 40 mutant C source files (80 variants).
+   - SCHR_Bench_C_Functions/bin/pe_x64_O2/: 80 compiled & stripped 64-bit Windows PE executables (`.exe`).
+   - SCHR_Bench_C_Functions/disassembly_objdump_80.json: Real `objdump -d -M intel` disassembly for all 80 PE64 binaries.
+   - SCHR_Bench_C_Functions/ground_truth_manifest.json: 40 function pair specs, mutation operators, and 80 input vectors (160 assertions).
+   - SCHR_Bench_C_Functions/tools/check_suite.py & build_pe.py & runner.c: Standalone build and execution verification harness.
+   - gold_set_mcq.json: 160 balanced, leak-free, length-neutral multiple-choice items (40 A, 40 B, 40 C, 40 D; 25.0% length-cue baseline).
 
 3. documentation/
-   Project reports, system architectures, and milestone checklists:
-   - PHASE2_GH0STRAT_EXECUTION_CHECKLIST.md: Step-by-step milestone D4 execution guide.
-   - SCHR_BENCH_MASTER_PLAN_OBSIDIAN.md: Obsidian master plan and RBL requirements.
-   - TIER_ROLES.md: Roles and responsibilities across the 3-Tier distributed architecture.
-   - PROJECT_STATUS.md: Live milestone tracking matrix (D1 -> D5).
+   Project planning and milestone notes:
+   - SCHR_BENCH_MASTER_PLAN_OBSIDIAN.md: Project master plan and RBL notes.
 
 4. manuscript/
-   Academic research papers, LaTeX camera-ready templates, figures, and bibtex:
-   - 01_IEEE_Conference_Format_8_10_Pages/: 8-10 page IEEE conference submission.
-   - 02_Springer_LNICST_Format_10_14_Pages/: 10-14 page Springer LNICST camera-ready draft.
-   - IEEE_SCHR_Bench_Paper_8_10_Pages.zip: Packaged IEEE template archive.
-   - Springer_SCHR_Bench_Paper_10_14_Pages.zip: Packaged Springer template archive.
+   Academic research papers, LaTeX templates, figures, and bibliography:
+   - 01_IEEE_Conference_Format_8_10_Pages/: IEEE conference manuscript (`main.tex` & `main_anonymous.tex`).
+   - 02_Springer_LNICST_Format_10_14_Pages/: Springer LNICST manuscript (`main.tex` & `main_anonymous.tex`).
+   - IEEE_SCHR_Bench_Paper_8_10_Pages.zip: Packaged IEEE Overleaf archive.
+   - Springer_SCHR_Bench_Paper_10_14_Pages.zip: Packaged Springer Overleaf archive.
 
-5. results/
-   Experimental outputs, statistical tables, and benchmark logs:
-   - benchmark_raw_logs.json: Complete raw query logs (480 entries across CT1-CT3).
-   - GH0STRAT_EVALUATION.json: Gh0stRAT real-world case study hallucination metrics.
-   - PAPER_TABLES_SPRINGER.md: Generated LaTeX tables (Table 1 - Table 4) for LNICST paper.
-   - E0_Table1_Springer.md: Ground Truth sanity check summary table.
+5. prompts/
+   System prompt templates:
+   - mcq_system_prompt.txt: System prompt for `--mode mcq` evaluation.
+   - explanation_system_prompt.txt: System prompt for structured explanation analysis.
 
-6. tier1_host/, tier2_kali/, tier3_win11/
-   Distributed 3-Tier infrastructure logs, scripts, and visual evidence:
-   - tier1_host/: GPU LLM server (Host MSI WSL2, Ollama LLaMA-3.1 & Qwen-2.5).
-   - tier2_kali/: Reverse Engineering environment (Ghidra Headless, MinGW cross-compiler).
-   - tier3_win11/: Isolated Sandbox (DIE & PE-bear static analysis of Gh0stRAT).
+6. results/
+   Experimental outputs, statistical tables, and raw benchmark logs:
+   - benchmark_raw_logs.json: Complete raw query logs (540 entries: 480 core CT1-CT3 runs + 60 E4 pilot runs).
+   - decompiled_contexts_80.json: Leak-free normalized contexts for all 80 variants.
+   - PAPER_TABLES_SPRINGER.md: Auto-generated statistical tables (Tables 1-6) from `step4_compute_statistics_and_tables.py`.
+   - E0_sanity_check_report.txt & E0_Table1_Springer.md: Dynamic binary execution verification report (160 assertions).
 
 7. Root Operational Files:
-   - CITATION.cff: Citation File Format for academic citation and GitHub indexing.
-   - LICENSE: MIT Open-Source License.
+   - CITATION.cff: Citation File Format metadata.
+   - LICENSE: MIT Open-Source License (Code) & CC BY 4.0 (Dataset).
    - MANIFEST.txt: This manifest document.
-   - README.md: Comprehensive guide, quickstart, reproduction commands.
-   - reproduce.sh: One-click reproduction script for artifact evaluation.
+   - README.md: Project overview, reproduction modes, and safety notice.
+   - reproduce.sh: Two-mode reproducibility script (`offline` default and `--live-ollama`).
 
 ================================================================================
-Generated: 2026-10-29 | Validated for FPT University IAM302t RBL Final Submission
+Updated: 2026-11-02 | Validated for FPT University IAM302t RBL & EAI INISCOM 2027
 ================================================================================

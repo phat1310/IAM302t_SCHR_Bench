@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-SCHR-Bench: Step 4 — Compute Statistical Metrics & Generate Springer LNICST / IEEE Paper Tables
-Computes SCHR (%), 95% Wilson CI, Mutant Miss Rate (%), Pairwise BLEU (Orig vs. Mut),
-Pair-level Spearman Rank Correlation (RQ2), and McNemar's Paired Test (RQ3).
+SCHR-Bench: Step 4 — Compute Statistical Metrics & Generate All Paper Tables
+Automatically computes from `results/benchmark_raw_logs.json` (540 logged runs):
+  1. Core Evaluation Table (CT1-CT3, N=80): SCHR (%), 95% Wilson CI, Mutant Miss Rate (%),
+     Pairwise BLEU (All / Error Pairs vs. Error-Free Pairs), Spearman rho (p-value), Mean Latency.
+  2. Category Matrix (Categories A, S, P, E, C; n=16 per category, N=80).
+  3. Mutation Operator Family Matrix (M1-M5 mapping from all 11 manifest operator tags; N=80).
+  4. Experiment E4 Obfuscation Table (Obf0-Obf3 on the 5-pair easy-tier pilot subset; N=10).
+  5. McNemar's Paired Statistical Test (CT1 vs. CT2/CT3; alpha=0.05).
+  6. Deterministic CT1 Failure Mechanism Breakdown (N=50 logged CT1 errors: 31 LLaMA + 19 Qwen).
 """
 
 import json
@@ -14,6 +20,27 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_DIR = SCRIPT_DIR.parent
 RESULTS_DIR = PROJECT_DIR / "results" if (PROJECT_DIR / "results").exists() else PROJECT_DIR / "Results"
 LOG_FILE = RESULTS_DIR / "benchmark_raw_logs.json"
+
+# Explicit, deterministic mapping from the 11 manifest `mutation_operator` tags
+# across all 40 pairs (80 variants) to the 5 formal Mutation Operator Families (M1 - M5):
+OPERATOR_TO_FAMILY_M1_M5 = {
+    # M1: Condition & Boolean Inversion (12 pairs = 24 variants)
+    "condition_inversion": "M1_Invert",     # 7 pairs (14 variants)
+    "boolean_operator": "M1_Invert",        # 3 pairs (6 variants)
+    "condition_weakening": "M1_Invert",     # 1 pair  (2 variants)
+    "boolean_precedence": "M1_Invert",      # 1 pair  (2 variants)
+    # M2: Constant & Arithmetic Alteration (12 pairs = 24 variants)
+    "constant_change": "M2_Const",          # 8 pairs (16 variants)
+    "arithmetic_operator": "M2_Const",      # 3 pairs (6 variants)
+    "bitwise_operator": "M2_Const",         # 1 pair  (2 variants)
+    # M3: Target / Effect Swap (5 pairs = 10 variants)
+    "api_effect_swap": "M3_Swap",           # 4 pairs (8 variants)
+    "mock_api_swap": "M3_Swap",             # 1 pair  (2 variants)
+    # M4: Relational Boundary Shift (8 pairs = 16 variants)
+    "relational_boundary": "M4_Bound",      # 8 pairs (16 variants)
+    # M5: Step Omission (3 pairs = 6 variants)
+    "step_omission": "M5_Omit",             # 3 pairs (6 variants)
+}
 
 
 def wilson_ci_95(k: int, n: int):
@@ -112,9 +139,9 @@ def main():
     obf_tiers = [t for t in ("Obf1_CFF", "Obf2_Sub", "Obf3_Combined") if any((m, t) in by_model_tier for m in models)]
 
     md_lines = [
-        "# BẢNG KẾT QUẢ THỰC NGHIỆM SCHR-BENCH (SPRINGER LNICST — EAI INISCOM 2027)",
+        "# BẢNG KẾT QUẢ THỰC NGHIỆM SCHR-BENCH (GENERATED AUTOMATICALLY BY `step4_compute_statistics_and_tables.py`)",
         "",
-        "## 1. Bảng Trung Tâm (E1 + E2 + E3): SCHR (%), 95% Wilson CI, Miss Rate & Pairwise BLEU",
+        "## 1. Bảng Trung Tâm (E1 + E2 + E3): SCHR (%), 95% Wilson CI, Miss Rate, BLEU & Spearman $\\rho$",
         "",
         "| Mô hình (LLM) | Tầng Ngữ cảnh | Số mẫu ($N$) | Lỗi Ảo giác | **SCHR (%) [95% Wilson CI]** | Miss Rate trên Mutant (%) | BLEU (Orig vs Mut) | BLEU (Cặp Lỗi vs Đúng) | Spearman $\\rho$ ($p$) | Latency TB (s) |",
         "| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |"
@@ -159,7 +186,7 @@ def main():
 
     md_lines += [
         "",
-        "## 2. Phân tích SCHR (%) theo Nhóm Hành vi An ninh (Categories A, S, P, E, C)",
+        "## 2. Phân tích SCHR (%) theo Nhóm Hành vi An ninh (Categories A, S, P, E, C; $n=16$ mỗi nhóm)",
         "",
         "| Mô hình (LLM) | Tầng | A: Debug Policy | S: Toy Decoder | P: Persistence | E: Env Signal | C: Control Flow |",
         "| :--- | :---: | :---: | :---: | :---: | :---: | :---: |"
@@ -182,10 +209,42 @@ def main():
                     cat_cells.append(f"{rate}% ({w}/{len(c_recs)})")
             md_lines.append(f"| `{m}` | **{t}** | " + " | ".join(cat_cells) + " |")
 
+    # Section 3: Mutation Operator Families M1 - M5
+    md_lines += [
+        "",
+        "## 3. Phân tích SCHR (%) theo 5 Họ Toán tử Đột biến ($\\mathcal{M}_1$–$\\mathcal{M}_5$, $N=80$)",
+        "",
+        "- **Mapping 11 toán tử trong manifest sang $\\mathcal{M}_1$–$\\mathcal{M}_5$:**",
+        "  * $\\mathcal{M}_1$ (`M1_Invert`, $n=24$): `condition_inversion` (14), `boolean_operator` (6), `condition_weakening` (2), `boolean_precedence` (2).",
+        "  * $\\mathcal{M}_2$ (`M2_Const`, $n=24$): `constant_change` (16), `arithmetic_operator` (6), `bitwise_operator` (2).",
+        "  * $\\mathcal{M}_3$ (`M3_Swap`, $n=10$): `api_effect_swap` (8), `mock_api_swap` (2).",
+        "  * $\\mathcal{M}_4$ (`M4_Bound`, $n=16$): `relational_boundary` (16).",
+        "  * $\\mathcal{M}_5$ (`M5_Omit`, $n=6$): `step_omission` (6).",
+        "",
+        "| Mô hình (LLM) | Tầng | $\\mathcal{M}_1$: Invert ($n=24$) | $\\mathcal{M}_2$: Const ($n=24$) | $\\mathcal{M}_3$: Swap ($n=10$) | $\\mathcal{M}_4$: Bound ($n=16$) | $\\mathcal{M}_5$: Omit ($n=6$) | Overall SCHR ($N=80$) |",
+        "| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |"
+    ]
+
+    m_fams = ["M1_Invert", "M2_Const", "M3_Swap", "M4_Bound", "M5_Omit"]
+    for m in models:
+        for t in core_tiers:
+            records = by_model_tier.get((m, t), {})
+            if not records:
+                continue
+            fam_cells = []
+            for mf in m_fams:
+                f_recs = [r for r in records.values() if OPERATOR_TO_FAMILY_M1_M5.get(r["mutation_operator"]) == mf]
+                w = sum(1 for r in f_recs if r["is_schr_hallucination"])
+                rate = round((w / len(f_recs)) * 100.0, 1) if f_recs else 0.0
+                fam_cells.append(f"{rate}% ({w}/{len(f_recs)})")
+            tot_w = sum(1 for r in records.values() if r["is_schr_hallucination"])
+            tot_r = round((tot_w / len(records)) * 100.0, 1)
+            md_lines.append(f"| `{m}` | **{t}** | " + " | ".join(fam_cells) + f" | **{tot_r}%** ({tot_w}/{len(records)}) |")
+
     if obf_tiers:
         md_lines += [
             "",
-            "## 3. Thí nghiệm E4 (RQ4): Tác động của Obfuscation Templates (Obf0–Obf3) trên tập Pilot 5 cặp cơ bản ($N=10$)",
+            "## 4. Thí nghiệm E4 (RQ4): Tác động của Obfuscation Templates (Obf0–Obf3) trên tập Pilot 5 cặp cơ bản ($N=10$)",
             "",
             "| Mô hình (LLM) | Mức Làm rối (Obfuscation Template) | Số mẫu ($N$) | Lỗi Ảo giác | **SCHR (%) [95% Wilson CI]** |",
             "| :--- | :---: | :---: | :---: | :---: |"
@@ -208,7 +267,7 @@ def main():
 
     md_lines += [
         "",
-        "## 4. Kiểm định Thống kê McNemar's Test (So sánh Cặp Phụ thuộc CT1 vs CT2/CT3, $\\alpha = 0.05$)",
+        "## 5. Kiểm định Thống kê McNemar's Test (So sánh Cặp Phụ thuộc CT1 vs CT2/CT3, $\\alpha = 0.05$)",
         "",
         "| Mô hình (LLM) | Cặp So sánh | $b$ (CT1 Sai $\\rightarrow$ Mới Đúng) | $c$ (CT1 Đúng $\\rightarrow$ Mới Sai) | Net ($b-c$) | $\\chi^2$ (McNemar) | $p$-value | Kết luận Thống kê ($\\alpha=0.05$) |",
         "| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |"
@@ -235,10 +294,35 @@ def main():
                 sig = f"Không có ý nghĩa thống kê ($p \\ge 0.05$, xu hướng $\\Delta = {b-c:+d}$)"
             md_lines.append(f"| `{m}` | **CT1 vs {comp_tier}** | {b} | {c} | `{b-c:+d}` | {chi2} | `{pval}` | {sig} |")
 
+    # Section 6: Deterministic CT1 Error Taxonomy (N=50)
+    md_lines += [
+        "",
+        "## 6. Phân loại Thực nghiệm 50 Lỗi CT1 ($N=50$: 31 LLaMA + 19 Qwen) theo Cơ chế Toán tử Đột biến",
+        "",
+        "| Nhóm Cơ chế Lỗi (Mutation Mechanism Group) | Các Toán tử trong Manifest | LLaMA-3.1 8B ($n=31$) | Qwen2.5-Coder 14B ($n=19$) | Tổng cộng ($N=50$) |",
+        "| :--- | :--- | :---: | :---: | :---: |"
+    ]
+    tax_groups = [
+        ("Constant & Arithmetic Alteration ($\\mathcal{M}_2$)", ("M2_Const",), "`constant_change`, `arithmetic_operator`, `bitwise_operator`"),
+        ("Condition & Boolean Inversion ($\\mathcal{M}_1$)", ("M1_Invert",), "`condition_inversion`, `boolean_operator`, `boolean_precedence`, `condition_weakening`"),
+        ("Relational Boundary Shift ($\\mathcal{M}_4$)", ("M4_Bound",), "`relational_boundary`"),
+        ("Target Swap & Step Omission ($\\mathcal{M}_3, \\mathcal{M}_5$)", ("M3_Swap", "M5_Omit"), "`api_effect_swap`, `mock_api_swap`, `step_omission`"),
+    ]
+    llama_ct1 = [r for r in by_model_tier.get(("llama3.1:8b", "CT1"), {}).values() if r["is_schr_hallucination"]]
+    qwen_ct1 = [r for r in by_model_tier.get(("qwen2.5-coder:14b", "CT1"), {}).values() if r["is_schr_hallucination"]]
+    total_ct1_err = len(llama_ct1) + len(qwen_ct1)
+
+    for grp_name, fam_keys, op_desc in tax_groups:
+        l_cnt = sum(1 for r in llama_ct1 if OPERATOR_TO_FAMILY_M1_M5.get(r["mutation_operator"]) in fam_keys)
+        q_cnt = sum(1 for r in qwen_ct1 if OPERATOR_TO_FAMILY_M1_M5.get(r["mutation_operator"]) in fam_keys)
+        t_cnt = l_cnt + q_cnt
+        pct = round((t_cnt / total_ct1_err) * 100.0, 1) if total_ct1_err else 0.0
+        md_lines.append(f"| **{grp_name}** | {op_desc} | {l_cnt} | {q_cnt} | **{t_cnt} ({pct}%)** |")
+
     out_md = RESULTS_DIR / "PAPER_TABLES_SPRINGER.md"
     out_md.write_text("\n".join(md_lines), encoding="utf-8")
 
 
 if __name__ == "__main__":
     main()
-    print("[+] Updated PAPER_TABLES_SPRINGER.md")
+    print("[+] Updated PAPER_TABLES_SPRINGER.md (including M1-M5 matrix and N=50 CT1 error taxonomy)")
