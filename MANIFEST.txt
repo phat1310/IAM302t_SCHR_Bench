@@ -28,7 +28,7 @@ Target Conference: EAI INISCOM 2027 (Springer LNICST Series) & IAM302t RBL
    - SCHR_Bench_C_Functions/disassembly_objdump_80.json: Real `objdump -d -M intel` disassembly for all 80 PE64 binaries.
    - SCHR_Bench_C_Functions/ground_truth_manifest.json: 40 function pair specs, mutation operators, and 80 input vectors (160 assertions).
    - SCHR_Bench_C_Functions/tools/check_suite.py & build_pe.py & runner.c: Standalone build and execution verification harness.
-   - gold_set_mcq.json: 160 balanced, leak-free, length-neutral multiple-choice items (40 A, 40 B, 40 C, 40 D; 25.0% length-cue baseline).
+   - gold_set_mcq.json: 240 full-factorial paired, balanced, leak-free, length-neutral multiple-choice items (N=80 across CT1, CT2, CT3; 60 A, 60 B, 60 C, 60 D; 25.0% length-cue baseline).
 
 3. documentation/
    Project planning and milestone notes:
@@ -49,7 +49,7 @@ Target Conference: EAI INISCOM 2027 (Springer LNICST Series) & IAM302t RBL
 6. results/
    Experimental outputs, statistical tables, and raw benchmark logs:
    - benchmark_raw_logs.json: Complete return-value & explanation raw logs (540 entries: 480 core CT1-CT3 runs + 60 E4 pilot runs).
-   - benchmark_mcq_logs.json: Complete Gold Set MCQ raw logs (320 entries: 2 models x 160 items with real `objdump` assembly in CT2/CT3).
+   - benchmark_mcq_logs.json: Complete Full-Factorial Gold Set MCQ raw logs (480 entries: 2 models x 240 items [N=80 per tier] with real `objdump` assembly in CT2/CT3).
    - decompiled_contexts_80.json: Leak-free normalized contexts (including real PE64 `objdump -d -M intel` disassembly) for all 80 variants.
    - PAPER_TABLES_SPRINGER.md: Auto-generated statistical tables (Sections 1-7) from `step4_compute_statistics_and_tables.py`.
    - E0_sanity_check_report.txt & E0_Table1_Springer.md: Dynamic binary execution verification report (160 assertions).

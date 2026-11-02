@@ -263,7 +263,7 @@ def run_mcq_suite(mcp: SCHRBenchMCPServer, models: list, ollama_url: str = None)
     mcq_log_path = RESULTS_DIR / "benchmark_mcq_logs.json"
     existing = json.loads(mcq_log_path.read_text(encoding="utf-8")) if mcq_log_path.exists() else {}
 
-    print(f"[+] Running 160-item Gold Set MCQ evaluation across models={models}")
+    print(f"[+] Running {len(mcq_items)}-item Gold Set MCQ evaluation across models={models}")
     for model in models:
         for idx, item in enumerate(mcq_items, 1):
             gid = item["gold_id"]

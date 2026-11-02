@@ -3,17 +3,17 @@
 SCHR-Bench: Step 4 — Compute Statistical Metrics & Generate All Paper Tables
 Automatically computes from:
   - `results/benchmark_raw_logs.json` (540 logged return-value & explanation runs)
-  - `results/benchmark_mcq_logs.json` (320 logged Gold Set MCQ runs: 2 models x 160 balanced MCQ items)
+  - `results/benchmark_mcq_logs.json` (480 logged Gold Set MCQ runs: 2 models x 240 full-factorial paired MCQ items across CT1, CT2, CT3, N=80 per tier)
   - `results/decompiled_contexts_80.json` (80 CT1 pseudocode variants checked for C recompilability)
 Outputs:
   1. Core Evaluation Table (CT1-CT3, N=80): SCHR (%), 95% Wilson CI, Mutant Miss Rate (%),
-     Pairwise BLEU (All / Error Pairs vs. Error-Free Pairs), Spearman rho (p-value), Recompilability (%), Mean Latency.
+     Pairwise BLEU (All / Error Pairs vs. Error-Free Pairs), Spearman rho (p-value), Mean Latency.
   2. Category Matrix (Categories A, S, P, E, C; n=16 per category, N=80).
   3. Mutation Operator Family Matrix (M1-M5 mapping from all 11 manifest operator tags; N=80).
   4. Experiment E4 Obfuscation Table (Obf0-Obf3 on the 5-pair easy-tier pilot subset; N=10).
-  5. McNemar's Paired Statistical Test (CT1 vs. CT2/CT3; alpha=0.05).
+  5. McNemar's Paired Statistical Test on Layer 1 Return-Value (CT1 vs. CT2/CT3; N=80, alpha=0.05).
   6. Deterministic CT1 Failure Mechanism Breakdown (N=50 logged CT1 errors: 31 LLaMA + 19 Qwen).
-  7. Gold Set MCQ Evaluation Table (160 items x 2 models = 320 runs across CT1, CT2 [with real objdump], CT3).
+  7. Gold Set MCQ Full-Factorial Paired Evaluation (240 items x 2 models = 480 runs; N=80 per tier across CT1, CT2 [with real objdump], CT3) + Paired McNemar Test.
 """
 
 import json
@@ -32,25 +32,18 @@ LOG_FILE = RESULTS_DIR / "benchmark_raw_logs.json"
 MCQ_LOG_FILE = RESULTS_DIR / "benchmark_mcq_logs.json"
 CONTEXTS_FILE = RESULTS_DIR / "decompiled_contexts_80.json"
 
-# Explicit, deterministic mapping from the 11 manifest `mutation_operator` tags
-# across all 40 pairs (80 variants) to the 5 formal Mutation Operator Families (M1 - M5):
 OPERATOR_TO_FAMILY_M1_M5 = {
-    # M1: Condition & Boolean Inversion (12 pairs = 24 variants)
-    "condition_inversion": "M1_Invert",     # 7 pairs (14 variants)
-    "boolean_operator": "M1_Invert",        # 3 pairs (6 variants)
-    "condition_weakening": "M1_Invert",     # 1 pair  (2 variants)
-    "boolean_precedence": "M1_Invert",      # 1 pair  (2 variants)
-    # M2: Constant & Arithmetic Alteration (12 pairs = 24 variants)
-    "constant_change": "M2_Const",          # 8 pairs (16 variants)
-    "arithmetic_operator": "M2_Const",      # 3 pairs (6 variants)
-    "bitwise_operator": "M2_Const",         # 1 pair  (2 variants)
-    # M3: Target / Effect Swap (5 pairs = 10 variants)
-    "api_effect_swap": "M3_Swap",           # 4 pairs (8 variants)
-    "mock_api_swap": "M3_Swap",             # 1 pair  (2 variants)
-    # M4: Relational Boundary Shift (8 pairs = 16 variants)
-    "relational_boundary": "M4_Bound",      # 8 pairs (16 variants)
-    # M5: Step Omission (3 pairs = 6 variants)
-    "step_omission": "M5_Omit",             # 3 pairs (6 variants)
+    "condition_inversion": "M1_Invert",
+    "boolean_operator": "M1_Invert",
+    "condition_weakening": "M1_Invert",
+    "boolean_precedence": "M1_Invert",
+    "constant_change": "M2_Const",
+    "arithmetic_operator": "M2_Const",
+    "bitwise_operator": "M2_Const",
+    "api_effect_swap": "M3_Swap",
+    "mock_api_swap": "M3_Swap",
+    "relational_boundary": "M4_Bound",
+    "step_omission": "M5_Omit",
 }
 
 
@@ -72,11 +65,6 @@ def find_c_compiler():
 
 
 def compute_ct1_recompilability():
-    """
-    Verify syntactic recompilability (`gcc -fsyntax-only`) of the 80 stripped C pseudocode functions (CT1)
-    by prepending standard Ghidra typedefs (`typedef unsigned long ulong; typedef unsigned int uint;`)
-    and static helper declarations (`FUN_140001100`, `FUN_140001110`).
-    """
     if not CONTEXTS_FILE.exists():
         return 80, 80, 100.0
     records = json.loads(CONTEXTS_FILE.read_text(encoding="utf-8"))
@@ -203,12 +191,12 @@ def main():
     md_lines = [
         "# BẢNG KẾT QUẢ THỰC NGHIỆM SCHR-BENCH (GENERATED AUTOMATICALLY BY `step4_compute_statistics_and_tables.py`)",
         "",
-        "## 1. Bảng Trung Tâm (E1 + E2 + E3): SCHR (%), 95% Wilson CI, Miss Rate, BLEU, Spearman $\\rho$ & Recompilability",
+        "## 1. Bảng Trung Tâm Layer 1 (E1 + E2 + E3): SCHR (%), 95% Wilson CI, Miss Rate, BLEU & Spearman $\\rho$",
         "",
         f"- **Kiểm định Recompilability (E2 — `gcc -fsyntax-only` trên 80 hàm CT1):** **{recomp_rate}% ({recomp_pass}/{recomp_tot})** biên dịch thành công (kể cả toàn bộ 40/40 biến thể đột biến ngược logic an ninh), chứng minh *\"biên dịch lại được\"* không đồng nghĩa *\"đúng hành vi an ninh\"*.",
         "",
-        "| Mô hình (LLM) | Tầng Ngữ cảnh | Số mẫu ($N$) | Lỗi Ảo giác | **SCHR (%) [95% Wilson CI]** | Miss Rate trên Mutant (%) | BLEU (Orig vs Mut) | BLEU (Cặp Lỗi vs Đúng) | Spearman $\\rho$ ($p$) | Recompilability | Latency TB (s) |",
-        "| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |"
+        "| Mô hình (LLM) | Tầng Ngữ cảnh | Số mẫu ($N$) | Lỗi Ảo giác | **SCHR (%) [95% Wilson CI]** | Miss Rate trên Mutant (%) | BLEU (Orig vs Mut) | BLEU (Cặp Lỗi vs Đúng) | Spearman $\\rho$ ($p$) | Latency TB (s) |",
+        "| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |"
     ]
 
     for m in models:
@@ -245,7 +233,7 @@ def main():
             md_lines.append(
                 f"| `{m}` | **{t}** | {n_total} | {n_wrong} | **{schr}%** [{ci_low}%, {ci_high}%] | "
                 f"{miss_rate}% ({n_missed}/{len(mutants)}) | {avg_bleu} | {b_err_avg} vs {b_ok_avg} | "
-                f"{rho:+.3f} (`p={rho_p}`) | {recomp_rate}% ({recomp_pass}/{recomp_tot}) | {avg_lat}s |"
+                f"{rho:+.3f} (`p={rho_p}`) | {avg_lat}s |"
             )
 
     md_lines += [
@@ -273,7 +261,6 @@ def main():
                     cat_cells.append(f"{rate}% ({w}/{len(c_recs)})")
             md_lines.append(f"| `{m}` | **{t}** | " + " | ".join(cat_cells) + " |")
 
-    # Section 3: Mutation Operator Families M1 - M5
     md_lines += [
         "",
         "## 3. Phân tích SCHR (%) theo 5 Họ Toán tử Đột biến ($\\mathcal{M}_1$–$\\mathcal{M}_5$, $N=80$)",
@@ -331,7 +318,7 @@ def main():
 
     md_lines += [
         "",
-        "## 5. Kiểm định Thống kê McNemar's Test (So sánh Cặp Phụ thuộc CT1 vs CT2/CT3, $\\alpha = 0.05$)",
+        "## 5. Kiểm định Thống kê McNemar's Test — Layer 1 Return-Value ($N=80$ mỗi tầng, $\\alpha = 0.05$)",
         "",
         "| Mô hình (LLM) | Cặp So sánh | $b$ (CT1 Sai $\\rightarrow$ Mới Đúng) | $c$ (CT1 Đúng $\\rightarrow$ Mới Sai) | Net ($b-c$) | $\\chi^2$ (McNemar) | $p$-value | Kết luận Thống kê ($\\alpha=0.05$) |",
         "| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |"
@@ -358,7 +345,6 @@ def main():
                 sig = f"Không có ý nghĩa thống kê ($p \\ge 0.05$, xu hướng $\\Delta = {b-c:+d}$)"
             md_lines.append(f"| `{m}` | **CT1 vs {comp_tier}** | {b} | {c} | `{b-c:+d}` | {chi2} | `{pval}` | {sig} |")
 
-    # Section 6: Deterministic CT1 Error Taxonomy
     llama_ct1 = [r for r in by_model_tier.get(("llama3.1:8b", "CT1"), {}).values() if r["is_schr_hallucination"]]
     qwen_ct1 = [r for r in by_model_tier.get(("qwen2.5-coder:14b", "CT1"), {}).values() if r["is_schr_hallucination"]]
     total_ct1_err = len(llama_ct1) + len(qwen_ct1)
@@ -383,30 +369,35 @@ def main():
         pct = round((t_cnt / total_ct1_err) * 100.0, 1) if total_ct1_err else 0.0
         md_lines.append(f"| **{grp_name}** | {op_desc} | {l_cnt} | {q_cnt} | **{t_cnt} ({pct}%)** |")
 
-    # Section 7: Gold Set MCQ Evaluation (160 items per model = 320 runs)
+    # Section 7: Full-Factorial Paired Gold Set MCQ Evaluation (240 items per model = 480 runs, N=80 per tier)
     if MCQ_LOG_FILE.exists():
         mcq_logs = json.loads(MCQ_LOG_FILE.read_text(encoding="utf-8"))
+        mcq_by_model_tier = defaultdict(dict)
         mcq_by_model = defaultdict(list)
         for entry in mcq_logs.values():
-            mcq_by_model[entry["model"]].append(entry)
+            m = entry["model"]
+            t = entry["context_tier"]
+            skey = f"{entry['function_id']}_{entry['variant']}"
+            mcq_by_model_tier[(m, t)][skey] = entry
+            mcq_by_model[m].append(entry)
 
         if mcq_by_model:
             md_lines += [
                 "",
-                "## 7. Đánh giá Trắc nghiệm Tự động Gold Set MCQ (`dataset/gold_set_mcq.json` — 160 mục/model, 320 lượt chạy, tích hợp `objdump` thật ở CT2/CT3)",
+                "## 7. Đánh giá Trắc nghiệm Tự động Gold Set MCQ (`dataset/gold_set_mcq.json` — Thiết kế Ghép cặp Đầy đủ $N=80$ mỗi tầng, 240 mục/model = 480 lượt chạy, tích hợp `objdump` thật ở CT2/CT3)",
                 "",
-                "| Mô hình (LLM) | Phân tập Đánh giá | Số mục ($N$) | Trả lời Đúng | Lỗi Ảo giác | **MCQ SCHR (%) [95% Wilson CI]** | Độ chính xác (Accuracy %) | Latency TB (s) |",
-                "| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |"
+                "| Mô hình (LLM) | Tầng Ngữ cảnh (Full-Factorial Paired $N=80$) | Số mục ($N$) | Trả lời Đúng | Lỗi Ảo giác | **MCQ SCHR (%) [95% Wilson CI]** | Độ chính xác (%) | McNemar vs CT1 ($b/c$, $p$-val) | Latency TB (s) |",
+                "| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |"
             ]
             for m in sorted(mcq_by_model.keys()):
-                items = mcq_by_model[m]
+                base_mcq = mcq_by_model_tier.get((m, "CT1"), {})
                 for subset_label, tier_filter in [
-                    ("**Toàn bộ Gold Set (All Tiers)**", None),
-                    ("CT1 (Stripped Pseudocode, $n=80$)", "CT1"),
-                    ("CT2 (+Real `objdump -d` Disassembly, $n=40$)", "CT2"),
-                    ("CT3 (+Real `objdump -d` & Callee Spec, $n=40$)", "CT3"),
+                    ("CT1 (Stripped Pseudocode Baseline)", "CT1"),
+                    ("CT2 (+Real `objdump -d` Disassembly)", "CT2"),
+                    ("CT3 (+Real `objdump -d` & Callee Spec)", "CT3"),
+                    ("**Toàn bộ Gold Set (All 3 Tiers Combined)**", None),
                 ]:
-                    sub = [x for x in items if (tier_filter is None or x["context_tier"] == tier_filter)]
+                    sub = [x for x in mcq_by_model[m] if (tier_filter is None or x["context_tier"] == tier_filter)]
                     if not sub:
                         continue
                     n_tot = len(sub)
@@ -415,8 +406,24 @@ def main():
                     schr, ci_l, ci_h = wilson_ci_95(n_err, n_tot)
                     acc = round((n_ok / n_tot) * 100.0, 1)
                     lat = round(sum(x.get("latency_sec", 0.0) for x in sub) / n_tot, 2)
+
+                    if tier_filter in ("CT2", "CT3") and base_mcq:
+                        comp_mcq = mcq_by_model_tier.get((m, tier_filter), {})
+                        b = c = 0
+                        for skey, r1 in base_mcq.items():
+                            if skey in comp_mcq:
+                                r2 = comp_mcq[skey]
+                                if r1["is_schr_hallucination"] and not r2["is_schr_hallucination"]:
+                                    b += 1
+                                elif not r1["is_schr_hallucination"] and r2["is_schr_hallucination"]:
+                                    c += 1
+                        _, pval = mcnemar_test(b, c)
+                        mc_str = f"`b={b}, c={c}` (`p={pval}`)"
+                    else:
+                        mc_str = "---"
+
                     md_lines.append(
-                        f"| `{m}` | {subset_label} | {n_tot} | {n_ok} | {n_err} | **{schr}%** [{ci_l}%, {ci_h}%] | {acc}% | {lat}s |"
+                        f"| `{m}` | {subset_label} | {n_tot} | {n_ok} | {n_err} | **{schr}%** [{ci_l}%, {ci_h}%] | {acc}% | {mc_str} | {lat}s |"
                     )
 
     out_md = RESULTS_DIR / "PAPER_TABLES_SPRINGER.md"
@@ -425,4 +432,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-    print("[+] Updated PAPER_TABLES_SPRINGER.md (including Recompilability, M1-M5 matrix, N=50 CT1 taxonomy, and Gold Set MCQ)")
+    print("[+] Updated PAPER_TABLES_SPRINGER.md (with 480 full-factorial paired MCQ runs and McNemar tests)")
