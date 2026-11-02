@@ -15,7 +15,7 @@
 Dự án **SCHR-Bench** được thực hiện trong khuôn khổ học phần **IAM302t (Malware Analysis and Reverse Engineering)** tại Trường Đại học FPT TP. Hồ Chí Minh theo mô hình **Research-Based Learning (RBL)**.
 
 ### Mục Tiêu Nghiên Cứu:
-1. **Mục tiêu học phần (IAM302t):** Xây dựng bộ khung đánh giá định lượng hiện tượng **Security-Critical Hallucination Rate (SCHR)** và **Mutant Miss Rate** của các mô hình ngôn ngữ lớn (LLMs) khi suy luận kết quả hành vi trên 40 cặp hàm C quyết định bảo mật ($N = 80$ biến thể thực thi, 540 lượt đánh giá).
+1. **Mục tiêu học phần (IAM302t):** Xây dựng bộ khung đánh giá định lượng hiện tượng **Security-Critical Hallucination Rate (SCHR)** và **Mutant Miss Rate** của các mô hình ngôn ngữ lớn (LLMs) khi suy luận kết quả hành vi trên 40 cặp hàm C quyết định bảo mật ($N = 80$ biến thể thực thi, 860 lượt đánh giá gồm 540 lượt Return-Value và 320 lượt Gold Set MCQ).
 2. **Mục tiêu học thuật:** Chuẩn bị bản thảo nghiên cứu theo định dạng **Springer LNICST** (hội nghị **EAI INISCOM 2027**) và định dạng **IEEE Conference** (phục vụ báo cáo nghiệm thu học phần IAM302t; hai bản thảo dùng cho mục đích học phần và định dạng mục tiêu, **không nộp trùng lặp — No Dual Submission**).
 
 ---
@@ -43,7 +43,7 @@ SCHR-Bench Architecture:
 
 * **Thông số mô hình & phần cứng (Model Tags & Reproducibility Notes):**
   * Mô hình đánh giá qua Ollama: `llama3.1:8b` (8B parameters, Q4\_0 quantization default tag) và `qwen2.5-coder:14b` (14B parameters, Q4\_K\_M quantization default tag).
-  * Tham số giải mã cố định: `temperature = 0.0`, `seed = 42`, `num_predict = 160`, `format = "json"`. Lưu ý: Dù cố định `temperature = 0.0` và `seed = 42`, kết quả suy luận dấu phẩy động trên GPU có thể dao động nhẹ giữa các kiến trúc phần cứng/driver CUDA hoặc phiên bản Ollama khác nhau; do đó toàn bộ **540 raw query logs** đã được lưu trữ đầy đủ tại `results/benchmark_raw_logs.json` để đảm bảo tái lập thống kê chính xác 100% ở chế độ Offline.
+  * Tham số giải mã cố định: `temperature = 0.0`, `seed = 42`, `num_predict = 160`, `format = "json"`. Lưu ý: Dù cố định `temperature = 0.0` và `seed = 42`, kết quả suy luận dấu phẩy động trên GPU có thể dao động nhẹ giữa các kiến trúc phần cứng/driver CUDA hoặc phiên bản Ollama khác nhau; do đó toàn bộ **860 raw query logs** (540 lượt Return-Value tại `results/benchmark_raw_logs.json` và 320 lượt Gold Set MCQ tại `results/benchmark_mcq_logs.json`) đã được lưu trữ đầy đủ để đảm bảo tái lập thống kê chính xác 100% ở chế độ Offline.
 
 ---
 
@@ -65,14 +65,17 @@ IAM302t_SCHR_Bench/
 
 ---
 
-## 📊 5. Tóm Tắt Số Liệu Thực Nghiệm Chính ($N = 80$ Variants, 540 Logged Runs)
+## 📊 5. Tóm Tắt Số Liệu Thực Nghiệm Chính ($N = 80$ Variants, 860 Logged Runs)
 
 * **540 lượt đánh giá trong `results/benchmark_raw_logs.json`:** Gồm **480 lượt đánh giá chính** (`2 models × 3 context tiers [CT1, CT2, CT3] × 80 variants`) và **60 lượt đánh giá Obfuscation E4** (`2 models × 3 obfuscation templates [Obf1_CFF, Obf2_Sub, Obf3_Combined] × 10 pilot variants`).
 * **Kiểm định thực thi E0 (`step0_verify_e0_windows.py`):** Biên dịch và chạy thật toàn bộ 80 biến thể qua 80 vector đầu vào (160 execution assertions), đạt **40/40 cặp hàm (100%) phân biệt hành vi trên Vector 1 (discriminating input)** và **50/80 tổng số vector phân biệt** (30 vector thứ 2 kiểm tra bảo toàn nhánh biên).
 * **Tỷ lệ SCHR & Kiểm định McNemar ($N = 80$):**
   * `llama3.1:8b`: **38.8%** (CT1, 31/80 lỗi) $\rightarrow$ **36.2%** (CT2, 29/80 lỗi) $\rightarrow$ **35.0%** (CT3, 28/80 lỗi); Mutant Miss Rate: `32.5% -> 27.5% -> 27.5%`; McNemar $p \in [0.5791, 0.7518]$ (không có ý nghĩa thống kê ở $\alpha = 0.05$).
   * `qwen2.5-coder:14b`: **23.8%** (CT1, 19/80 lỗi) $\rightarrow$ **20.0%** (CT2, 16/80 lỗi) $\rightarrow$ **18.8%** (CT3, 15/80 lỗi); Mutant Miss Rate: `27.5% -> 25.0% -> 25.0%`; McNemar $p \in [0.2888, 0.4497]$ (không có ý nghĩa thống kê ở $\alpha = 0.05$).
-  * **Tương quan hạng Spearman (RQ2):** Độ tương đồng từ vựng BLEU giữa giải thích gốc và đột biến của các cặp bị lỗi SCHR cao hơn nhóm cặp trả lời đúng ($\rho \in [+0.293, +0.495]$), cho thấy chỉ số tương đồng bề mặt không phát hiện được lỗi đảo ngược ngữ nghĩa.
+  * **Tương quan hạng Spearman & Recompilability (RQ2):** 100.0% (80/80) hàm CT1 biên dịch lại thành công (`gcc -fsyntax-only`), và độ tương đồng từ vựng BLEU giữa giải thích gốc và đột biến của các cặp bị lỗi SCHR cao hơn nhóm cặp trả lời đúng ($\rho \in [+0.293, +0.495]$).
+* **320 lượt đánh giá Trắc nghiệm Gold Set MCQ trong `results/benchmark_mcq_logs.json` (160 mục/model, tích hợp `objdump -d -M intel` thật ở CT2/CT3):**
+  * `llama3.1:8b`: **40.6% MCQ SCHR** trên toàn bộ 160 mục (95/160 đúng; CT1: **38.8%**, CT2 + `objdump`: **37.5%**, CT3: **47.5%**).
+  * `qwen2.5-coder:14b`: **23.8% MCQ SCHR** trên toàn bộ 160 mục (122/160 đúng; CT1: **21.2%**, CT2 + `objdump`: **20.0%**, CT3: **32.5%**).
 
 ---
 
@@ -81,7 +84,7 @@ IAM302t_SCHR_Bench/
 Kịch bản `reproduce.sh` hỗ trợ **2 chế độ tách biệt rõ ràng**:
 
 ### Chế độ A (Mặc định — Offline Verification & Statistical Reproduction, không cần GPU/Ollama):
-Biên dịch và chạy kiểm định động E0 trên 80 biến thể C (160 assertions), tái tạo ngữ cảnh `decompiled_contexts_80.json` (không chứa trường `semantic_target` và các từ khóa rò rỉ nhãn đã kiểm), và tính toán lại toàn bộ bảng thống kê (`PAPER_TABLES_SPRINGER.md`) từ 540 log thực nghiệm có sẵn:
+Biên dịch và chạy kiểm định động E0 trên 80 biến thể C (160 assertions), tái tạo ngữ cảnh `decompiled_contexts_80.json` (không chứa trường `semantic_target` và các từ khóa rò rỉ nhãn đã kiểm), và tính toán lại toàn bộ bảng thống kê (`PAPER_TABLES_SPRINGER.md`) từ 860 log thực nghiệm có sẵn (540 Return-Value + 320 Gold Set MCQ):
 ```bash
 bash reproduce.sh
 ```

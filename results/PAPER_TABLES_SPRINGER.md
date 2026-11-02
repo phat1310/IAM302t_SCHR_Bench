@@ -1,15 +1,17 @@
 # BẢNG KẾT QUẢ THỰC NGHIỆM SCHR-BENCH (GENERATED AUTOMATICALLY BY `step4_compute_statistics_and_tables.py`)
 
-## 1. Bảng Trung Tâm (E1 + E2 + E3): SCHR (%), 95% Wilson CI, Miss Rate, BLEU & Spearman $\rho$
+## 1. Bảng Trung Tâm (E1 + E2 + E3): SCHR (%), 95% Wilson CI, Miss Rate, BLEU, Spearman $\rho$ & Recompilability
 
-| Mô hình (LLM) | Tầng Ngữ cảnh | Số mẫu ($N$) | Lỗi Ảo giác | **SCHR (%) [95% Wilson CI]** | Miss Rate trên Mutant (%) | BLEU (Orig vs Mut) | BLEU (Cặp Lỗi vs Đúng) | Spearman $\rho$ ($p$) | Latency TB (s) |
-| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| `llama3.1:8b` | **CT1** | 80 | 31 | **38.8%** [28.8%, 49.7%] | 32.5% (13/40) | 0.376 | 0.423 vs 0.234 | +0.326 (`p=0.0335`) | 6.93s |
-| `llama3.1:8b` | **CT2** | 80 | 29 | **36.2%** [26.6%, 47.2%] | 27.5% (11/40) | 0.4 | 0.457 vs 0.282 | +0.324 (`p=0.0347`) | 7.33s |
-| `llama3.1:8b` | **CT3** | 80 | 28 | **35.0%** [25.5%, 45.9%] | 27.5% (11/40) | 0.462 | 0.532 vs 0.333 | +0.293 (`p=0.0593`) | 7.53s |
-| `qwen2.5-coder:14b` | **CT1** | 80 | 19 | **23.8%** [15.8%, 34.1%] | 27.5% (11/40) | 0.358 | 0.497 vs 0.256 | +0.399 (`p=0.0073`) | 26.69s |
-| `qwen2.5-coder:14b` | **CT2** | 80 | 16 | **20.0%** [12.7%, 30.0%] | 25.0% (10/40) | 0.403 | 0.584 vs 0.294 | +0.495 (`p=0.0004`) | 26.77s |
-| `qwen2.5-coder:14b` | **CT3** | 80 | 15 | **18.8%** [11.7%, 28.7%] | 25.0% (10/40) | 0.409 | 0.582 vs 0.315 | +0.475 (`p=0.0009`) | 26.31s |
+- **Kiểm định Recompilability (E2 — `gcc -fsyntax-only` trên 80 hàm CT1):** **100.0% (80/80)** biên dịch thành công (kể cả toàn bộ 40/40 biến thể đột biến ngược logic an ninh), chứng minh *"biên dịch lại được"* không đồng nghĩa *"đúng hành vi an ninh"*.
+
+| Mô hình (LLM) | Tầng Ngữ cảnh | Số mẫu ($N$) | Lỗi Ảo giác | **SCHR (%) [95% Wilson CI]** | Miss Rate trên Mutant (%) | BLEU (Orig vs Mut) | BLEU (Cặp Lỗi vs Đúng) | Spearman $\rho$ ($p$) | Recompilability | Latency TB (s) |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| `llama3.1:8b` | **CT1** | 80 | 31 | **38.8%** [28.8%, 49.7%] | 32.5% (13/40) | 0.376 | 0.423 vs 0.234 | +0.326 (`p=0.0335`) | 100.0% (80/80) | 6.93s |
+| `llama3.1:8b` | **CT2** | 80 | 29 | **36.2%** [26.6%, 47.2%] | 27.5% (11/40) | 0.4 | 0.457 vs 0.282 | +0.324 (`p=0.0347`) | 100.0% (80/80) | 7.33s |
+| `llama3.1:8b` | **CT3** | 80 | 28 | **35.0%** [25.5%, 45.9%] | 27.5% (11/40) | 0.462 | 0.532 vs 0.333 | +0.293 (`p=0.0593`) | 100.0% (80/80) | 7.53s |
+| `qwen2.5-coder:14b` | **CT1** | 80 | 19 | **23.8%** [15.8%, 34.1%] | 27.5% (11/40) | 0.358 | 0.497 vs 0.256 | +0.399 (`p=0.0073`) | 100.0% (80/80) | 26.69s |
+| `qwen2.5-coder:14b` | **CT2** | 80 | 16 | **20.0%** [12.7%, 30.0%] | 25.0% (10/40) | 0.403 | 0.584 vs 0.294 | +0.495 (`p=0.0004`) | 100.0% (80/80) | 26.77s |
+| `qwen2.5-coder:14b` | **CT3** | 80 | 15 | **18.8%** [11.7%, 28.7%] | 25.0% (10/40) | 0.409 | 0.582 vs 0.315 | +0.475 (`p=0.0009`) | 100.0% (80/80) | 26.31s |
 
 ## 2. Phân tích SCHR (%) theo Nhóm Hành vi An ninh (Categories A, S, P, E, C; $n=16$ mỗi nhóm)
 
@@ -70,3 +72,16 @@
 | **Condition & Boolean Inversion ($\mathcal{M}_1$)** | `condition_inversion`, `boolean_operator`, `boolean_precedence`, `condition_weakening` | 12 | 5 | **17 (34.0%)** |
 | **Relational Boundary Shift ($\mathcal{M}_4$)** | `relational_boundary` | 5 | 1 | **6 (12.0%)** |
 | **Target Swap & Step Omission ($\mathcal{M}_3, \mathcal{M}_5$)** | `api_effect_swap`, `mock_api_swap`, `step_omission` | 2 | 1 | **3 (6.0%)** |
+
+## 7. Đánh giá Trắc nghiệm Tự động Gold Set MCQ (`dataset/gold_set_mcq.json` — 160 mục/model, 320 lượt chạy, tích hợp `objdump` thật ở CT2/CT3)
+
+| Mô hình (LLM) | Phân tập Đánh giá | Số mục ($N$) | Trả lời Đúng | Lỗi Ảo giác | **MCQ SCHR (%) [95% Wilson CI]** | Độ chính xác (Accuracy %) | Latency TB (s) |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| `llama3.1:8b` | **Toàn bộ Gold Set (All Tiers)** | 160 | 95 | 65 | **40.6%** [33.3%, 48.4%] | 59.4% | 1.46s |
+| `llama3.1:8b` | CT1 (Stripped Pseudocode, $n=80$) | 80 | 49 | 31 | **38.8%** [28.8%, 49.7%] | 61.3% | 1.1s |
+| `llama3.1:8b` | CT2 (+Real `objdump -d` Disassembly, $n=40$) | 40 | 25 | 15 | **37.5%** [24.2%, 53.0%] | 62.5% | 1.7s |
+| `llama3.1:8b` | CT3 (+Real `objdump -d` & Callee Spec, $n=40$) | 40 | 21 | 19 | **47.5%** [32.9%, 62.5%] | 52.5% | 1.92s |
+| `qwen2.5-coder:14b` | **Toàn bộ Gold Set (All Tiers)** | 160 | 122 | 38 | **23.8%** [17.8%, 30.9%] | 76.2% | 4.28s |
+| `qwen2.5-coder:14b` | CT1 (Stripped Pseudocode, $n=80$) | 80 | 63 | 17 | **21.2%** [13.7%, 31.4%] | 78.8% | 3.38s |
+| `qwen2.5-coder:14b` | CT2 (+Real `objdump -d` Disassembly, $n=40$) | 40 | 32 | 8 | **20.0%** [10.5%, 34.8%] | 80.0% | 5.34s |
+| `qwen2.5-coder:14b` | CT3 (+Real `objdump -d` & Callee Spec, $n=40$) | 40 | 27 | 13 | **32.5%** [20.1%, 48.0%] | 67.5% | 5.03s |

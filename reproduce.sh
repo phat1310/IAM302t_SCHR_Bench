@@ -38,7 +38,8 @@ python3 code/step4_compute_statistics_and_tables.py
 if [ "$MODE" = "live" ]; then
     echo ""
     echo "[Live Mode] Executing Full LLM Benchmark Suite via Ollama (--max-pairs 40)..."
-    python3 code/step3_mcp_server_and_benchmark.py --max-pairs 40
+    python3 code/step3_mcp_server_and_benchmark.py --mode return --max-pairs 40
+    python3 code/step3_mcp_server_and_benchmark.py --mode mcq
 fi
 
 echo ""

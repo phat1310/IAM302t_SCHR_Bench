@@ -223,6 +223,10 @@ def main():
             obf3 = to_ghidra_stripped_pseudocode(sid, variant, helpers, target_line, obf_level=3)
 
             real_objdump = objdump_map.get(skey, {}).get("objdump_intel_O2", "")
+            real_objdump_anon = real_objdump.replace("<target>:", "<FUN_140001140>:")
+            ct2_with_objdump = (
+                f"{ct1}\n\n{ct2_asm}\n\n; --- Compiled PE64 objdump -d -M intel (-O2) ---\n{real_objdump_anon}"
+            ) if real_objdump_anon else f"{ct1}\n\n{ct2_asm}"
 
             records.append({
                 "sample_key": skey,
@@ -235,10 +239,10 @@ def main():
                 "tests": item["tests"],
                 "contexts": {
                     "CT1": ct1,
-                    "CT2": f"{ct1}\n\n{ct2_asm}",
-                    "CT2_Objdump": f"{ct1}\n\n; --- Compiled PE64 objdump -d -M intel (-O2) ---\n{real_objdump}" if real_objdump else f"{ct1}\n\n{ct2_asm}",
-                    "CT3": f"{ct1}\n\n{ct2_asm}\n\n{ct3_spec}",
-                    "CT4": f"{ct1}\n\n{ct2_asm}\n\n{ct3_spec}\n\n{ct4_neigh}",
+                    "CT2": ct2_with_objdump,
+                    "CT2_Objdump": f"{ct1}\n\n; --- Compiled PE64 objdump -d -M intel (-O2) ---\n{real_objdump_anon}" if real_objdump_anon else f"{ct1}\n\n{ct2_asm}",
+                    "CT3": f"{ct2_with_objdump}\n\n{ct3_spec}",
+                    "CT4": f"{ct2_with_objdump}\n\n{ct3_spec}\n\n{ct4_neigh}",
                 },
                 "obfuscated_ct1": {
                     "Obf0": ct1,

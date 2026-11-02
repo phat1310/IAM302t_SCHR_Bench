@@ -97,11 +97,11 @@ class SCHRBenchMCPServer:
             f"{mcq_item['question']}\n\n"
             f"Options:\n{opt_lines}\n\n"
             f"Select the single accurate option (A, B, C, or D) and return JSON only: "
-            f"{{\"reasoning\": \"...\", \"choice\": \"<A|B|C|D>\"}}"
+            f"{{\"choice\": \"<A|B|C|D>\"}}"
         )
 
 
-def query_ollama(model: str, system_prompt: str, user_prompt: str, ollama_url: str = None, timeout: int = 120) -> dict:
+def query_ollama(model: str, system_prompt: str, user_prompt: str, ollama_url: str = None, timeout: int = 120, num_predict: int = 160) -> dict:
     target_url = ollama_url or OLLAMA_URL
     payload = {
         "model": model,
@@ -112,7 +112,7 @@ def query_ollama(model: str, system_prompt: str, user_prompt: str, ollama_url: s
         "options": {
             "temperature": 0.0,
             "seed": 42,
-            "num_predict": 160
+            "num_predict": num_predict
         }
     }
     req = urllib.request.Request(
@@ -271,7 +271,7 @@ def run_mcq_suite(mcp: SCHRBenchMCPServer, models: list, ollama_url: str = None)
             if log_id in existing:
                 continue
             prompt = mcp.build_mcq_prompt(item)
-            res = query_ollama(model, sys_prompt, prompt, ollama_url=target_url)
+            res = query_ollama(model, sys_prompt, prompt, ollama_url=target_url, num_predict=12)
             is_correct = (res["choice"] == item["ground_truth_choice"])
             existing[log_id] = {
                 "model": model,

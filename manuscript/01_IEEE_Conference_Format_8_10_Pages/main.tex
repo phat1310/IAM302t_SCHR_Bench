@@ -40,7 +40,7 @@ Mai-Hoang Dinh\IEEEauthorrefmark{1}\IEEEauthorrefmark{2}
 \maketitle
 
 \begin{abstract}
-Large Language Models (LLMs) are increasingly integrated into software reverse engineering (SRE) workflows to summarize stripped pseudocode and assist analysts in reasoning about program behavior. However, in security-relevant code analysis, incorrect LLM predictions---such as inverting conditional branches, miscomputing bitwise masks, or overlooking boundary conditions---introduce operational risks during triage. Classical evaluation metrics such as BLEU measure surface lexical similarity rather than exact semantic behavior. In this paper, we present \textbf{SCHR-Bench}, a controlled benchmark designed to evaluate \textbf{Security-Critical Hallucination Rates (SCHR)} via differential source-level mutations paired with execution-verified return-value ground truth. We construct 40 controlled C security-logic function pairs ($N = 80$ compiled variants) spanning five functional categories: Mock Debugger Policy (Category A), Toy Byte Decoder (Category S), Persistence State Mock (Category P), Environment Signal Mock (Category E), and Control-Flow \& Boundary Logic (Category C). All 80 C variants are compiled with MinGW-w64 (\texttt{x86\_64-w64-mingw32-gcc}) and executed across 2 input vectors per pair (80 input vectors, 160 execution assertions in Experiment E0), confirming that 40/40 pairs diverge on their primary discriminating input vector (Vector 1) and 50/80 total input vectors produce divergent outputs. Across 540 logged evaluation runs ($\tau = 0.0, \text{seed} = 42$), we evaluate two open-weight models (\texttt{LLaMA-3.1 8B} and \texttt{Qwen2.5-Coder 14B}) on a concrete return-value prediction task across three source-derived normalized context tiers (CT1--CT3, $N=80$ variants per tier) and a 5-pair easy-tier pilot subset ($N=10$ variants) under four simulated OLLVM-style structural transformation templates (\texttt{Obf0}--\texttt{Obf3}). Our empirical results show that: (1) under stripped pseudocode (CT1), \texttt{LLaMA-3.1 8B} exhibits an SCHR of 38.8\% [95\% Wilson CI: 28.8\%, 49.7\%] and a Mutant Miss Rate of 32.5\%, whereas \texttt{Qwen2.5-Coder 14B} achieves 23.8\% [15.8\%, 34.1\%] and a Mutant Miss Rate of 27.5\%, with toy byte decoders (Category S) remaining the most error-prone category (56.2\% SCHR for both models); (2) pair-level Spearman rank correlation ($\rho \in [+0.293, +0.495]$) shows that function pairs with SCHR errors exhibit higher pairwise lexical overlap ($\text{BLEU} \in [0.423, 0.584]$) between original and mutant explanations than error-free pairs ($\text{BLEU} \in [0.234, 0.333]$); (3) appending register-mapped pseudo-assembly (CT2) and constant/callee specifications (CT3) reduces point-estimate error rates ($38.8\% \rightarrow 35.0\%$ on LLaMA-3.1; $23.8\% \rightarrow 18.8\%$ on Qwen2.5-Coder), but McNemar's paired test ($p \in [0.2888, 0.7518]$) indicates that these differences are not statistically significant at $\alpha = 0.05$; and (4) on the $N=10$ pilot subset, combined structural obfuscation (\path{Obf3_Combined}) increases error counts by one instance for both models ($3/10 \rightarrow 4/10$ on LLaMA-3.1; $1/10 \rightarrow 2/10$ on Qwen2.5-Coder).
+Large Language Models (LLMs) are increasingly integrated into software reverse engineering (SRE) workflows to summarize stripped pseudocode and assist analysts in reasoning about binary behavior. However, recent empirical studies reveal that LLMs suffer a \textbf{46.7\% error rate} when interpreting stealth and evasion techniques~\cite{pordanesh2024exploring} and that each LLM hallucination induces at least a \textbf{231\% slowdown} in human reverse-engineering comprehension~\cite{basque2026decompiling}. Classical evaluation metrics such as BLEU and syntactic recompilability measure surface form rather than whether an LLM detects semantics-inverting code changes. In this paper, we present \textbf{SCHR-Bench}, a controlled benchmark designed to evaluate \textbf{Security-Critical Hallucination Rates (SCHR)} via differential source-level mutations paired with execution-verified ground truth, without executing live malware or requiring commercial IDA Pro licenses. We construct 40 controlled C security-logic function pairs ($N = 80$ compiled PE64 variants) spanning five functional categories (Mock Debugger Policy, Toy Byte Decoder, Persistence State Mock, Environment Signal Mock, and Control-Flow \& Boundary Logic) and five binary-adapted mutation operator families ($\mathcal{M}_1$--$\mathcal{M}_5$). All 80 C variants are compiled with MinGW-w64 (\texttt{x86\_64-w64-mingw32-gcc -O2}) and verified across 80 input vectors (160 execution assertions in Experiment E0), confirming that 40/40 pairs diverge on their primary discriminating input vector (Vector 1) and 50/80 total vectors diverge. Across \textbf{860 total logged LLM evaluations} ($\tau = 0.0, \text{seed} = 42$)---comprising 540 return-value and explanation runs (\path{benchmark_raw_logs.json}) and 320 mutation-aware multiple-choice question (MCQ) runs (\path{benchmark_mcq_logs.json}) incorporating real \texttt{objdump -d -M intel} disassembly---we evaluate \texttt{LLaMA-3.1 8B} and \texttt{Qwen2.5-Coder 14B}. Our results show that: (1) under stripped pseudocode (CT1), \texttt{LLaMA-3.1 8B} exhibits a return-value SCHR of 38.8\% [95\% Wilson CI: 28.8\%, 49.7\%] (MCQ SCHR: 38.8\% at CT1, 40.6\% overall across 160 items), whereas \texttt{Qwen2.5-Coder 14B} achieves 23.8\% [15.8\%, 34.1\%] (MCQ SCHR: 21.2\% at CT1, 23.8\% overall); (2) while 100.0\% (80/80) of stripped CT1 routines pass syntactic C recompilability (\texttt{gcc -fsyntax-only}), pair-level Spearman rank correlation ($\rho \in [+0.293, +0.495]$) confirms that pairs with SCHR errors exhibit higher pairwise BLEU similarity ($\text{BLEU} \in [0.423, 0.584]$) than error-free pairs ($\text{BLEU} \in [0.234, 0.333]$); (3) appending assembly (CT2) and constant/callee specifications (CT3) yields modest error reductions ($38.8\% \rightarrow 35.0\%$ on LLaMA-3.1; $23.8\% \rightarrow 18.8\%$ on Qwen2.5-Coder; and $38.8\% \rightarrow 37.5\%$ on LLaMA CT2 with real \texttt{objdump}), though McNemar's test ($p \in [0.2888, 0.7518]$) indicates non-significance at $\alpha = 0.05$; and (4) on a preliminary 5-pair easy-tier pilot subset ($N=10$), combined structural obfuscation (\path{Obf3_Combined}) increases errors by one unit for both models.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -48,97 +48,145 @@ Reverse Engineering, Large Language Models, Hallucination Evaluation, Differenti
 \end{IEEEkeywords}
 
 \section{Introduction}
-Software Reverse Engineering (SRE) of stripped binary executables is an important capability in security auditing, vulnerability assessment, and incident analysis~\cite{shoshitaishvili2016sok,cifuentes1995decompilation}. Because raw assembly instructions impose cognitive overhead on human analysts, workflows commonly rely on decompilers such as Ghidra~\cite{ghidra2024nsa} and IDA Pro to lift machine code into C-like pseudocode~\cite{yakdan2015norepdb}. Recently, Large Language Models (LLMs) have been adopted to summarize decompiled routines, infer variable roles, and trace branch conditions~\cite{tan2024llm4decompile,hui2024qwen25coder,dubey2024llama3,wong2023refining}.
+Software Reverse Engineering (SRE) of stripped binary executables is an essential capability in security auditing, vulnerability assessment, and incident response~\cite{shoshitaishvili2016sok,cifuentes1995decompilation}. Because raw assembly instructions impose heavy cognitive load on analysts, operational workflows rely on decompilers such as NSA Ghidra~\cite{ghidra2024nsa} to lift machine code into C-like pseudocode~\cite{yakdan2015norepdb}. Recently, Large Language Models (LLMs) have been widely adopted to summarize decompiled functions, infer variable roles, and explain branch conditions~\cite{pordanesh2024exploring,basque2026decompiling,tan2024llm4decompile,hui2024qwen25coder,dubey2024llama3}.
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.94\textwidth]{figures/fig1.png}
-\caption{Overview of the SCHR-Bench Evaluation Pipeline: (1) Tier 1 Host GPU Inference Server running Ollama (\texttt{llama3.1:8b} and \texttt{qwen2.5-coder:14b} at $\tau = 0.0, \text{seed} = 42$); and (2) Tier 2 Compilation, Context Generation, and Evaluation Rig executing MinGW-w64 compilation (\texttt{step0\_verify\_e0\_windows.py}), normalized context construction (\texttt{extract\_contexts.py}), and statistical evaluation (\texttt{step4\_compute\_statistics\_and\_tables.py}). Note: Tier 3 shown in the system diagram represents an optional isolated sandbox environment not used in the quantitative benchmark.}
+\caption{Overview of the SCHR-Bench Evaluation Pipeline: (1) Tier 1 Host GPU Inference Server running Ollama (\texttt{llama3.1:8b} and \texttt{qwen2.5-coder:14b} at $\tau = 0.0, \text{seed} = 42$); and (2) Tier 2 Compilation, Context Generation, and Evaluation Rig executing MinGW-w64 compilation (\texttt{step0\_verify\_e0\_windows.py}), context and real \texttt{objdump -d} assembly construction (\texttt{extract\_contexts.py}), and statistical evaluation (\texttt{step4\_compute\_statistics\_and\_tables.py}). Note: Tier 3 shown in the diagram represents an optional isolated sandbox not used in the quantitative benchmark.}
 \label{fig:architecture}
 \end{figure*}
 
-However, LLMs remain prone to \textit{hallucinations}~\cite{ji2023hallucination,min2023factscore}. In reverse engineering tasks, an incorrect prediction regarding a branch condition, bitwise mask, or arithmetic accumulator can invert the analyst's understanding of a routine's decision outcome. Evaluating such semantic errors requires addressing two methodological challenges:
+However, LLMs remain prone to plausible-sounding \textit{hallucinations}~\cite{ji2023hallucination,min2023factscore}. Empirical evidence highlights the severity of this problem in binary analysis: Pordanesh and Tan~\cite{pordanesh2024exploring} demonstrated that even GPT-4 suffers a \textbf{46.7\% error rate} when analyzing stealth and evasion techniques (and a 26.7\% error rate on persistence routines), while Basque et al.~\cite{basque2026decompiling} found in a 48-participant human--LLM reverse-engineering study at NDSS 2026 that each LLM hallucination causes at least a \textbf{231\% slowdown} in analyst comprehension speed and frequently misleads analysts into incorrect conclusions. Similarly, Katpara and Sankaran~\cite{katpara2026firmware} identified the lack of hallucination-specific benchmarks for binary and malware analysis as critical open research gaps (Gaps 7 and 8).
+
+\begin{table}[t]
+\centering
+\caption{Positioning of \textbf{SCHR-Bench (Group 7)} vs.\ \textbf{VeRA (Group 1)}.}
+\label{tab:vera_positioning}
+\resizebox{0.98\columnwidth}{!}{%
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Dimension} & \textbf{VeRA (Group 1)} & \textbf{SCHR-Bench (Group 7)} \\
+\midrule
+\textbf{Ground Truth} & Written C + dynamic test vectors & \textbf{Controlled security-critical mutations} \\
+\textbf{Core Question} & ``How many claims are true vs.\ false?'' & \textbf{``Does LLM detect a mutated security logic?''} \\
+\textbf{Primary Focus} & Static + dynamic claim verifier & \textbf{SCHR metric}, MCQ \& return-value oracle \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\textbf{Scope and Positioning vs.\ VeRA (Group 1):} To construct a reproducible benchmark with deterministic ground truth without executing live malware, requiring commercial IDA Pro licenses, or relying on subjective manual labeling from scratch, we scope \textbf{SCHR-Bench} to x86-64 Windows PE functions under static analysis (NSA Ghidra~\cite{ghidra2024nsa} and GNU \texttt{objdump}) and light-to-moderate structural transformations, explicitly excluding commercial virtualization packers such as VMProtect (which destroy decompiler control-flow recovery and render both decompilers and LLMs uninformative). As summarized in Table~\ref{tab:vera_positioning}, our work complements the parallel \textbf{VeRA (Group 1)} project: whereas VeRA evaluates whether individual LLM claims pass static and dynamic verifiers (``Is the claim true or false?''), \textbf{SCHR-Bench (Group 7)} uses differential mutation testing to measure whether an LLM can detect that a single security-critical predicate, constant, or state transition has been inverted or altered (``Does the model catch a dangerous semantic change, or repeat a memorized template?'').
+
+We investigate four research questions (RQ1--RQ4) and their corresponding hypotheses (H1--H4): \textbf{RQ1 (H1):} Does the LLM detect single-point security-critical mutations or repeat the unmutated baseline answer? \textbf{RQ2 (H2):} Does SCHR capture semantic inversions that surface BLEU~\cite{papineni2002bleu} and syntactic C recompilability miss? \textbf{RQ3 (H3):} Does appending assembly (CT2) and constant/callee specifications (CT3) reduce SCHR relative to stripped pseudocode (CT1)? \textbf{RQ4 (H4):} How do structural obfuscation templates (\texttt{Obf0}--\texttt{Obf3}) affect SCHR on a pilot subset? All code, C sources, compiled PE64 binaries, real \texttt{objdump} disassembly, MCQ gold set, and 860 logged runs are available at \url{https://github.com/phat1310/IAM302t_SCHR_Bench}.
+
+\section{Related Work}
+
+\subsection{Empirical Studies of LLMs in Binary Reverse Engineering}
+Table~\ref{tab:guideline_related} summarizes the five foundational studies motivating SCHR-Bench:
 \begin{enumerate}
-    \item \textbf{Need for Deterministic Behavioral Ground Truth:} Stripped pseudocode removes identifier names, data types, and inline documentation. Benchmarks that focus on identifier naming or type recovery~\cite{lacomis2019dire,chen2022varbert} evaluate surface symbol restoration rather than whether an LLM accurately traces control-flow and arithmetic invariants under concrete inputs.
-    \item \textbf{Limitations of Surface Lexical Overlap:} Text similarity metrics such as BLEU~\cite{papineni2002bleu} compare n-gram overlap. When a single relational operator (\texttt{==} vs.\ \texttt{!=}) or XOR mask constant is mutated, the surrounding syntactic structure remains largely identical. Consequently, an LLM may generate highly similar natural language explanations for both original and mutated code while failing to predict the inverted return value.
+    \item \textbf{Error Rates on Stealth and Evasion (Pordanesh \& Tan, 2024~\cite{pordanesh2024exploring}):} Evaluating GPT-4 on binary reverse engineering, Pordanesh and Tan reported that error rates rise to \textbf{46.7\% on stealth and anti-analysis routines} and \textbf{26.7\% on persistence mechanisms}, motivating our focus on security-critical logic.
+    \item \textbf{Operational Cost of Hallucinations (Basque et al., NDSS 2026~\cite{basque2026decompiling}):} Across 48 human reverse engineers (109+ hours), Basque et al.\ showed that each LLM hallucination causes a \textbf{minimum 231\% slowdown} in comprehension speed and often leads directly to wrong solutions.
+    \item \textbf{Adapting Mutation Testing from Hardware HDL to Binary SRE (Qayyum et al., 2025~\cite{qayyum2025verilog}):} Qayyum et al.\ used mutation operators and tiered specification context for \textbf{Verilog HDL} debugging. Because hardware RTL mutations do not apply directly to stripped x86-64 binaries, we design and execution-verify five binary-specific mutation families ($\mathcal{M}_1$--$\mathcal{M}_5$, Section III-D) and adapt context escalation into static binary tiers (CT1--CT4).
+    \item \textbf{Atomic Claim Evaluation (Min et al., EMNLP 2023~\cite{min2023factscore}):} FActScore decomposes long-form text into atomic claims; we pair each atomic mutation with an execution-verified return-value oracle and a 160-item mutation-aware MCQ gold set.
+    \item \textbf{Benchmark Gaps in Malware \& Firmware RE (Katpara \& Sankaran, 2026~\cite{katpara2026firmware}):} Katpara and Sankaran identified the lack of hallucination benchmarks for binary/malware analysis as critical open gaps (Gaps 7 and 8).
 \end{enumerate}
 
-To investigate these issues in a controlled setting, we present \textbf{SCHR-Bench}, a benchmark built on 40 pairs of original ($f_{\text{orig}}$) and minimally mutated ($f_{\text{mut}}$) C functions ($N=80$ variants) modeling five security-relevant decision archetypes. Each C variant is compiled into a 64-bit Windows PE executable using MinGW-w64 and verified against concrete input vectors (Experiment E0) to establish an exact return-value oracle. We then evaluate open-weight LLMs on predicting the exact integer return value and explaining the routine's logic across normalized stripped pseudocode (CT1), register-mapped pseudo-assembly listings (CT2), enriched constant/callee specifications (CT3), and simulated structural obfuscation templates (\texttt{Obf0}--\texttt{Obf3}). Our code, dataset, compiled test harness, and 540 raw evaluation logs are available at \url{https://github.com/phat1310/IAM302t_SCHR_Bench}.
+\begin{table*}[t]
+\centering
+\caption{Summary of foundational related literature and how each informs the design of SCHR-Bench.}
+\label{tab:guideline_related}
+\resizebox{0.98\textwidth}{!}{%
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Reference} & \textbf{Key Empirical Finding / Method} & \textbf{Role in SCHR-Bench Design} \\
+\midrule
+Pordanesh \& Tan (2024)~\cite{pordanesh2024exploring} & \textbf{46.7\% LLM error rate} on stealth/evasion; 26.7\% on persistence & Direct motivation for measuring SCHR on security-critical logic \\
+Basque et al.\ (NDSS 2026)~\cite{basque2026decompiling} & \textbf{231\% minimum slowdown} per LLM hallucination in human SRE & Demonstrates operational cost of undetected RE hallucinations \\
+Qayyum et al.\ (TODAES 2025)~\cite{qayyum2025verilog} & Mutation testing \& tiered context for \textbf{Verilog HDL} debugging & Adapted from Verilog HDL into 5 binary mutation families ($\mathcal{M}_1$--$\mathcal{M}_5$) \& CT1--CT4 \\
+Min et al.\ (EMNLP 2023)~\cite{min2023factscore} & \textbf{FActScore}: atomic claim verification of LLM generations & Foundation for atomic mutation-aware MCQ and return-value grading \\
+Katpara \& Sankaran (2026)~\cite{katpara2026firmware} & Identifies \textbf{Gaps 7 \& 8}: lack of hallucination benchmarks in binary RE & Positions SCHR-Bench as a controlled ground-truth benchmark \\
+\bottomrule
+\end{tabular}%
+}
+\end{table*}
 
-\section{Related Work and Positioning}
-
-\subsection{Decompilation Artifacts and Program Analysis}
-Decompilers reconstruct structured high-level control flow from low-level machine instructions~\cite{cifuentes1995decompilation,yakdan2015norepdb,schwarz2002disassembly}. When symbols are stripped, decompiled code replaces meaningful identifiers with generic placeholders (\path{FUN_140001140}, \path{param_1}, \path{iVar1}). Prior machine learning approaches such as DIRE~\cite{lacomis2019dire} and VarBERT~\cite{chen2022varbert} train models to recover variable names and types from decompiler outputs, while TREX~\cite{pei2021trex} learns execution semantics from micro-traces for binary similarity.
-
-\subsection{LLMs for Reverse Engineering and Mutation Testing}
-Recent work such as LLM4Decompile~\cite{tan2024llm4decompile} and Wong et al.~\cite{wong2023refining} leverages LLMs to refine or re-decompile assembly into readable C code. While these studies evaluate syntactic re-compilability or n-gram similarity against reference source code, mutation testing~\cite{jia2011analysis} provides a complementary mechanism to probe whether an analysis tool is sensitive to small, semantics-altering code changes (e.g., flipping a branch predicate or constant). SCHR-Bench applies differential mutation testing to evaluate whether LLMs accurately compute behavioral return values when stripped C routines undergo controlled single-point mutations.
+\subsection{Decompiler Recovery and Neural Refinement}
+Classic decompilers reconstruct high-level control flow from machine code~\cite{cifuentes1995decompilation,yakdan2015norepdb,schwarz2002disassembly}, while DIRE~\cite{lacomis2019dire}, VarBERT~\cite{chen2022varbert}, TREX~\cite{pei2021trex}, LLM4Decompile~\cite{tan2024llm4decompile}, and Wong et al.~\cite{wong2023refining} recover identifier names, variable types, or re-compilable C source. SCHR-Bench complements these works by testing differential semantic sensitivity~\cite{jia2011analysis} under single-point mutations.
 
 \section{The SCHR-Bench Framework}
 
 \subsection{Task Formulation and Metric Definitions}
-Let $f_{\text{orig}}$ and $f_{\text{mut}} = \mathcal{M}(f_{\text{orig}})$ denote a pair of original and mutated C functions with identical signature \texttt{int target(int a, int b, int c)}. Across 40 function pairs, our dataset comprises $N = 80$ individual function variants (40 original and 40 mutant units). For each variant $i \in \{1, \dots, N\}$ and context tier $k \in \{\text{CT1, CT2, CT3}\}$, the context generator produces a stripped code representation $\mathcal{D}_k(i)$. Given $\mathcal{D}_k(i)$ and a concrete discriminating input vector $x_i = (a_i, b_i, c_i)$ (Vector 1 from \path{ground_truth_manifest.json}), the LLM is prompted to output a structured JSON object containing its predicted integer return value $\hat{y}_i \in \mathbb{Z}$ (\path{predicted_return}) and a brief natural language explanation $\mathcal{Y}_i$ (\path{security_interpretation}).
-
-We define two primary quantitative metrics (implemented in \path{code/step4_compute_statistics_and_tables.py}):
+Let $f_{\text{orig}}$ and $f_{\text{mut}} = \mathcal{M}(f_{\text{orig}})$ denote a pair of original and mutated C functions with signature \texttt{int target(int a, int b, int c)} ($N = 80$ variants across 40 pairs). We evaluate models across two automated layers in \path{code/step3_mcp_server_and_benchmark.py} and \path{code/step4_compute_statistics_and_tables.py}:
 \begin{enumerate}
-    \item \textbf{Security-Critical Hallucination Rate (SCHR):} Defined on the return-value prediction task as the proportion of evaluation units ($N=80$) where the model's predicted return value $\hat{y}_i$ does not match the execution-verified ground-truth return value $y_i^*$:
+    \item \textbf{Layer 1 --- Concrete Return-Value \& Explanation Task (\texttt{--mode return}, 540 runs):} Given code representation $\mathcal{D}_k(i)$ and discriminating input vector $x_i = (a_i, b_i, c_i)$ (Vector 1 from \path{ground_truth_manifest.json}), the LLM outputs a JSON object with its predicted integer return value $\hat{y}_i \in \mathbb{Z}$ (\path{predicted_return}) and a technical explanation $\mathcal{Y}_i$ (\path{security_interpretation}).
+    \item \textbf{Layer 2 --- Mutation-Aware Multiple-Choice Gold Set (\texttt{--mode mcq}, 320 runs):} Given $\mathcal{D}_k(i)$ (where CT2 and CT3 include real \texttt{objdump -d -M intel} disassembly from the compiled PE64 binary) and a 4-option question from \path{dataset/gold_set_mcq.json} (160 items: 80 CT1, 40 CT2, 40 CT3; balanced 40 A, 40 B, 40 C, 40 D, with the longest option correct in 40/160 = 25.0\% of items), the LLM selects option $\hat{c}_i \in \{\text{A, B, C, D}\}$.
+\end{enumerate}
+
+We define two primary error metrics:
+\begin{enumerate}
+    \item \textbf{Security-Critical Hallucination Rate (SCHR):} The proportion of evaluation units where the model's prediction ($\hat{y}_i$ or $\hat{c}_i$) does not match the execution-verified ground truth ($y_i^*$ or $c_i^*$):
     \begin{equation}
     \text{SCHR} = \frac{1}{N} \sum_{i=1}^N \mathbb{I}\left( \hat{y}_i \neq y_i^* \right)
     \end{equation}
-    where $\mathbb{I}(\cdot)$ is the indicator function.
-    \item \textbf{Mutant Miss Rate:} Defined across the $N_{\text{mut}} = 40$ mutated variants as the proportion of mutants on which the LLM fails to account for the mutation and instead predicts the ground-truth return value of the unmutated original counterpart ($y_{\text{orig}, j}^*$, logged as \path{opposite_variant_truth}):
+    \item \textbf{Mutant Miss Rate:} Across the $N_{\text{mut}} = 40$ mutated variants, the proportion of mutants on which the LLM predicts the unmutated original return value ($y_{\text{orig}, j}^*$):
     \begin{equation}
     \text{Miss Rate} = \frac{1}{N_{\text{mut}}} \sum_{j=1}^{N_{\text{mut}}} \mathbb{I}\left( \hat{y}_{\text{mut}, j} = y_{\text{orig}, j}^* \right)
     \end{equation}
 \end{enumerate}
-
-To quantify uncertainty on binomial proportions, we compute 95\% confidence intervals $[L, U]$ using the Wilson score interval~\cite{wilson1927probable}:
+We compute 95\% confidence intervals $[L, U]$ via the Wilson score interval~\cite{wilson1927probable}:
 \begin{equation}
 [L, U] = \frac{\hat{p} + \frac{z^2}{2N}}{1 + \frac{z^2}{N}} \pm \frac{z \sqrt{\frac{\hat{p}(1-\hat{p})}{N} + \frac{z^2}{4N^2}}}{1 + \frac{z^2}{N}}
 \end{equation}
-where $\hat{p} = k/N$ is the observed error proportion and $z = 1.96$. Because CT1, CT2, and CT3 are evaluated on the exact same 80 units, we test paired differences between tiers using McNemar's test~\cite{mcnemar1947note} with continuity correction ($\alpha = 0.05$): $\chi^2 = \frac{(|b - c| - 1)^2}{b + c}$, where $b$ counts units where CT1 erred ($\text{SCHR}=1$) and the enriched tier succeeded ($\text{SCHR}=0$), and $c$ counts units where CT1 succeeded but the enriched tier erred.
+with $z = 1.96$, and test paired differences between tiers using McNemar's test~\cite{mcnemar1947note} with continuity correction ($\alpha = 0.05$): $\chi^2 = \frac{(|b - c| - 1)^2}{b + c}$.
 
-\subsection{Evaluation Protocol and Pairwise BLEU Analysis}
-All LLM evaluations are executed via \path{code/step3_mcp_server_and_benchmark.py} (\texttt{--mode return --max-pairs 40}) using Ollama with deterministic decoding parameters ($\tau = 0.0, \text{seed} = 42, \text{num\_predict} = 160$, JSON mode). Note that while $\text{SCHR}$ (Eq.~1) is computed strictly from the exact integer match $\hat{y}_i = y_i^*$ on the discriminating input vector (Vector 1), our runner also supports a multiple-choice evaluation mode (\texttt{--mode mcq}) using a 160-item benchmark (\path{dataset/gold_set_mcq.json}) with balanced answer keys (40 A, 40 B, 40 C, 40 D) and length-neutralized options (the longest option is the correct choice in exactly 40/160 items, matching the 25.0\% random baseline).
-
-To examine how surface lexical similarity behaves across original and mutated explanations (RQ2), \path{step4_compute_statistics_and_tables.py} computes a custom pairwise 1--3-gram BLEU similarity score (\path{simple_bleu_similarity}, geometric mean of 1-, 2-, and 3-gram precision with brevity penalty) between the model's explanation for the original variant ($\mathcal{Y}_{\text{orig}, j}$) and its explanation for the mutated variant ($\mathcal{Y}_{\text{mut}, j}$) for each of the 40 pairs. We further compute the Spearman rank correlation ($\rho$) between pair-level BLEU similarity and pair-level SCHR error count across all 40 pairs.
+\subsection{RQ2 Comparison Metrics: Pairwise BLEU and C Recompilability}
+To test Hypothesis H2 (RQ2), \path{step4_compute_statistics_and_tables.py} computes: (1) pairwise 1--3-gram BLEU similarity (\path{simple_bleu_similarity}) between original and mutant explanations ($\mathcal{Y}_{\text{orig}, j}$ vs.\ $\mathcal{Y}_{\text{mut}, j}$) across all 40 pairs and its Spearman rank correlation ($\rho$) with pair-level SCHR errors; and (2) \textbf{Syntactic C Recompilability} (\path{compute_ct1_recompilability}), which prepends standard decompiler type definitions (\texttt{ulong}, \texttt{uint}) and static helper stubs to all 80 stripped CT1 routines and checks compilation via \texttt{x86\_64-w64-mingw32-gcc -std=c11 -fsyntax-only}.
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.92\textwidth]{figures/fig2_decompilation_diff.png}
-\caption{Illustrative conceptual diagram of a conditional polarity mutation ($\mathcal{M}_1$: \texttt{!= 0} vs.\ \texttt{== 0}). Note: This figure is an expository illustration containing human-added explanatory comments (\texttt{/* CRITICAL MUTATION */}) and conceptual assembly labels (\texttt{JZ}/\texttt{JNZ}); the actual prompts fed to the models in \texttt{results/decompiled\_contexts\_80.json} are generated by \texttt{code/extract\_contexts.py} and contain zero inline mutation comments.}
+\caption{Illustrative conceptual diagram of a conditional polarity mutation ($\mathcal{M}_1$: \texttt{!= 0} vs.\ \texttt{== 0}). Note: This figure is an expository illustration containing human-added explanatory comments (\texttt{/* CRITICAL MUTATION */}) and conceptual assembly labels (\texttt{JZ}/\texttt{JNZ}); the actual prompts in \texttt{results/decompiled\_contexts\_80.json} contain zero inline mutation comments.}
 \label{fig:decompilation_diff}
 \end{figure*}
 
-\subsection{Controlled C Security-Logic Dataset and Context Generation}
-To ensure deterministic execution and complete safety (zero live OS API calls or system modifications), all 40 function pairs (80 C files in \path{dataset/SCHR_Bench_C_Functions/src/}) are implemented as standalone, pure C functions with signature \texttt{int target(int a, int b, int c)}. The 40 pairs are organized into five categories (8 pairs / 16 variants per category; 2 easy, 3 medium, 3 tricky per category):
+\subsection{Controlled C Dataset and Context Tiers (CT1--CT4)}
+To guarantee operational safety (zero live malware execution or OS registry/service calls), all 40 function pairs (80 C files in \path{dataset/SCHR_Bench_C_Functions/src/}) are implemented as standalone, pure C routines (\texttt{int target(int a, int b, int c)}) across five categories (8 pairs / 16 variants per category; 2 easy, 3 medium, 3 tricky): \textbf{Category A (Mock Debugger Policy --- \texttt{A01}--\texttt{A08})}, \textbf{Category S (Toy Byte Decoder --- \texttt{S01}--\texttt{S08})}, \textbf{Category P (Persistence State Mock --- \texttt{P01}--\texttt{P08})}, \textbf{Category E (Environment Signal Mock --- \texttt{E01}--\texttt{E08})}, and \textbf{Category C (Control-Flow \& Boundary Logic --- \texttt{C01}--\texttt{C08})}.
+
+All 80 C variants are compiled into stripped 64-bit Windows PE executables (\path{dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/}) and disassembled via \texttt{objdump -d -M intel} (\path{disassembly_objdump_80.json}). In \path{code/extract_contexts.py}, we construct four static context tiers stored in \path{results/decompiled_contexts_80.json}:
 \begin{itemize}
-    \item \textbf{Category A (Mock Debugger Policy --- \texttt{A01}--\texttt{A08}):} Integer predicates simulating debugger flag checks, bitmask tests, elapsed-time thresholds, and parity checks.
-    \item \textbf{Category S (Toy Byte Decoder --- \texttt{S01}--\texttt{S08}):} Single-byte and two-byte XOR masks, additive/subtractive shifts, derived key offsets, and toy checksum accumulators.
-    \item \textbf{Category P (Persistence State Mock --- \texttt{P01}--\texttt{P08}):} Bitfield state transitions and helper function switches (\path{mock_add} setting bit 0 vs.\ \path{mock_remove} clearing bit 0).
-    \item \textbf{Category E (Environment Signal Mock --- \texttt{E01}--\texttt{E08}):} Threshold comparisons modeling memory size, time delta, masked tags, and composite score checks.
-    \item \textbf{Category C (Control-Flow \& Boundary Logic --- \texttt{C01}--\texttt{C08}):} Relational boundary branches, multi-branch state counters, bounded loops, and compound boolean precedence.
+    \item \textbf{CT1 (Simulated Stripped Pseudocode):} Strips \texttt{target} $\rightarrow$ \path{FUN_140001140}, parameters \texttt{a, b, c} $\rightarrow$ \path{param_1, param_2, param_3}, and static helpers \path{mock_add}/\path{mock_remove} $\rightarrow$ \path{FUN_140001100}/\path{FUN_140001110}.
+    \item \textbf{CT2 (+Assembly Anchor):} Appends both the Win64 fastcall register-mapped template (\texttt{ECX}, \texttt{EDX}, \texttt{R8D}) and the real \texttt{objdump -d -M intel} disassembly extracted from the compiled `-O2` PE64 binary (e.g., \texttt{test ecx,ecx; sete al} vs.\ \texttt{setne al}). \textit{Note:} In the initial 540 return-value runs (\path{benchmark_raw_logs.json}), CT2 contained the source-derived register template, whereas in the 320 Gold Set MCQ runs (\path{benchmark_mcq_logs.json}) and current \path{decompiled_contexts_80.json}, CT2 and CT3 include the real \texttt{objdump -d -M intel} disassembly.
+    \item \textbf{CT3 (+Enriched Constant \& Callee Specifications):} Appends explicit register mappings, hexadecimal-to-decimal immediate lookup tables, and helper specifications. (\textit{Prompt Hygiene Note:} In the initial 540 return-value runs, CT3 and several manifest questions inadvertently included the pair-level \path{semantic_target} descriptor; we subsequently purged \path{semantic_target} from \path{extract_contexts.py} and \path{decompiled_contexts_80.json} and neutralized all 40 questions in \path{ground_truth_manifest.json} prior to running the 320 MCQ evaluations).
+    \item \textbf{CT4 (Optional Caller Neighborhood):} Appends the caller harness (\texttt{main} at \path{0x140001200}) and cross-reference context.
 \end{itemize}
+For Experiment E4 (Section~\ref{sec:rq4}), \path{extract_contexts.py} generates four simulated structural obfuscation templates: \texttt{Obf0} (CT1 baseline), \path{Obf1_CFF} (state-machine \texttt{while(1)} dispatcher), \path{Obf2_Sub} (boolean-arithmetic identity substitution), and \path{Obf3_Combined} (combined dispatcher, substitution, and quadratic predicate).
 
-\textbf{Source-Derived Normalized Context Generation (\path{extract_contexts.py}):} All 80 C variants are compiled into stripped 64-bit Windows PE executables (\path{dataset/SCHR_Bench_C_Functions/bin/pe_x64_O2/}) alongside their real \texttt{objdump -d -M intel} disassembly (\path{disassembly_objdump_80.json}, linked into \path{decompiled_contexts_80.json} as a companion \path{CT2_Objdump} tier) and verified dynamically across both input vectors (\path{tools/check_suite.py} and \path{code/step0_verify_e0_windows.py}). For the 540 logged benchmark evaluations in \path{benchmark_raw_logs.json}, \path{code/extract_contexts.py} parses the C source files to construct controlled, source-derived normalized text representations (\path{CT1}--\path{CT3} and \path{Obf1}--\path{Obf3}) stored in \path{results/decompiled_contexts_80.json}:
-\begin{itemize}
-    \item \textbf{CT1 (Simulated Stripped Pseudocode):} Renames \texttt{target} $\rightarrow$ \path{FUN_140001140}, parameters \texttt{a, b, c} $\rightarrow$ \path{param_1, param_2, param_3}, and static helpers \path{mock_add}/\path{mock_remove} $\rightarrow$ \path{FUN_140001100}/\path{FUN_140001110} inside a standardized Ghidra-style function wrapper.
-    \item \textbf{CT2 (+Register-Mapped Pseudo-Assembly Template):} Appends a deterministic Win64 fastcall template mapping \path{param_1..3} to \texttt{ECX}, \texttt{EDX}, \texttt{R8D}, listing hexadecimal-to-decimal immediate conversions, and showing the register-substituted expression and static callee instructions (\texttt{OR EAX, 0x1} / \texttt{AND EAX, 0xfffffffe}).
-    \item \textbf{CT3 (+Enriched Constant \& Callee Specifications):} Appends explicit parameter-to-register mappings, immediate constant lookup tables, and algebraic specifications of helper functions. \textit{Methodological Note on Prompt Hygiene:} In our initial benchmark run (logged in \path{benchmark_raw_logs.json}), the CT3 template builder (\path{build_ct3_api_and_callee_spec}) and several manifest questions inadvertently included the pair-level \path{semantic_target} descriptor (e.g., phrases such as ``equality branch inverted'' on both original and mutant variants). We have removed \path{semantic_target} from CT3 and neutralized all 40 questions in the repository (\path{extract_contexts.py} and \path{ground_truth_manifest.json}, verified with zero leak-word matches), and we explicitly analyze the effect of this metadata confounding in Section~\ref{sec:rq3} and Section~\ref{sec:threats}.
-\end{itemize}
+\subsection{Binary-Adapted Mutation Operators ($\mathcal{M}_1$--$\mathcal{M}_5$) and E0 Verification}
+Unlike Verilog HDL mutations~\cite{qayyum2025verilog}, binary reverse engineering requires mutations that survive C compilation into stripped x86-64 machine instructions while altering a security-critical outcome. Table~\ref{tab:operator_mapping} documents the deterministic mapping (\path{OPERATOR_TO_FAMILY_M1_M5} in \path{step4_compute_statistics_and_tables.py}) from the 11 granular \path{mutation_operator} tags in \path{ground_truth_manifest.json} to our five formal mutation families ($\mathcal{M}_1$--$\mathcal{M}_5$).
 
-For Experiment E4 (Section~\ref{sec:rq4}), \path{extract_contexts.py} also generates four simulated OLLVM-inspired source-level structural templates: \texttt{Obf0} (CT1 baseline), \path{Obf1_CFF} (wrapping the body in a \texttt{while(1)} state dispatcher \path{local_state}), \path{Obf2_Sub} (replacing \texttt{!= 0} and \texttt{== 0} with boolean-arithmetic identity expressions), and \path{Obf3_Combined} (combining a dispatcher loop, identity substitution, and quadratic predicate \path{local_dispatch}).
+\begin{table*}[t]
+\centering
+\caption{Mapping of the 11 manifest \texttt{mutation\_operator} tags across all 40 pairs ($N=80$ variants) to the 5 binary-adapted mutation operator families ($\mathcal{M}_1$--$\mathcal{M}_5$).}
+\label{tab:operator_mapping}
+\resizebox{0.98\textwidth}{!}{%
+\begin{tabular}{@{}lllcc@{}}
+\toprule
+\textbf{Family} & \textbf{Binary Adaptation \& Security Meaning} & \textbf{Manifest Operator Tags (\texttt{ground\_truth\_manifest.json})} & \textbf{Pairs} & \textbf{Variants} \\
+\midrule
+$\mathcal{M}_1$ (\textbf{Invert}) & Flips branch polarity (\texttt{JE} $\leftrightarrow$ \texttt{JNE}, \texttt{SETE} $\leftrightarrow$ \texttt{SETNE}) & \texttt{condition\_inversion} (7), \texttt{boolean\_operator} (3), \texttt{condition\_weakening} (1), \texttt{boolean\_precedence} (1) & 12 & 24 \\
+$\mathcal{M}_2$ (\textbf{Const})  & Alters immediate XOR keys, bitmasks, or arithmetic shifts & \texttt{constant\_change} (8), \texttt{arithmetic\_operator} (3), \texttt{bitwise\_operator} (1) & 12 & 24 \\
+$\mathcal{M}_3$ (\textbf{Swap})   & Swaps state-update effect or callee target (\texttt{OR 1} $\leftrightarrow$ \texttt{AND \textasciitilde 1}) & \texttt{api\_effect\_swap} (4), \texttt{mock\_api\_swap} (1) & 5 & 10 \\
+$\mathcal{M}_4$ (\textbf{Bound})  & Shifts strict vs.\ inclusive relational boundary (\texttt{JL} $\leftrightarrow$ \texttt{JLE}) & \texttt{relational\_boundary} (8) & 8 & 16 \\
+$\mathcal{M}_5$ (\textbf{Omit})   & Omits a defensive check or state-cleanup operation & \texttt{step\_omission} (3) & 3 & 6 \\
+\midrule
+\textbf{Total} & \textbf{All 5 Binary-Adapted Mutation Families} & \textbf{All 11 Manifest Tags Verified in E0} & \textbf{40} & \textbf{80} \\
+\bottomrule
+\end{tabular}%
+}
+\end{table*}
 
-\subsection{Mutation Operators and Experiment E0 Execution Verification}
-Across the 40 function pairs, each mutant $f_{\text{mut}}$ is created via one of five mutation operator families documented in \path{ground_truth_manifest.json}:
-\begin{enumerate}
-    \item $\mathcal{M}_1$ \textbf{(Condition \& Boolean Inversion --- 12 pairs / 24 variants):} Inverts equality/branch polarity (\path{condition_inversion}: 7 pairs), logical operators (\path{boolean_operator}: 3 pairs), or boolean precedence/weakening (2 pairs).
-    \item $\mathcal{M}_2$ \textbf{(Constant \& Arithmetic Alteration --- 12 pairs / 24 variants):} Modifies immediate constants (\path{constant_change}: 8 pairs), arithmetic operators (\path{arithmetic_operator}: 3 pairs), or bitwise operators (\path{bitwise_operator}: 1 pair).
-    \item $\mathcal{M}_3$ \textbf{(Target / Effect Swap --- 5 pairs / 10 variants):} Swaps bitwise state effects or helper function targets (\path{api_effect_swap}: 4 pairs, \path{mock_api_swap}: 1 pair).
-    \item $\mathcal{M}_4$ \textbf{(Relational Boundary Shift --- 8 pairs / 16 variants):} Shifts strict vs.\ inclusive relational operators (\texttt{<} $\leftrightarrow$ \texttt{<=}, \texttt{>} $\leftrightarrow$ \texttt{>=}, \path{relational_boundary}: 8 pairs).
-    \item $\mathcal{M}_5$ \textbf{(Step Omission --- 3 pairs / 6 variants):} Omits a state-update or cleanup step (\path{step_omission}: 3 pairs).
-\end{enumerate}
-
-\textbf{Experiment E0 Verification (\path{code/step0_verify_e0_windows.py} and \path{tools/check_suite.py}):} Each of the 40 pairs is associated with 2 concrete input vectors `(a, b, c)` in \path{ground_truth_manifest.json} (80 input vectors $\times$ 2 variants = 160 execution assertions). Our verification script compiles all 80 C files with \path{tools/runner.c} using \path{x86_64-w64-mingw32-gcc} (v14.2.0, \texttt{-std=c11 -O2 -fno-inline -fno-lto}), executes all 80 compiled PE64 binaries across both input vectors, and asserts that stdout matches the manifest ground truth. As summarized in Table~\ref{tab:e0_suite}, all 160 execution assertions pass: \textbf{40/40 pairs (100.0\%)} produce divergent return values ($f_{\text{orig}} \neq f_{\text{mut}}$) on \textbf{Vector 1} (which serves as the discriminating input queried in the LLM benchmark), while \textbf{10/40 pairs} also diverge on Vector 2 (yielding \textbf{50/80 divergent vectors} overall, with the remaining 30/80 secondary vectors verifying non-mutated boundary preservation).
+\textbf{Experiment E0 Execution Verification (\path{step0_verify_e0_windows.py} and \path{tools/check_suite.py}):} Compiling and running all 80 PE64 binaries across both input vectors per pair (80 vectors $\times$ 2 variants = 160 assertions) with \path{x86_64-w64-mingw32-gcc} (v14.2.0, \texttt{-std=c11 -O2 -fno-inline -fno-lto}) confirms that all 160 execution assertions pass (Table~\ref{tab:e0_suite}): \textbf{40/40 pairs (100.0\%)} diverge ($f_{\text{orig}} \neq f_{\text{mut}}$) on \textbf{Vector 1} (the discriminating input queried in the LLM benchmark), and \textbf{50/80 total vectors} diverge.
 
 \begin{table}[t]
 \centering
@@ -163,36 +211,54 @@ Across the 40 function pairs, each mutant $f_{\text{mut}}$ is created via one of
 
 \section{Quantitative Evaluation and Empirical Findings}
 
-\subsection{RQ1: Baseline Return-Value Hallucination Rates ($N=80$)}
-Table~\ref{tab:core_results} reports the empirical evaluation across all 80 function variants (480 core evaluation runs across CT1--CT3 logged in \path{results/benchmark_raw_logs.json}). Under stripped pseudocode (CT1), the general-purpose \path{llama3.1:8b} model records a baseline SCHR of \textbf{38.8\%} (31/80 errors, 95\% Wilson CI: [28.8\%, 49.7\%]) and a Mutant Miss Rate of \textbf{32.5\%} (13/40 mutants where the model predicted the unmutated original return value). The code-specialized \path{qwen2.5-coder:14b} model achieves a lower baseline CT1 SCHR of \textbf{23.8\%} (19/80 errors, 95\% Wilson CI: [15.8\%, 34.1\%]) and a Mutant Miss Rate of \textbf{27.5\%} (11/40). Mean per-query inference latency on the local Ollama server was 6.93--7.53s for \path{llama3.1:8b} and 26.31--26.77s for \path{qwen2.5-coder:14b} (reflecting sequential single-batch execution of an 8B vs.\ 14B model).
+\subsection{RQ1: Return-Value and Gold Set MCQ Hallucination Rates}
+Table~\ref{tab:core_results} reports the Layer 1 return-value evaluation across all 80 function variants (480 core runs across CT1--CT3 in \path{results/benchmark_raw_logs.json}), and Table~\ref{tab:mcq_results} reports the Layer 2 automated Gold Set MCQ evaluation across all 160 balanced items per model (320 runs in \path{results/benchmark_mcq_logs.json}).
 
 \begin{table*}[t]
 \centering
-\caption{Core Quantitative Evaluation across Context Tiers (CT1--CT3) on the 80-variant dataset ($N=80$ per tier, 480 runs): SCHR (\%), 95\% Wilson CI, Mutant Miss Rate (\%), Pairwise BLEU (All / Error Pairs vs.\ Error-Free Pairs), Spearman $\rho$ ($p$-value), and Mean Latency.}
+\caption{Layer 1 Core Quantitative Evaluation (Return-Value Oracle, $N=80$ per tier, 480 runs): SCHR (\%), 95\% Wilson CI, Mutant Miss Rate (\%), Pairwise BLEU (All / Error vs.\ Ok Pairs), Spearman $\rho$ ($p$-value), Syntactic C Recompilability (\%), and Mean Latency.}
 \label{tab:core_results}
 \resizebox{0.98\textwidth}{!}{%
-\begin{tabular}{@{}llcccccccc@{}}
+\begin{tabular}{@{}llccccccccc@{}}
 \toprule
-\textbf{Model} & \textbf{Context Tier} & \textbf{$N$} & \textbf{Errors} & \textbf{SCHR (\%) [95\% Wilson CI]} & \textbf{Mutant Miss Rate} & \textbf{BLEU (All)} & \textbf{BLEU (Err / Ok Pairs)} & \textbf{Spearman $\rho$ ($p$-value)} & \textbf{Mean Latency} \\
+\textbf{Model} & \textbf{Context Tier} & \textbf{$N$} & \textbf{Errors} & \textbf{SCHR (\%) [95\% Wilson CI]} & \textbf{Mutant Miss Rate} & \textbf{BLEU (All)} & \textbf{BLEU (Err / Ok)} & \textbf{Spearman $\rho$ ($p$-value)} & \textbf{Recompilability} & \textbf{Latency} \\
 \midrule
-\texttt{llama3.1:8b}       & \textbf{CT1 (Pseudocode)}  & 80 & 31 & \textbf{38.8\%} [28.8\%, 49.7\%] & 32.5\% (13/40) & 0.376 & 0.423 / 0.234 & $+0.326$ ($p=0.0335$) & 6.93s \\
-\texttt{llama3.1:8b}       & \textbf{CT2 (+Pseudo-Asm)} & 80 & 29 & \textbf{36.2\%} [26.6\%, 47.2\%] & 27.5\% (11/40) & 0.400 & 0.457 / 0.282 & $+0.324$ ($p=0.0347$) & 7.33s \\
-\texttt{llama3.1:8b}       & \textbf{CT3 (+Enriched)}   & 80 & 28 & \textbf{35.0\%} [25.5\%, 45.9\%] & 27.5\% (11/40) & 0.462 & 0.532 / 0.333 & $+0.293$ ($p=0.0593$) & 7.53s \\
+\texttt{llama3.1:8b}       & \textbf{CT1 (Pseudocode)}  & 80 & 31 & \textbf{38.8\%} [28.8\%, 49.7\%] & 32.5\% (13/40) & 0.376 & 0.423 / 0.234 & $+0.326$ ($p=0.0335$) & 100.0\% (80/80) & 6.93s \\
+\texttt{llama3.1:8b}       & \textbf{CT2 (+Pseudo-Asm)} & 80 & 29 & \textbf{36.2\%} [26.6\%, 47.2\%] & 27.5\% (11/40) & 0.400 & 0.457 / 0.282 & $+0.324$ ($p=0.0347$) & 100.0\% (80/80) & 7.33s \\
+\texttt{llama3.1:8b}       & \textbf{CT3 (+Enriched)}   & 80 & 28 & \textbf{35.0\%} [25.5\%, 45.9\%] & 27.5\% (11/40) & 0.462 & 0.532 / 0.333 & $+0.293$ ($p=0.0593$) & 100.0\% (80/80) & 7.53s \\
 \midrule
-\texttt{qwen2.5-coder:14b} & \textbf{CT1 (Pseudocode)}  & 80 & 19 & \textbf{23.8\%} [15.8\%, 34.1\%] & 27.5\% (11/40) & 0.358 & 0.497 / 0.256 & $+0.399$ ($p=0.0073$) & 26.69s \\
-\texttt{qwen2.5-coder:14b} & \textbf{CT2 (+Pseudo-Asm)} & 80 & 16 & \textbf{20.0\%} [12.7\%, 30.0\%] & 25.0\% (10/40) & 0.403 & 0.584 / 0.294 & $+0.495$ ($p=0.0004$) & 26.77s \\
-\texttt{qwen2.5-coder:14b} & \textbf{CT3 (+Enriched)}   & 80 & 15 & \textbf{18.8\%} [11.7\%, 28.7\%] & 25.0\% (10/40) & 0.409 & 0.582 / 0.315 & $+0.475$ ($p=0.0009$) & 26.31s \\
+\texttt{qwen2.5-coder:14b} & \textbf{CT1 (Pseudocode)}  & 80 & 19 & \textbf{23.8\%} [15.8\%, 34.1\%] & 27.5\% (11/40) & 0.358 & 0.497 / 0.256 & $+0.399$ ($p=0.0073$) & 100.0\% (80/80) & 26.69s \\
+\texttt{qwen2.5-coder:14b} & \textbf{CT2 (+Pseudo-Asm)} & 80 & 16 & \textbf{20.0\%} [12.7\%, 30.0\%] & 25.0\% (10/40) & 0.403 & 0.584 / 0.294 & $+0.495$ ($p=0.0004$) & 100.0\% (80/80) & 26.77s \\
+\texttt{qwen2.5-coder:14b} & \textbf{CT3 (+Enriched)}   & 80 & 15 & \textbf{18.8\%} [11.7\%, 28.7\%] & 25.0\% (10/40) & 0.409 & 0.582 / 0.315 & $+0.475$ ($p=0.0009$) & 100.0\% (80/80) & 26.31s \\
 \bottomrule
 \end{tabular}%
 }
 \end{table*}
 
-Tables~\ref{tab:category_matrix} and \ref{tab:central_matrix} disaggregate SCHR across the five functional categories ($n=16$ variants per category) and five mutation operator families ($N=80$). Three patterns are observed:
-\begin{enumerate}
-    \item \textbf{High Error Rates on Bitwise/Arithmetic Decoders (Category S \& $\mathcal{M}_2$):} Both models exhibit their highest failure rates on Category S (Toy Byte Decoders), with \path{llama3.1:8b} recording 56.2\%--62.5\% SCHR and \path{qwen2.5-coder:14b} remaining at 56.2\% (9/16) across all three context tiers. Under $\mathcal{M}_2$ (Constant \& Arithmetic Alteration), both models record a 50.0\% (12/24) error rate at CT1, reflecting difficulties in mentally computing multi-step XOR and shift expressions without external execution tools.
-    \item \textbf{Lower Error Rates on Branch Predicates in Code-Specialized Models:} In Category A (Mock Debugger Policy) and Category E (Environment Signal Mock), \path{qwen2.5-coder:14b} achieves CT2/CT3 SCHR of 6.2\% (1/16) and 18.8\% (3/16), compared to 31.2\% (5/16) and 43.8\%--50.0\% for \path{llama3.1:8b}. In Category P (Persistence State Mock), \path{qwen2.5-coder:14b} reduces errors from 12.5\% (2/16) at CT1 to 0.0\% (0/16) at CT2 and CT3 when callee instructions (\texttt{OR EAX, 0x1} vs.\ \texttt{AND EAX, 0xfffffffe}) are explicitly shown.
-    \item \textbf{Condition Inversion ($\mathcal{M}_1$) vs.\ Relational Boundaries ($\mathcal{M}_4$):} At CT1, \path{llama3.1:8b} errs on 50.0\% (12/24) of $\mathcal{M}_1$ variants and 31.2\% (5/16) of $\mathcal{M}_4$ variants, whereas \path{qwen2.5-coder:14b} records 20.8\% (5/24) on $\mathcal{M}_1$ and 6.2\% (1/16) on $\mathcal{M}_4$.
-\end{enumerate}
+\begin{table*}[t]
+\centering
+\caption{Layer 2 Gold Set Multiple-Choice Question (MCQ) Evaluation (\texttt{dataset/gold\_set\_mcq.json}, 160 balanced items per model = 320 runs, incorporating real \texttt{objdump -d -M intel} disassembly in CT2 and CT3).}
+\label{tab:mcq_results}
+\resizebox{0.98\textwidth}{!}{%
+\begin{tabular}{@{}llcccccc@{}}
+\toprule
+\textbf{Model} & \textbf{Gold Set MCQ Subset} & \textbf{Items ($N$)} & \textbf{Correct} & \textbf{Errors} & \textbf{MCQ SCHR (\%) [95\% Wilson CI]} & \textbf{Accuracy (\%)} & \textbf{Mean Latency} \\
+\midrule
+\texttt{llama3.1:8b}       & \textbf{All Gold Set Items (CT1--CT3)} & \textbf{160} & \textbf{95}  & \textbf{65} & \textbf{40.6\%} [33.3\%, 48.4\%] & \textbf{59.4\%} & 1.46s \\
+\texttt{llama3.1:8b}       & CT1 (Stripped Pseudocode Baseline)      & 80           & 49           & 31          & \textbf{38.8\%} [28.8\%, 49.7\%] & 61.3\%          & 1.10s \\
+\texttt{llama3.1:8b}       & CT2 (+Real \texttt{objdump -d} Assembly) & 40          & 25           & 15          & \textbf{37.5\%} [24.2\%, 53.0\%] & 62.5\%          & 1.70s \\
+\texttt{llama3.1:8b}       & CT3 (+Real \texttt{objdump -d} \& Spec)  & 40          & 21           & 19          & \textbf{47.5\%} [32.9\%, 62.5\%] & 52.5\%          & 1.92s \\
+\midrule
+\texttt{qwen2.5-coder:14b} & \textbf{All Gold Set Items (CT1--CT3)} & \textbf{160} & \textbf{122} & \textbf{38} & \textbf{23.8\%} [17.8\%, 30.9\%] & \textbf{76.2\%} & 4.28s \\
+\texttt{qwen2.5-coder:14b} & CT1 (Stripped Pseudocode Baseline)      & 80           & 63           & 17          & \textbf{21.2\%} [13.7\%, 31.4\%] & 78.8\%          & 3.38s \\
+\texttt{qwen2.5-coder:14b} & CT2 (+Real \texttt{objdump -d} Assembly) & 40          & 32           & 8           & \textbf{20.0\%} [10.5\%, 34.8\%] & 80.0\%          & 5.34s \\
+\texttt{qwen2.5-coder:14b} & CT3 (+Real \texttt{objdump -d} \& Spec)  & 40          & 27           & 13          & \textbf{32.5\%} [20.1\%, 48.0\%] & 67.5\%          & 5.03s \\
+\bottomrule
+\end{tabular}%
+}
+\end{table*}
+
+Under stripped pseudocode (CT1, $N=80$), Layer 1 (return-value) and Layer 2 (MCQ) yield highly consistent baseline hallucination rates: \path{llama3.1:8b} records \textbf{38.8\%} (31/80) in return-value mode and \textbf{38.8\%} (31/80) in CT1 MCQ mode (overall 160-item MCQ SCHR: \textbf{40.6\%}), while \path{qwen2.5-coder:14b} records \textbf{23.8\%} (19/80) in return-value mode and \textbf{21.2\%} (17/80) in CT1 MCQ mode (overall 160-item MCQ SCHR: \textbf{23.8\%}). Tables~\ref{tab:category_matrix} and \ref{tab:central_matrix} disaggregate Layer 1 SCHR across the five functional categories ($n=16$ per category) and five mutation families ($\mathcal{M}_1$--$\mathcal{M}_5$, $N=80$). Both models exhibit their highest failure rates on Category S (Toy Byte Decoders: 56.2\%--62.5\%) and $\mathcal{M}_2$ (Constant \& Arithmetic Alteration: 50.0\% at CT1), while \path{qwen2.5-coder:14b} achieves lower error rates on $\mathcal{M}_1$ Condition Inversion (20.8\% vs.\ 50.0\% on LLaMA-3.1 at CT1) and Category P Persistence Mocks (0.0\% at CT2/CT3).
 
 \begin{table*}[t]
 \centering
@@ -236,12 +302,12 @@ Tables~\ref{tab:category_matrix} and \ref{tab:central_matrix} disaggregate SCHR 
 }
 \end{table*}
 
-\subsection{RQ2: Pair-Level Correlation Between BLEU Similarity and SCHR}
-To test whether surface lexical overlap between original and mutant explanations ($\mathcal{Y}_{\text{orig}}$ vs.\ $\mathcal{Y}_{\text{mut}}$) is associated with return-value errors, we disaggregated pairwise BLEU scores across the 40 function pairs into pairs with at least one SCHR error versus pairs with zero errors (Table~\ref{tab:core_results}). Across all models and tiers, \textbf{pairs suffering from SCHR errors exhibit higher pairwise BLEU similarity than error-free pairs}: at CT1, error pairs average $\text{BLEU} = 0.423$ ($n=30$) vs.\ $0.234$ ($n=10$) on \path{llama3.1:8b} (Spearman $\rho = +0.326, p = 0.0335$), and $0.497$ ($n=17$) vs.\ $0.256$ ($n=23$) on \path{qwen2.5-coder:14b} ($\rho = +0.399, p = 0.0073$). At CT2 and CT3, this positive correlation remains statistically significant on \path{qwen2.5-coder:14b} ($\rho = +0.495, p = 0.0004$ at CT2; $\rho = +0.475, p = 0.0009$ at CT3). When an LLM fails to notice a mutated operator or constant, it generates nearly identical boilerplate explanations for both $f_{\text{orig}}$ and $f_{\text{mut}}$, yielding high lexical similarity precisely when semantic discrimination fails.
+\subsection{RQ2: Why BLEU and Recompilability Fail to Catch SCHR Errors}
+Table~\ref{tab:core_results} confirms Hypothesis H2 across both metrics: (1) \textbf{100.0\% Syntactic C Recompilability (80/80):} Every stripped CT1 routine (including all 40 mutated variants) compiles cleanly under \texttt{gcc -fsyntax-only}, proving that syntactic compilability does not imply semantic correctness; and (2) \textbf{Positive Spearman Correlation Between BLEU and SCHR Errors:} Pairs with SCHR errors exhibit higher pairwise BLEU similarity than error-free pairs ($0.423$ vs.\ $0.234$ on LLaMA CT1, $\rho = +0.326, p = 0.0335$; $0.497$ vs.\ $0.256$ on Qwen CT1, $\rho = +0.399, p = 0.0073$; and $\rho = +0.495, p = 0.0004$ on Qwen CT2), because models generate nearly identical boilerplate explanations when they fail to notice a mutated operator or constant.
 
-\subsection{RQ3: Context Escalation and McNemar's Paired Analysis}
+\subsection{RQ3: Context Escalation, Real \texttt{objdump} Assembly, and McNemar's Test}
 \label{sec:rq3}
-Appending register-mapped pseudo-assembly (CT2) and constant/callee specifications (CT3) yields modest point-estimate error reductions: \path{llama3.1:8b} moves from 38.8\% $\rightarrow$ 36.2\% $\rightarrow$ 35.0\%, while \path{qwen2.5-coder:14b} moves from 23.8\% $\rightarrow$ 20.0\% $\rightarrow$ 18.8\%. Table~\ref{tab:mcnemar} presents McNemar's paired test across all 80 variants at significance level $\alpha = 0.05$. None of the paired transitions reaches statistical significance at $\alpha = 0.05$ ($p \in [0.2888, 0.7518]$): while CT2/CT3 corrects $b = 5\text{--}8$ errors, it simultaneously introduces $c = 2\text{--}5$ new regressions where CT1 was previously correct. Furthermore, in the logged CT3 runs, the accidental inclusion of pair-level \path{semantic_target} strings (Section III-C) contributed to higher pairwise explanation similarity ($\text{BLEU} = 0.462$ on LLaMA CT3) without providing statistically significant gains in return-value accuracy. We hypothesize that passive context concatenation can induce \textit{context dilution} and \textit{pseudocode primacy}, though validating this attention hypothesis requires mechanistic probing in future work.
+Appending assembly (CT2) and constant/callee specifications (CT3) reduces point-estimate error rates in Layer 1 ($38.8\% \rightarrow 36.2\% \rightarrow 35.0\%$ on LLaMA-3.1; $23.8\% \rightarrow 20.0\% \rightarrow 18.8\%$ on Qwen2.5-Coder), and providing real \texttt{objdump -d -M intel} disassembly in Layer 2 CT2 achieves lower MCQ SCHR than CT1 ($37.5\%$ vs.\ $38.8\%$ on LLaMA-3.1; $20.0\%$ vs.\ $21.2\%$ on Qwen2.5-Coder). However, McNemar's paired test across all 80 units (Table~\ref{tab:mcnemar}) shows that none of the transitions reaches statistical significance at $\alpha = 0.05$ ($p \in [0.2888, 0.7518]$), as fixing $b = 5\text{--}8$ baseline errors is partially offset by $c = 2\text{--}5$ new regressions. We hypothesize that passive context concatenation can induce \textit{context dilution} and \textit{pseudocode primacy}, where models fail to reconcile appended assembly instructions against initial C-like tokens.
 
 \begin{table}[t]
 \centering
@@ -271,7 +337,7 @@ Appending register-mapped pseudo-assembly (CT2) and constant/callee specificatio
 
 \subsection{RQ4: Preliminary Observations on Structural Obfuscation ($N=10$ Pilot Subset)}
 \label{sec:rq4}
-In Experiment E4, we evaluated both models across the four simulated structural obfuscation templates (\texttt{Obf0}, \path{Obf1_CFF}, \path{Obf2_Sub}, and \path{Obf3_Combined}) on a 5-pair easy-tier pilot subset (\texttt{A01}, \texttt{S01}, \texttt{P01}, \texttt{E01}, \texttt{C01}; $N=10$ variants, 60 obfuscation runs logged in \path{benchmark_raw_logs.json}). Because this subset contains only $N=10$ variants from the easy difficulty tier, we report these results strictly as preliminary observations (Table~\ref{tab:obfuscation}). On this subset, isolated \path{Obf1_CFF} or \path{Obf2_Sub} leaves error counts unchanged relative to \texttt{Obf0} (3/10 on \path{llama3.1:8b}; 1/10 on \path{qwen2.5-coder:14b}), whereas combining all three templates (\path{Obf3_Combined}) results in one additional error for each model ($3/10 \rightarrow 4/10$, 40.0\% [16.8\%, 68.7\%] on LLaMA-3.1; $1/10 \rightarrow 2/10$, 20.0\% [5.7\%, 51.0\%] on Qwen2.5-Coder). Given the wide Wilson confidence intervals at $N=10$, full-scale evaluation across all 80 variants compiled with actual OLLVM compiler passes~\cite{junod2015ollvm} is required before drawing general conclusions.
+In Experiment E4, we evaluated both models across the four simulated structural obfuscation templates (\texttt{Obf0}--\texttt{Obf3}) on a 5-pair easy-tier pilot subset (\texttt{A01}, \texttt{S01}, \texttt{P01}, \texttt{E01}, \texttt{C01}; $N=10$ variants, 60 runs in \path{benchmark_raw_logs.json}). As shown in Table~\ref{tab:obfuscation}, isolated \path{Obf1_CFF} or \path{Obf2_Sub} leaves error counts unchanged relative to \texttt{Obf0} (3/10 on LLaMA-3.1; 1/10 on Qwen2.5-Coder), whereas \path{Obf3_Combined} results in one additional error for each model ($3/10 \rightarrow 4/10$ on LLaMA-3.1; $1/10 \rightarrow 2/10$ on Qwen2.5-Coder). Given the small pilot sample ($N=10$), full-scale evaluation across all 80 variants compiled with real OLLVM passes~\cite{junod2015ollvm} is required before drawing general conclusions.
 
 \begin{table}[t]
 \centering
@@ -296,32 +362,8 @@ In Experiment E4, we evaluated both models across the four simulated structural 
 }
 \end{table}
 
-\subsection{Comparison with Related Decompilation Evaluation Approaches}
-Table~\ref{tab:sota_comparison} summarizes the design scope of SCHR-Bench relative to prior decompilation and code analysis studies (DIRE~\cite{lacomis2019dire}, VarBERT~\cite{chen2022varbert}, LLM4Decompile~\cite{tan2024llm4decompile}, and Wong et al.~\cite{wong2023refining}).
-
-\begin{table*}[t]
-\centering
-\caption{Scope comparison between SCHR-Bench and related decompiled code evaluation studies.}
-\label{tab:sota_comparison}
-\resizebox{0.98\textwidth}{!}{%
-\begin{tabular}{@{}lccccc@{}}
-\toprule
-\textbf{Study / Framework} & \textbf{Primary Task} & \textbf{Input Representation} & \textbf{Ground Truth Oracle} & \textbf{Primary Metric} & \textbf{Differential Mutants} \\
-\midrule
-DIRE (ASE '19)~\cite{lacomis2019dire} & Identifier naming & Decompiled AST/code & Debug symbol tables & Name accuracy & No \\
-VarBERT (USENIX Sec '22)~\cite{chen2022varbert} & Variable name \& type & Stripped pseudocode & Dwarf debug symbols & Type / Name accuracy & No \\
-LLM4Decompile (EMNLP '24)~\cite{tan2024llm4decompile} & Neural decompilation & x86-64 assembly & Original C source & Re-executability / Edit sim & No \\
-Wong et al.\ (2023)~\cite{wong2023refining} & Decompiled code refinement & Decompiled C snippets & Reference source & Pass rate / Syntactic quality & No \\
-\midrule
-\textbf{SCHR-Bench (Ours)} & \textbf{Return-value prediction} & \textbf{Normalized stripped C} & \textbf{160 E0 assertions} & \textbf{SCHR [Wilson CI],} & \textbf{Yes (40 Orig/Mut} \\
- & \textbf{on mutated logic} & \textbf{\& pseudo-asm (CT1--CT3)} & \textbf{(40/40 Vec 1 diff)} & \textbf{Miss Rate \& Spearman $\rho$} & \textbf{pairs, $N=80$)} \\
-\bottomrule
-\end{tabular}%
-}
-\end{table*}
-
 \section{Breakdown of Logged CT1 Failures by Mutation Mechanism}
-Across the 160 CT1 evaluations (80 variants $\times$ 2 models), exactly \textbf{50 return-value prediction errors} occurred (31 on \path{llama3.1:8b} and 19 on \path{qwen2.5-coder:14b}). Rather than relying on subjective human coding without inter-rater reliability, Table~\ref{tab:error_taxonomy} deterministically groups all 50 logged CT1 failures according to the objective ground-truth \path{mutation_operator} field recorded in \path{ground_truth_manifest.json} and \path{benchmark_raw_logs.json}: Constant \& Arithmetic Alteration ($\mathcal{M}_2$) accounts for 48.0\% (24/50), Condition \& Boolean Inversion ($\mathcal{M}_1$) accounts for 34.0\% (17/50), Relational Boundary Shift ($\mathcal{M}_4$) accounts for 12.0\% (6/50), and Target Swap / Step Omission ($\mathcal{M}_3, \mathcal{M}_5$) accounts for 6.0\% (3/50).
+Across the 160 Layer 1 CT1 evaluations (80 variants $\times$ 2 models), exactly \textbf{50 return-value prediction errors} occurred (31 on \path{llama3.1:8b} and 19 on \path{qwen2.5-coder:14b}). Table~\ref{tab:error_taxonomy} deterministically groups all 50 logged CT1 failures according to the objective \path{mutation_operator} tag in \path{ground_truth_manifest.json}: Constant \& Arithmetic Alteration ($\mathcal{M}_2$) accounts for 48.0\% (24/50), Condition \& Boolean Inversion ($\mathcal{M}_1$) accounts for 34.0\% (17/50), Relational Boundary Shift ($\mathcal{M}_4$) accounts for 12.0\% (6/50), and Target Swap / Step Omission ($\mathcal{M}_3, \mathcal{M}_5$) accounts for 6.0\% (3/50).
 
 \begin{table}[t]
 \centering
@@ -341,24 +383,26 @@ Across the 160 CT1 evaluations (80 variants $\times$ 2 models), exactly \textbf{
 }
 \end{table}
 
-\section{Threats to Validity, Future Work, and Conclusion}
+\section{Safety, Threats to Validity, and Conclusion}
 
-\subsection{Threats to Validity}
+\subsection{Ethical and Operational Safety}
+A primary advantage of SCHR-Bench is its strict adherence to static analysis safety: all 80 benchmark variants are self-contained, pure C functions (\texttt{int target(int a, int b, int c)}) containing zero live malware payloads and zero destructive OS calls. No live malware samples are distributed or executed in our repository.
+
+\subsection{Threats to Validity and Scope Limitations}
 \label{sec:threats}
-In accordance with empirical software engineering standards, we explicitly document the limitations and threats to validity of this study:
+We explicitly document the scope boundaries and limitations of our current study:
 \begin{enumerate}
-    \item \textbf{Construct Validity (Return-Value Task vs.\ Real-World SRE):} Our benchmark operationalizes security-critical hallucination via exact integer return-value prediction (\path{predicted_return}) on self-contained mock C functions (\texttt{int target(int a, int b, int c)}) with no real OS API calls. While this isolates arithmetic and branch reasoning with an unambiguous oracle, it measures input-specific execution tracing rather than open-ended malware reverse engineering.
-    \item \textbf{Internal Validity (Source-Derived Simulated Contexts):} The contexts in \path{decompiled_contexts_80.json} (CT1 stripped pseudocode, CT2 register-mapped pseudo-assembly, and \texttt{Obf1}--\texttt{Obf3} obfuscation templates) are generated deterministically from C source code by \path{extract_contexts.py} rather than extracted from real Ghidra decompiler or OLLVM binary builds. Consequently, our findings measure LLM sensitivity to identifier stripping and structural templates rather than real compiler/decompiler artifacts (such as \texttt{-O2} instruction scheduling or real Ghidra CFG recovery noise).
-    \item \textbf{Prompt Metadata Confounding in Logged CT3 Runs:} In the initial benchmark execution stored in \path{benchmark_raw_logs.json}, the CT3 context builder included the pair-level \path{semantic_target} string (which contained mutation words like ``inverted'' on both original and mutant variants) and several manifest questions contained mutation hints. Although we have fixed \path{extract_contexts.py} and \path{ground_truth_manifest.json} in the repository to be 100\% leak-free, the logged CT3 numbers in Table~\ref{tab:core_results} reflect prompts with that metadata present.
-    \item \textbf{Single-Vector LLM Evaluation \& E0 Vector Coverage:} Although Experiment E0 verifies 2 input vectors per pair (80 vectors / 160 assertions), only Vector 1 is guaranteed to discriminate all 40/40 pairs (Vector 2 diverges on 10/40 pairs and tests boundary preservation on 30/40 pairs), and \path{step3_mcp_server_and_benchmark.py} queries the LLM only on Vector 1 (\path{tests[0]}).
-    \item \textbf{Statistical Power and Sample Size:} With $N=80$ variants for CT1--CT3, our sample provides sufficient power to detect large effect sizes, but small context-tier differences (2--4 units in McNemar's test, $p \in [0.2888, 0.7518]$) are not statistically significant. Furthermore, Experiment E4 evaluates only an $N=10$ easy-tier pilot subset (5 pairs) and cannot support statistically significant claims about obfuscation.
-    \item \textbf{Single-Author Dataset Construction:} The C functions, mutations, and test vectors were authored within a single research group; expanding the benchmark with externally sourced real-world binary subroutines and multi-vector fuzzing oracles is needed to improve external validity.
+    \item \textbf{Mock C Functions vs.\ Real Malware and Live Win32 APIs:} Our 40 function pairs are self-contained mock routines (using static helpers \path{mock_add}/\path{mock_remove} rather than live Win32 APIs such as \texttt{RegSetValueEx} or \texttt{IsDebuggerPresent}) with one mutation per function pair. Thus, SCHR on our controlled suite represents a lower bound on the difficulty of real-world malware reverse engineering.
+    \item \textbf{Source-Derived Pseudocode and Obfuscation Templates vs.\ Full Ghidra/OLLVM Builds:} While all 80 variants are compiled to stripped PE64 binaries and disassembled with real \texttt{objdump -d -M intel} (used in our 320 Gold Set MCQ runs and linked in \path{decompiled_contexts_80.json}), the CT1 pseudocode and \texttt{Obf1}--\texttt{Obf3} templates are generated deterministically from C source by \path{extract_contexts.py} rather than lifted via Ghidra Headless or compiled with OLLVM passes~\cite{junod2015ollvm}. Moreover, Experiment E4 evaluates only an $N=10$ easy-tier pilot subset.
+    \item \textbf{Automated Return-Value \& MCQ Grading vs.\ Dual-Rater Free-Form Cohen's $\kappa$:} To guarantee deterministic reproducibility, our 860 logged runs rely on exact return-value matching (540 runs) and 4-option MCQ matching (320 runs). While we provide the free-form atomic claim prompt (\path{prompts/explanation_system_prompt.txt}), dual-annotator human grading of free-text explanations with Cohen's $\kappa$~\cite{cohen1960coefficient} was not conducted in this phase.
+    \item \textbf{Prompt Metadata Confounding in Initial Return-Value CT3 Logs:} In the initial 540 return-value runs, the CT3 template and several manifest questions inadvertently included the pair-level \path{semantic_target} string; this was fully removed in \path{extract_contexts.py}, \path{ground_truth_manifest.json}, and the 320 Gold Set MCQ evaluations.
+    \item \textbf{Model \& Decoding Coverage:} We evaluated two open-weight models (\texttt{llama3.1:8b} and \texttt{qwen2.5-coder:14b}) locally via Ollama at $\tau = 0.0$ (\texttt{seed=42}) rather than commercial cloud APIs or multi-seed $\tau > 0$ sampling.
 \end{enumerate}
 
 \subsection{Future Work and Conclusion}
-\textbf{Future Work:} Building on the limitations identified above, we plan to: (1) replace source-derived context templates with genuine Ghidra Headless decompiler outputs and `objdump -d` disassembly extracted from binaries compiled across `-O0`, `-O2`, and `-O3` optimization levels and real OLLVM compiler passes~\cite{junod2015ollvm}; (2) evaluate models across multiple discriminating and non-discriminating test vectors per function pair; and (3) investigate active mitigation architectures, such as \textit{Interleaved Chain-of-Thought (CoT) Register Tracing} and \textit{Model Context Protocol (MCP) Multi-Decompiler Verification}, which were not empirically evaluated in this study.
+\textbf{Future Work:} We plan to: (1) run Ghidra Headless decompilation and real OLLVM compiler passes across all 80 binaries; (2) conduct dual-annotator FActScore claim grading with Cohen's $\kappa$ on free-form explanations and compare against commercial API models; and (3) evaluate active mitigation architectures such as \textit{Interleaved Chain-of-Thought (CoT) Register Tracing} and \textit{Multi-Engine Decompiler Verification (E6)}.
 
-\textbf{Conclusion:} We presented \textbf{SCHR-Bench}, a controlled benchmark evaluating LLM return-value prediction errors across 40 original/mutant C security-logic function pairs ($N=80$ execution-verified variants, 540 logged runs). Our results show that \texttt{LLaMA-3.1 8B} and \texttt{Qwen2.5-Coder 14B} exhibit baseline CT1 error rates of 38.8\% and 23.8\% respectively (reaching 56.2\% on bitwise decoders), pair-level lexical similarity (BLEU) correlates positively with SCHR errors ($\rho \in [+0.293, +0.495]$), and passive context escalation (CT2/CT3) yields non-significant improvements under McNemar's test ($p \ge 0.2888$). All code, C sources, verification scripts, and raw logs are publicly available at \url{https://github.com/phat1310/IAM302t_SCHR_Bench}.
+\textbf{Conclusion:} We presented \textbf{SCHR-Bench}, a controlled differential mutation benchmark measuring whether LLMs detect security-critical behavioral changes across 40 original/mutant C function pairs ($N=80$ execution-verified PE64 variants, 860 total logged evaluations across return-value and Gold Set MCQ tasks). Our results show that \texttt{LLaMA-3.1 8B} and \texttt{Qwen2.5-Coder 14B} exhibit baseline CT1 error rates of 38.8\% and 23.8\% (and overall 160-item Gold Set MCQ SCHR of 40.6\% and 23.8\%), that 100.0\% syntactic recompilability and high pairwise BLEU ($\rho \in [+0.293, +0.495]$) mask semantic inversions, and that passive context escalation (CT2/CT3) provides non-significant improvements under McNemar's test ($p \ge 0.2888$). All artifacts are publicly available at \url{https://github.com/phat1310/IAM302t_SCHR_Bench}.
 
 \section*{Disclosure of AI Usage}
 During the preparation of this project under the IAM302t Research-Based Learning (RBL) curriculum, the authors used local LLMs (\texttt{LLaMA-3.1 8B} and \texttt{Qwen2.5-Coder 14B} via Ollama) as the subjects of empirical evaluation, and used AI coding/writing assistance for LaTeX formatting, script refactoring, and language polishing. All experimental scripts, C source functions, and statistical tables were verified by the authors.

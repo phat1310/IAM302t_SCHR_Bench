@@ -5,8 +5,5 @@ Evaluate the code carefully to determine its true runtime control-flow behavior 
 Instructions:
 1. Do not assume canonical malware or security patterns if the logic indicates otherwise.
 2. Carefully inspect branch conditions, comparison operators, and loop boundaries.
-3. Output your final answer strictly in the specified JSON format:
-   {
-     "reasoning": "<step-by-step technical analysis of predicates and data flow>",
-     "choice": "<A | B | C | D>"
-   }
+3. Output your final answer strictly in JSON format containing ONLY the key "choice" (A, B, C, or D):
+   {"choice": "<A | B | C | D>"}
