@@ -29,7 +29,7 @@ Dự án **SCHR-Bench** được thực hiện trong khuôn khổ học phần *
 | 3 | **Nguyễn Trọng Duy** | **SE194413** | **Context Extractor & Metrics Specialist** |
 | 4 | **Võ Hồng Phúc** | **SE203844** | **Statistical Analyst & Manuscript Co-Author** |
 
-* **Giảng viên hướng dẫn (Corresponding Author):** Thầy **Đinh Mai Hoàng** (`dinhmh@fe.edu.vn`).
+* **Giảng viên hướng dẫn (Corresponding Author):** Thầy **Mai Hoàng Dinh** (`dinhmh@fe.edu.vn`).
 
 ---
 
