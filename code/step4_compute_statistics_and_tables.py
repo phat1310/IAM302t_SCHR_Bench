@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-SCHR-Bench: Step 4 — Compute Statistical Metrics & Generate Springer LNICST Paper Tables
+SCHR-Bench: Step 4 — Compute Statistical Metrics & Generate Springer LNICST / IEEE Paper Tables
+Computes SCHR (%), 95% Wilson CI, Mutant Miss Rate (%), Pairwise BLEU (Orig vs. Mut),
+Pair-level Spearman Rank Correlation (RQ2), and McNemar's Paired Test (RQ3).
 """
 
 import json
@@ -32,7 +34,7 @@ def mcnemar_test(b: int, c: int):
         return 0.0, 1.0
     chi2 = ((abs(b - c) - 1.0) ** 2) / (b + c)
     p_val = math.erfc(math.sqrt(chi2 / 2.0))
-    return round(chi2, 3), round(p_val, 5)
+    return round(chi2, 3), round(p_val, 4)
 
 
 def simple_bleu_similarity(text_a: str, text_b: str) -> float:
@@ -55,6 +57,44 @@ def simple_bleu_similarity(text_a: str, text_b: str) -> float:
     return round(bp * geo_mean, 3)
 
 
+def rankdata(a):
+    n = len(a)
+    ivec = sorted(range(n), key=lambda i: a[i])
+    svec = [a[i] for i in ivec]
+    sumranks = 0
+    dupcount = 0
+    newarray = [0.0] * n
+    for i in range(n):
+        sumranks += i
+        dupcount += 1
+        if i == n - 1 or svec[i] != svec[i + 1]:
+            averank = sumranks / float(dupcount) + 1.0
+            for j in range(i - dupcount + 1, i + 1):
+                newarray[ivec[j]] = averank
+            sumranks = 0
+            dupcount = 0
+    return newarray
+
+
+def spearman_corr(x, y):
+    if len(x) < 3 or len(x) != len(y):
+        return 0.0, 1.0
+    rx = rankdata(x)
+    ry = rankdata(y)
+    n = len(x)
+    mx = sum(rx) / n
+    my = sum(ry) / n
+    num = sum((rx[i] - mx) * (ry[i] - my) for i in range(n))
+    den = math.sqrt(sum((rx[i] - mx) ** 2 for i in range(n)) * sum((ry[i] - my) ** 2 for i in range(n)))
+    r = num / den if den > 0 else 0.0
+    if abs(r) >= 1.0:
+        p = 0.0
+    else:
+        t = r * math.sqrt((n - 2) / (1.0 - r * r))
+        p = math.erfc(abs(t) / math.sqrt(2.0))
+    return round(r, 3), round(p, 4)
+
+
 def main():
     if not LOG_FILE.exists():
         return
@@ -74,10 +114,10 @@ def main():
     md_lines = [
         "# BẢNG KẾT QUẢ THỰC NGHIỆM SCHR-BENCH (SPRINGER LNICST — EAI INISCOM 2027)",
         "",
-        "## 1. Bảng Trung Tâm (E1 + E2 + E3): SCHR (%), 95% Wilson CI, Miss Rate & BLEU Score",
+        "## 1. Bảng Trung Tâm (E1 + E2 + E3): SCHR (%), 95% Wilson CI, Miss Rate & Pairwise BLEU",
         "",
-        "| Mô hình (LLM) | Tầng Ngữ cảnh | Số mẫu ($N$) | Lỗi Ảo giác | **SCHR (%) [95% Wilson CI]** | Miss Rate trên Mutant (%) | BLEU (Orig vs Mut) | Latency TB (s) |",
-        "| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |"
+        "| Mô hình (LLM) | Tầng Ngữ cảnh | Số mẫu ($N$) | Lỗi Ảo giác | **SCHR (%) [95% Wilson CI]** | Miss Rate trên Mutant (%) | BLEU (Orig vs Mut) | BLEU (Cặp Lỗi vs Đúng) | Spearman $\\rho$ ($p$) | Latency TB (s) |",
+        "| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |"
     ]
 
     for m in models:
@@ -89,21 +129,32 @@ def main():
             n_wrong = sum(1 for r in records.values() if r["is_schr_hallucination"])
             schr, ci_low, ci_high = wilson_ci_95(n_wrong, n_total)
 
-            mutants = [r for r in records.values() if r["variant"] == "mutant"]
+            mutants = sorted([r for r in records.values() if r["variant"] == "mutant"], key=lambda x: x["id"])
             n_missed = sum(1 for r in mutants if r["predicted_return"] == r["opposite_variant_truth"])
             miss_rate = round((n_missed / len(mutants)) * 100.0, 1) if mutants else 0.0
 
             bleu_scores = []
+            pair_errs = []
             for r in mutants:
                 orig_key = f"{r['id']}_original"
                 if orig_key in records:
                     b_score = simple_bleu_similarity(records[orig_key]["explanation"], r["explanation"])
+                    e_cnt = int(r["is_schr_hallucination"]) + int(records[orig_key]["is_schr_hallucination"])
                     bleu_scores.append(b_score)
+                    pair_errs.append(e_cnt)
+
             avg_bleu = round(sum(bleu_scores) / len(bleu_scores), 3) if bleu_scores else 0.0
+            bleu_err = [b for b, e in zip(bleu_scores, pair_errs) if e > 0]
+            bleu_ok = [b for b, e in zip(bleu_scores, pair_errs) if e == 0]
+            b_err_avg = round(sum(bleu_err) / len(bleu_err), 3) if bleu_err else 0.0
+            b_ok_avg = round(sum(bleu_ok) / len(bleu_ok), 3) if bleu_ok else 0.0
+            rho, rho_p = spearman_corr(bleu_scores, pair_errs)
             avg_lat = round(sum(r.get("latency_sec", 0.0) for r in records.values()) / n_total, 2)
 
             md_lines.append(
-                f"| `{m}` | **{t}** | {n_total} | {n_wrong} | **{schr}%** [{ci_low}%, {ci_high}%] | {miss_rate}% | {avg_bleu} | {avg_lat}s |"
+                f"| `{m}` | **{t}** | {n_total} | {n_wrong} | **{schr}%** [{ci_low}%, {ci_high}%] | "
+                f"{miss_rate}% ({n_missed}/{len(mutants)}) | {avg_bleu} | {b_err_avg} vs {b_ok_avg} | "
+                f"{rho:+.3f} (`p={rho_p}`) | {avg_lat}s |"
             )
 
     md_lines += [
@@ -134,9 +185,9 @@ def main():
     if obf_tiers:
         md_lines += [
             "",
-            "## 3. Thí nghiệm E4 (RQ4): Tác động của Obfuscation (OLLVM Levels 0–3) lên SCHR (%)",
+            "## 3. Thí nghiệm E4 (RQ4): Tác động của Obfuscation Templates (Obf0–Obf3) trên tập Pilot 5 cặp cơ bản ($N=10$)",
             "",
-            "| Mô hình (LLM) | Mức Làm rối (Obfuscation Level) | Số mẫu ($N$) | Lỗi Ảo giác | **SCHR (%) [95% Wilson CI]** |",
+            "| Mô hình (LLM) | Mức Làm rối (Obfuscation Template) | Số mẫu ($N$) | Lỗi Ảo giác | **SCHR (%) [95% Wilson CI]** |",
             "| :--- | :---: | :---: | :---: | :---: |"
         ]
         for m in models:
@@ -145,7 +196,6 @@ def main():
                 if not records:
                     continue
                 if t == "CT1":
-                    # Filter to same subset as Obf1_CFF for fair comparison
                     obf_keys = set(by_model_tier.get((m, obf_tiers[0]), {}).keys())
                     records = {k: v for k, v in records.items() if k in obf_keys}
                 if not records:
@@ -153,15 +203,15 @@ def main():
                 n_total = len(records)
                 n_wrong = sum(1 for r in records.values() if r["is_schr_hallucination"])
                 schr, ci_low, ci_high = wilson_ci_95(n_wrong, n_total)
-                lbl = "Obf0 (Unobfuscated CT1)" if t == "CT1" else t
+                lbl = "Obf0 (Unobfuscated CT1 Baseline)" if t == "CT1" else t
                 md_lines.append(f"| `{m}` | **{lbl}** | {n_total} | {n_wrong} | **{schr}%** [{ci_low}%, {ci_high}%] |")
 
     md_lines += [
         "",
-        "## 4. Kiểm định Thống kê McNemar's Test (So sánh Cặp Phụ thuộc CT1 vs CT2/CT3)",
+        "## 4. Kiểm định Thống kê McNemar's Test (So sánh Cặp Phụ thuộc CT1 vs CT2/CT3, $\\alpha = 0.05$)",
         "",
-        "| Mô hình (LLM) | Cặp So sánh | $b$ (CT1 Sai $\\rightarrow$ Mới Đúng) | $c$ (CT1 Đúng $\\rightarrow$ Mới Sai) | $\\chi^2$ (McNemar) | $p$-value | Kết luận |",
-        "| :--- | :---: | :---: | :---: | :---: | :---: | :---: |"
+        "| Mô hình (LLM) | Cặp So sánh | $b$ (CT1 Sai $\\rightarrow$ Mới Đúng) | $c$ (CT1 Đúng $\\rightarrow$ Mới Sai) | Net ($b-c$) | $\\chi^2$ (McNemar) | $p$-value | Kết luận Thống kê ($\\alpha=0.05$) |",
+        "| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |"
     ]
 
     for m in models:
@@ -179,8 +229,11 @@ def main():
                     elif not r1["is_schr_hallucination"] and r2["is_schr_hallucination"]:
                         c += 1
             chi2, pval = mcnemar_test(b, c)
-            sig = "Cải thiện rệt ($b > c$)" if b > c else "Tương đương"
-            md_lines.append(f"| `{m}` | **CT1 vs {comp_tier}** | {b} | {c} | {chi2} | `{pval}` | {sig} |")
+            if pval < 0.05:
+                sig = f"Có ý nghĩa thống kê ($p < 0.05$, $\\Delta = {b-c:+d}$)"
+            else:
+                sig = f"Không có ý nghĩa thống kê ($p \\ge 0.05$, xu hướng $\\Delta = {b-c:+d}$)"
+            md_lines.append(f"| `{m}` | **CT1 vs {comp_tier}** | {b} | {c} | `{b-c:+d}` | {chi2} | `{pval}` | {sig} |")
 
     out_md = RESULTS_DIR / "PAPER_TABLES_SPRINGER.md"
     out_md.write_text("\n".join(md_lines), encoding="utf-8")

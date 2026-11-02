@@ -1,46 +1,43 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# SCHR-Bench: 1-Click Reproducibility Script (Artifact Evaluation Standard)
-# Project: Security-Critical Hallucination Rate Benchmark
-# Target: FPT University IAM302t & Springer LNICST (INISCOM 2027)
+# SCHR-Bench: Two-Mode Reproducibility Script (Artifact Evaluation Standard)
+# Mode A (Default): Offline E0 binary execution verification + statistical table reproduction
+# Mode B (--live-ollama): Full live LLM benchmark execution via local Ollama server
 # ==============================================================================
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-echo "========================================================================"
-echo "  SCHR-Bench: One-Click Reproducibility Pipeline"
-echo "  Artifact Package: SOC / Research-Based Learning Standard"
-echo "========================================================================"
-
-echo ""
-echo "[Step 1/3] Running E0 Ground Truth Sanity Check (160 Assertions)..."
-if [ -f "code/step0_verify_e0_windows.py" ]; then
-    python3 code/step0_verify_e0_windows.py
-elif [ -f "scripts/step0_verify_e0_windows.py" ]; then
-    python3 scripts/step0_verify_e0_windows.py
+MODE="offline"
+if [ "${1:-}" = "--live-ollama" ]; then
+    MODE="live"
 fi
 
-echo ""
-echo "[Step 2/3] Evaluating Statistical Engine (SCHR, Wilson CI 95%, McNemar)..."
-if [ -f "code/step4_compute_statistics_and_tables.py" ]; then
-    python3 code/step4_compute_statistics_and_tables.py
-elif [ -f "code/eval_engine.py" ]; then
-    python3 code/eval_engine.py
-elif [ -f "scripts/step4_compute_statistics_and_tables.py" ]; then
-    python3 scripts/step4_compute_statistics_and_tables.py
-fi
+echo "========================================================================"
+echo "  SCHR-Bench: Reproducibility Pipeline (Mode: $MODE)"
+echo "  Artifact Package: template SOC-RL-v2.0"
+echo "========================================================================"
 
 echo ""
-echo "[Step 3/3] Executing Milestone D3 Live Demo..."
-if [ -f "code/live_demo.sh" ]; then
-    bash code/live_demo.sh
-elif [ -f "scripts/live_demo.sh" ]; then
-    bash scripts/live_demo.sh
+echo "[Step 1/3] Running E0 Ground-Truth Compile & Execution Check (80 variants, 160 assertions)..."
+python3 code/step0_verify_e0_windows.py
+
+echo ""
+echo "[Step 2/3] Generating Leak-Free Normalized Contexts (decompiled_contexts_80.json)..."
+python3 code/extract_contexts.py
+
+echo ""
+echo "[Step 3/3] Reproducing Statistical Tables (SCHR, 95% Wilson CI, Spearman rho, McNemar) from 540 Logged Runs..."
+python3 code/step4_compute_statistics_and_tables.py
+
+if [ "$MODE" = "live" ]; then
+    echo ""
+    echo "[Live Mode] Executing Full LLM Benchmark Suite via Ollama (--max-pairs 40)..."
+    python3 code/step3_mcp_server_and_benchmark.py --max-pairs 40
 fi
 
 echo ""
 echo "========================================================================"
-echo "  [OK] SCHR-Bench All Reproducibility Steps Executed Successfully!"
+echo "  [OK] SCHR-Bench Reproducibility Pipeline Completed (Mode: $MODE)!"
 echo "========================================================================"

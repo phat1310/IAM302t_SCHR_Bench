@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-SCHR-Bench: Step 1B / Step 2 — Extract & Generate Stripped Decompiler Contexts (CT1-CT4)
-and Obfuscation Levels (Obf0 - Obf3) for all 80 binary variants (40 pairs).
+SCHR-Bench: Step 1B / Step 2 — Extract & Generate Normalized Stripped Contexts (CT1-CT4)
+and OLLVM-Style Structural Transformation Templates (Obf0 - Obf3) for all 80 variants (40 pairs).
 """
 
 import json
@@ -10,8 +10,16 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_DIR = SCRIPT_DIR.parent
-DATASET_DIR = PROJECT_DIR / "dataset" / "SCHR_Bench_C_Functions" if (PROJECT_DIR / "dataset" / "SCHR_Bench_C_Functions").exists() else PROJECT_DIR / "Dataset_SCHR_Bench" / "SCHR_Bench_C_Functions"
-RESULTS_DIR = PROJECT_DIR / "results" if (PROJECT_DIR / "results").exists() else PROJECT_DIR / "Results"
+DATASET_DIR = (
+    PROJECT_DIR / "dataset" / "SCHR_Bench_C_Functions"
+    if (PROJECT_DIR / "dataset" / "SCHR_Bench_C_Functions").exists()
+    else PROJECT_DIR / "Dataset_SCHR_Bench" / "SCHR_Bench_C_Functions"
+)
+RESULTS_DIR = (
+    PROJECT_DIR / "results"
+    if (PROJECT_DIR / "results").exists()
+    else PROJECT_DIR / "Results"
+)
 RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
 
@@ -32,7 +40,7 @@ def extract_c_body(c_path: Path):
 
 def to_ghidra_stripped_pseudocode(sid: str, variant: str, helpers: list, target_line: str, obf_level: int = 0) -> str:
     """
-    Transform C source into authentic Ghidra 11.x stripped decompiler pseudocode (CT1).
+    Transform C source into a normalized Ghidra-style stripped pseudocode representation (CT1).
     - Strips function name `target` -> `FUN_140001140`
     - Strips parameter names `a, b, c` -> `param_1, param_2, param_3`
     - Strips static helper names (`mock_add` -> `FUN_140001100`, `mock_remove` -> `FUN_140001110`)
@@ -41,7 +49,6 @@ def to_ghidra_stripped_pseudocode(sid: str, variant: str, helpers: list, target_
     raw_body = body_match.group(1) if body_match else target_line
     raw_body = re.sub(r"\(void\)\s*[abc]\s*;", "", raw_body).strip()
 
-    # Strip helper function names in CT1 (since binary is stripped with -s)
     raw_body_stripped = raw_body.replace("mock_add", "FUN_140001100").replace("mock_remove", "FUN_140001110")
 
     def repl_param(m):
@@ -52,7 +59,7 @@ def to_ghidra_stripped_pseudocode(sid: str, variant: str, helpers: list, target_
 
     if obf_level == 0:
         return (
-            "/* WARNING: Function: FUN_140001140 (stripped PE64, Ghidra 11.2 Decompiler) */\n"
+            "/* Normalized Stripped Decompiler Representation: FUN_140001140 (PE64) */\n"
             "ulong FUN_140001140(int param_1, int param_2, int param_3)\n"
             "{\n"
             "  int iVar1;\n"
@@ -62,7 +69,7 @@ def to_ghidra_stripped_pseudocode(sid: str, variant: str, helpers: list, target_
         )
     elif obf_level == 1:
         return (
-            "/* WARNING: Function: FUN_140001140 (OLLVM -fla Control Flow Flattened) */\n"
+            "/* Structural Obfuscation Template Obf1_CFF: Control-Flow Flattening Dispatcher */\n"
             "ulong FUN_140001140(int param_1, int param_2, int param_3)\n"
             "{\n"
             "  int local_state = 0x37a1;\n"
@@ -80,7 +87,7 @@ def to_ghidra_stripped_pseudocode(sid: str, variant: str, helpers: list, target_
         body_mba = body_p.replace("!= 0", "^ 0x0 != ((param_2 & ~param_2))")
         body_mba = body_mba.replace("== 0", "== ((param_3 ^ param_3) & 0xff)")
         return (
-            "/* WARNING: Function: FUN_140001140 (OLLVM -sub Mixed Boolean-Arithmetic) */\n"
+            "/* Structural Obfuscation Template Obf2_Sub: Mixed Boolean-Arithmetic Substitution */\n"
             "ulong FUN_140001140(int param_1, int param_2, int param_3)\n"
             "{\n"
             f"  {body_mba}\n"
@@ -89,7 +96,7 @@ def to_ghidra_stripped_pseudocode(sid: str, variant: str, helpers: list, target_
     else:
         body_mba = body_p.replace("!= 0", "^ 0x0 != ((param_2 & ~param_2))")
         return (
-            "/* WARNING: Function: FUN_140001140 (OLLVM -fla -sub -bcf Combined) */\n"
+            "/* Structural Obfuscation Template Obf3_Combined: CFF + MBA + Opaque Predicate */\n"
             "ulong FUN_140001140(int param_1, int param_2, int param_3)\n"
             "{\n"
             "  uint local_dispatch = ((param_1 * (param_1 + 1)) & 1) ^ 0x7f01;\n"
@@ -115,8 +122,8 @@ def format_hex_annotations(expr: str) -> str:
 
 def generate_x64_assembly(sid: str, variant: str, helpers: list, target_line: str) -> str:
     """
-    Generate Ghidra Disassembly Listing (CT2) with exact instruction-level semantics
-    and immediate constant annotations (Hex <-> Decimal) as shown in Ghidra Listing View.
+    Generate Register-Mapped x86-64 Disassembly / Pseudo-Assembly Context (CT2)
+    under the Win64 fastcall convention (ECX=param_1, EDX=param_2, R8D=param_3).
     """
     body_match = re.search(r"target\s*\([^)]*\)\s*\{\s*(.*)\s*\}", target_line)
     raw_body = body_match.group(1) if body_match else target_line
@@ -130,28 +137,22 @@ def generate_x64_assembly(sid: str, variant: str, helpers: list, target_line: st
     imm_notes = format_hex_annotations(raw_body)
 
     asm_lines = [
-        "; --- Ghidra x86-64 Disassembly Listing (Win64 fastcall: ECX=param_1, EDX=param_2, R8D=param_3) ---",
-        "FUN_140001140:                          ; XREF: main+0x4b",
+        "; --- Win64 Fastcall Register-Mapped Listing (ECX=param_1, EDX=param_2, R8D=param_3) ---",
+        "FUN_140001140:",
         "  140001140: 55                 PUSH    RBP",
         "  140001141: 48 89 e5           MOV     RBP, RSP",
-        f"  ; Immediate Constants in Disassembly: {imm_notes}",
-        f"  ; Exact Assembly Register Logic   : {reg_body}",
+        f"  ; Immediate Constants : {imm_notes}",
+        f"  ; Register Expression : {reg_body}",
     ]
     if "mock_add" in raw_body:
         asm_lines += [
-            "  140001148: e8 b3 ff ff ff     CALL    FUN_140001100   ; target callee at 0x140001100",
-            "  ; Disassembly of callee FUN_140001100:",
-            "  ;   140001100: 89 c8          MOV     EAX, ECX",
-            "  ;   140001102: 83 c8 01       OR      EAX, 0x1        ; EAX = param_1 | 1 (sets bit 0 to 1)",
-            "  ;   140001105: c3             RET"
+            "  140001148: e8 b3 ff ff ff     CALL    FUN_140001100",
+            "  ; Callee FUN_140001100: MOV EAX, ECX ; OR EAX, 0x1 ; RET",
         ]
     elif "mock_remove" in raw_body:
         asm_lines += [
-            "  140001148: e8 c3 ff ff ff     CALL    FUN_140001110   ; target callee at 0x140001110",
-            "  ; Disassembly of callee FUN_140001110:",
-            "  ;   140001110: 89 c8          MOV     EAX, ECX",
-            "  ;   140001112: 83 e0 fe       AND     EAX, 0xfffffffe ; EAX = param_1 & ~1 (clears bit 0 to 0)",
-            "  ;   140001115: c3             RET"
+            "  140001148: e8 c3 ff ff ff     CALL    FUN_140001110",
+            "  ; Callee FUN_140001110: MOV EAX, ECX ; AND EAX, 0xfffffffe ; RET",
         ]
     asm_lines += [
         "  140001160: 5d                 POP     RBP",
@@ -160,22 +161,26 @@ def generate_x64_assembly(sid: str, variant: str, helpers: list, target_line: st
     return "\n".join(asm_lines)
 
 
-def build_ct3_api_and_callee_spec(sid: str, category: str, helpers: list, semantic_target: str, target_line: str) -> str:
+def build_ct3_api_and_callee_spec(sid: str, category: str, helpers: list, target_line: str) -> str:
+    """
+    Build Context Tier 3 (CT3): Enriched Instruction, Constant & Callee Specifications.
+    NOTE: Strictly excludes `semantic_target` or any mutation description to prevent label leakage (P0-5).
+    """
     body_match = re.search(r"target\s*\([^)]*\)\s*\{\s*(.*)\s*\}", target_line)
     raw_body = body_match.group(1) if body_match else target_line
     raw_body = re.sub(r"\(void\)\s*[abc]\s*;", "", raw_body).strip()
     imm_notes = format_hex_annotations(raw_body)
 
     specs = [
-        "[Context Tier 3 — Enriched Instruction, Constant & Callee Specifications]",
-        f"- Security Policy Domain: {category} ({semantic_target})",
-        f"- Register Mapping: `param_1` = `a`, `param_2` = `b`, `param_3` = `c`",
+        "[Context Tier 3 — Enriched Register, Constant & Callee Specifications]",
+        f"- Functional Category: {category}",
+        f"- Win64 Register Mapping: `param_1` = `ECX` (arg 1), `param_2` = `EDX` (arg 2), `param_3` = `R8D` (arg 3)",
         f"- Hex-to-Decimal Immediate Table: {imm_notes}",
     ]
     if helpers:
-        specs.append("- Decompiled Helper Function Specifications:")
-        specs.append("  * `FUN_140001100(int state)` -> `return state | 1;` (Sets persistence bit 0; if state=0, returns 1).")
-        specs.append("  * `FUN_140001110(int state)` -> `return state & ~1;` (Clears persistence bit 0; if state=0, returns 0).")
+        specs.append("- Static Callee Specifications:")
+        specs.append("  * `FUN_140001100(int state)` -> `return state | 1;`")
+        specs.append("  * `FUN_140001110(int state)` -> `return state & ~1;`")
     return "\n".join(specs)
 
 
@@ -205,7 +210,7 @@ def main():
 
             ct1 = to_ghidra_stripped_pseudocode(sid, variant, helpers, target_line, obf_level=0)
             ct2_asm = generate_x64_assembly(sid, variant, helpers, target_line)
-            ct3_spec = build_ct3_api_and_callee_spec(sid, item["category"], helpers, item["semantic_target"], target_line)
+            ct3_spec = build_ct3_api_and_callee_spec(sid, item["category"], helpers, target_line)
             ct4_neigh = build_ct4_neighborhood(sid, helpers)
 
             obf1 = to_ghidra_stripped_pseudocode(sid, variant, helpers, target_line, obf_level=1)
@@ -238,7 +243,7 @@ def main():
 
     out_path = RESULTS_DIR / "decompiled_contexts_80.json"
     out_path.write_text(json.dumps(records, indent=2, ensure_ascii=False), encoding="utf-8")
-    print(f"[+] Built {len(records)} enriched context records at: {out_path}")
+    print(f"[+] Built {len(records)} leak-free context records at: {out_path}")
 
 
 if __name__ == "__main__":

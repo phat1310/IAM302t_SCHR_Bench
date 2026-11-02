@@ -1,10 +1,12 @@
 # 🔬 SCHR-Bench: Security-Critical Hallucination Rate Benchmark
-> **Evaluating Security-Critical Hallucinations of Large Language Models in Binary Reverse Engineering via Controlled Mutation Ground Truth**
+> **SCHR-Bench: Evaluating Security-Critical Hallucinations in LLM-Assisted Binary Reverse Engineering via Ground-Truth Mutations**
 
-[![Học phần](https://img.shields.io/badge/Course-IAM302t--Fall2026-green.svg)](file:///D:/ATTT/ATTT_FPT/KY_5_FALL_2026/IAM302t)
-[![Đơn vị](https://img.shields.io/badge/Institution-FPT--University--HCMC-blue.svg)](https://hcmuni.fpt.edu.vn/)
-[![Nhóm](https://img.shields.io/badge/Group-IA2007--G7-orange.svg)](#thành-viên-nhóm-7)
-[![Hội nghị](https://img.shields.io/badge/Target-EAI--INISCOM--2027--Springer-red.svg)](https://iniscom.eai-conferences.org/)
+[![Course](https://img.shields.io/badge/Course-IAM302t--Fall2026-green.svg)](https://github.com/phat1310/IAM302t_SCHR_Bench)
+[![Institution](https://img.shields.io/badge/Institution-FPT--University--HCMC-blue.svg)](https://hcmuni.fpt.edu.vn/)
+[![Group](https://img.shields.io/badge/Group-IA2007--G7-orange.svg)](#2-thành-viên-nhóm-7-lớp-ia2007)
+[![Target](https://img.shields.io/badge/Target-EAI--INISCOM--2027--Springer-red.svg)](https://iniscom.eai-conferences.org/)
+[![License](https://img.shields.io/badge/Code--License-MIT-brightgreen.svg)](LICENSE)
+[![Dataset](https://img.shields.io/badge/Dataset--License-CC--BY--4.0-yellow.svg)](#7-giấy-phép--cảnh-báo-an-toàn-safety--licensing)
 
 ---
 
@@ -13,8 +15,8 @@
 Dự án **SCHR-Bench** được thực hiện trong khuôn khổ học phần **IAM302t (Malware Analysis and Reverse Engineering)** tại Trường Đại học FPT TP. Hồ Chí Minh theo mô hình **Research-Based Learning (RBL)**.
 
 ### Mục Tiêu Nghiên Cứu:
-1. **Mục tiêu học phần (IAM302t):** Xây dựng hệ thống kiểm thử tự động đo lường độ chính xác và phát hiện các ảo giác nguy hiểm (Security Hallucination) của LLM khi dịch ngược mã nhị phân stripped x64.
-2. **Mục tiêu học thuật:** Công bố bài báo khoa học chuẩn **Springer LNICST** tại hội nghị quốc tế **EAI INISCOM 2027**.
+1. **Mục tiêu học phần (IAM302t):** Xây dựng bộ khung đánh giá định lượng hiện tượng **Security-Critical Hallucination Rate (SCHR)** và **Mutant Miss Rate** của các mô hình ngôn ngữ lớn (LLMs) khi suy luận kết quả hành vi trên 40 cặp hàm C quyết định bảo mật ($N = 80$ biến thể thực thi, 540 lượt đánh giá).
+2. **Mục tiêu học thuật:** Chuẩn bị bản thảo nghiên cứu theo định dạng **Springer LNICST** (hội nghị **EAI INISCOM 2027**) và định dạng **IEEE Conference** (phục vụ báo cáo nghiệm thu học phần IAM302t; hai bản thảo dùng cho mục đích học phần và định dạng mục tiêu, **không nộp trùng lặp — No Dual Submission**).
 
 ---
 
@@ -24,95 +26,76 @@ Dự án **SCHR-Bench** được thực hiện trong khuôn khổ học phần *
 | :---: | :--- | :---: | :--- |
 | 1 | **Nguyễn Tấn Phát** | **SE173285** | **Group Leader & Pipeline Co-Engineer** |
 | 2 | **Đỗ Thiện Nhân** | **SE194134** | **C/Binary & Mutation Engineer** |
-| 3 | **Nguyễn Trọng Duy** | **SE194413** | **Decompiler & Metrics Specialist** |
-| 4 | **Võ Hồng Phúc** | **SE203844** | **Statistical Analyst & Lead Author** |
+| 3 | **Nguyễn Trọng Duy** | **SE194413** | **Context Extractor & Metrics Specialist** |
+| 4 | **Võ Hồng Phúc** | **SE203844** | **Statistical Analyst & Manuscript Co-Author** |
 
-* **Giảng viên hướng dẫn:** Thầy **Đinh Mai Hoàng (DINHMH)**.
+* **Giảng viên hướng dẫn (Corresponding Author):** Thầy **Đinh Mai Hoàng** (`dinhmh@fe.edu.vn`).
 
 ---
 
-## 🏗️ 3. Cấu Trúc Hệ Thống Thực Nghiệm 3-Tier
+## 🏗️ 3. Cấu Trúc Hệ Thống Thực Nghiệm & Môi Trường Tái Lập
 
 ```text
 SCHR-Bench Architecture:
-├── Tier 1 (Host MSI - WSL2): Ollama GPU Server (llama3.1:8b, qwen2.5-coder:14b)
-├── Tier 2 (Kali Linux VM) : MinGW Compiler, Ghidra 11.x Headless, MCP Benchmark Pipeline
-└── Tier 3 (Windows 11 VM) : Isolated Malware Sandbox (DIE, PE-bear, Gh0stRAT Case Study)
+├── Tier 1 (Host GPU Inference Server) : Ollama Local API (llama3.1:8b, qwen2.5-coder:14b; τ=0.0, seed=42)
+└── Tier 2 (Compilation & Benchmark Rig): MinGW-w64 (x86_64-w64-mingw32-gcc 14.2.0), E0 Verifier, Context Extractor & Statistical Engine
 ```
 
-Xem chi tiết phân công và hướng dẫn lệnh tại [TIER_ROLES.md](TIER_ROLES.md).  
-Xem nhật ký tiến độ dự án tại [PROJECT_STATUS.md](PROJECT_STATUS.md).
+* **Thông số mô hình & phần cứng (Model Tags & Reproducibility Notes):**
+  * Mô hình đánh giá qua Ollama: `llama3.1:8b` (8B parameters, Q4\_0 quantization default tag) và `qwen2.5-coder:14b` (14B parameters, Q4\_K\_M quantization default tag).
+  * Tham số giải mã cố định: `temperature = 0.0`, `seed = 42`, `num_predict = 160`, `format = "json"`. Lưu ý: Dù cố định `temperature = 0.0` và `seed = 42`, kết quả suy luận dấu phẩy động trên GPU có thể dao động nhẹ giữa các kiến trúc phần cứng/driver CUDA hoặc phiên bản Ollama khác nhau; do đó toàn bộ **540 raw query logs** đã được lưu trữ đầy đủ tại `results/benchmark_raw_logs.json` để đảm bảo tái lập thống kê chính xác 100% ở chế độ Offline.
 
 ---
 
-## 📂 4. Cấu Trúc Đóng Gói Sản Phẩm Nghiên Cứu (Research Artifact Package Standard)
-
-Cấu trúc Repository tuân thủ 100% quy chuẩn đóng gói sản phẩm nghiên cứu khoa học / Artifact Evaluation chuẩn RBL ĐH FPT (tham chiếu template `SOC-RL-v2.0`):
+## 📂 4. Cấu Trúc Đóng Gói Sản Phẩm Nghiên Cứu (theo template `SOC-RL-v2.0`)
 
 ```text
 IAM302t_SCHR_Bench/
-├── 📁 code/                    # Toàn bộ script và pipeline tự động hóa (Step 0 -> Step 4, Live Demo, Eval Engine)
-├── 📁 dataset/                 # 40 hàm C bảo mật tự viết & 80 file PE x64 stripped đột biến
-├── 📁 documentation/           # Master Plan, checklist nghiệm thu (D1 -> D5) & tài liệu kiến trúc
-├── 📁 manuscript/              # Bản thảo LaTeX bài báo khoa học Springer LNICST (10-14 trang) & IEEE (8-10 trang)
-├── 📁 results/                 # Cơ sở dữ liệu ngữ cảnh decompiled, raw query logs (540 entries) & bảng thống kê
-├── 📁 tier1_host/              # Cấu hình GPU Inference Hub, scripts kiểm thử LAN & giám sát Ollama
-├── 📁 tier2_kali/              # Môi trường biên dịch MinGW, Ghidra Headless decompiler & bộ ảnh minh chứng 01-12
-├── 📁 tier3_win11/             # Môi trường Sandbox cách ly, báo cáo phân tích DIE & PE-bear cho mẫu Gh0stRAT
-├── 📄 CITATION.cff             # File định dạng trích dẫn chuẩn cho bài báo khoa học và GitHub
-├── 📄 LICENSE                  # Giấy phép mã nguồn mở MIT License
-├── 📄 MANIFEST.txt             # Bảng kê khai mục lục toàn bộ file, dữ liệu và mô tả chức năng
+├── 📁 code/                    # Toàn bộ script thực thi (Step 0 -> Step 4, Context Extractor, Live Demo)
+├── 📁 dataset/                 # 40 cặp hàm C quyết định bảo mật (80 biến thể), runner.c, manifest & 160 câu MCQ
+├── 📁 documentation/           # Tài liệu kế hoạch và ghi chú thiết kế
+├── 📁 manuscript/              # Bản thảo LaTeX Springer LNICST & IEEE Conference
+├── 📁 results/                 # Ngữ cảnh trích xuất (decompiled_contexts_80.json), 540 raw logs & bảng thống kê
+├── 📄 CITATION.cff             # File định dạng trích dẫn chuẩn cho bài báo và GitHub
+├── 📄 LICENSE                  # Giấy phép mã nguồn mở MIT License (Code) & CC BY 4.0 (Dataset)
+├── 📄 MANIFEST.txt             # Bảng kê khai mục lục file trong dự án
 ├── 📄 README.md                # Tài liệu tổng quan dự án & hướng dẫn vận hành
-├── 📄 reproduce.sh             # Script 1-lệnh tự động tái hiện toàn bộ kết quả thực nghiệm
-├── 📄 PROJECT_STATUS.md        # Bảng theo dõi tiến độ đồng bộ giữa các Tier
-├── 📄 TIER_ROLES.md            # Quy chuẩn phân công nhiệm vụ cho từng máy ảo / AI Agent
-└── 📄 .gitignore               # Cấu hình loại trừ file nhị phân mã độc và file đĩa ảo lớn
+└── 📄 reproduce.sh             # Kịch bản tái lập 2 chế độ (Offline Log Verification & Full Live Pipeline)
 ```
 
 ---
 
-## 🌿 5. Chiến Lược Phân Nhánh Git (Branching Workflow)
+## 📊 5. Tóm Tắt Số Liệu Thực Nghiệm Chính ($N = 80$ Variants, 540 Logged Runs)
 
-Để bảo đảm tính ổn định và tách bạch môi trường thực nghiệm, dự án tuân theo quy trình Git-Flow:
-* **`main`**: Nhánh bảo vệ (Protected Branch). Chỉ cập nhật khi nghiệm thu hoàn tất các mốc D1 $\rightarrow$ D5 và bản thảo hoàn thiện của bài báo khoa học.
-* **`dev`**: Nhánh tích hợp trung tâm (Integration Branch). Nơi hội tụ các kết quả thực nghiệm và tính năng mới từ các Tier.
-* **Nhánh theo Tier / Feature**:
-  * `tier1-host`: Phục vụ cấu hình Ollama, prompt engineering, paper drafts.
-  * `tier2-kali`: Phục vụ MinGW, Ghidra Headless, MCP Benchmark.
-  * `tier3-win11`: Phục vụ Sandbox setup, công cụ DIE/PE-bear và bóc tách mẫu Gh0stRAT.
-
-### Luồng làm việc chuẩn:
-1. **Lấy code mới nhất từ dev:**
-   ```bash
-   git checkout dev
-   git pull origin dev
-   ```
-2. **Tạo nhánh làm việc:**
-   ```bash
-   git checkout -b tier2-kali
-   ```
-3. **Commit & Push kết quả:**
-   ```bash
-   git add .
-   git commit -m "feat(tier2): cập nhật bảng kết quả thực nghiệm CT1-CT4"
-   git push -u origin tier2-kali
-   ```
-4. **Merge vào `dev`:** Tạo Pull Request trên GitHub từ `tierX` vào `dev` hoặc gộp trực tiếp trên máy sau khi test đạt.
-5. **Merge vào `main`:** Nghiệm thu hoàn thiện mốc đồ án rồi merge `dev` $\rightarrow$ `main`.
+* **540 lượt đánh giá trong `results/benchmark_raw_logs.json`:** Gồm **480 lượt đánh giá chính** (`2 models × 3 context tiers [CT1, CT2, CT3] × 80 variants`) và **60 lượt đánh giá Obfuscation E4** (`2 models × 3 obfuscation templates [Obf1_CFF, Obf2_Sub, Obf3_Combined] × 10 pilot variants`).
+* **Kiểm định thực thi E0 (`step0_verify_e0_windows.py`):** Biên dịch và chạy thật toàn bộ 80 biến thể qua 80 vector đầu vào (160 execution assertions), đạt **40/40 cặp hàm (100%) phân biệt hành vi trên Vector 1 (discriminating input)** và **50/80 tổng số vector phân biệt** (30 vector thứ 2 kiểm tra bảo toàn nhánh biên).
+* **Tỷ lệ SCHR & Kiểm định McNemar ($N = 80$):**
+  * `llama3.1:8b`: **38.8%** (CT1, 31/80 lỗi) $\rightarrow$ **36.2%** (CT2, 29/80 lỗi) $\rightarrow$ **35.0%** (CT3, 28/80 lỗi); Mutant Miss Rate: `32.5% -> 27.5% -> 27.5%`; McNemar $p \in [0.5791, 0.7518]$ (không có ý nghĩa thống kê ở $\alpha = 0.05$).
+  * `qwen2.5-coder:14b`: **23.8%** (CT1, 19/80 lỗi) $\rightarrow$ **20.0%** (CT2, 16/80 lỗi) $\rightarrow$ **18.8%** (CT3, 15/80 lỗi); Mutant Miss Rate: `27.5% -> 25.0% -> 25.0%`; McNemar $p \in [0.2888, 0.4497]$ (không có ý nghĩa thống kê ở $\alpha = 0.05$).
+  * **Tương quan hạng Spearman (RQ2):** Độ tương đồng từ vựng BLEU giữa giải thích gốc và đột biến của các cặp bị lỗi SCHR cao hơn nhóm cặp trả lời đúng ($\rho \in [+0.293, +0.495]$), cho thấy chỉ số tương đồng bề mặt không phát hiện được lỗi đảo ngược ngữ nghĩa.
 
 ---
 
-## ⚡ 6. Hướng Dẫn Tái Hiện Thực Nghiệm (1-Click Reproducibility)
+## ⚡ 6. Hướng Dẫn Tái Lập Thực Nghiệm (`reproduce.sh` — 2 Chế Độ)
 
-Để thẩm định tính toàn vẹn và tái hiện kết quả đo lường ảo giác của đồ án, chỉ cần thực thi kịch bản `reproduce.sh`:
+Kịch bản `reproduce.sh` hỗ trợ **2 chế độ tách biệt rõ ràng**:
 
+### Chế độ A (Mặc định — Offline Verification & Statistical Reproduction, không cần GPU/Ollama):
+Biên dịch và chạy kiểm định động E0 trên 80 biến thể C (160 assertions), tái tạo ngữ cảnh `decompiled_contexts_80.json` sạch 100% không rò rỉ nhãn, và tính toán lại toàn bộ bảng thống kê (`PAPER_TABLES_SPRINGER.md`) từ 540 log thực nghiệm có sẵn:
 ```bash
-# Cấp quyền thực thi và chạy kịch bản tái hiện 1-lệnh:
-chmod +x reproduce.sh
 bash reproduce.sh
 ```
 
-Luồng tái hiện sẽ tự động thực hiện:
-1. **Kiểm tra tính đúng đắn Ground Truth (E0 Sanity Check):** Xác thực 80 test vectors (160 binary execution assertions) trên 40 cặp hàm C bảo mật đạt 100% behavioral divergence.
-2. **Động cơ thống kê (Statistical Engine):** Tính toán độ tin cậy Wilson Score Interval 95%, kiểm định McNemar ($N=80$) và xuất bảng LaTeX từ 540 lượt đánh giá thực nghiệm.
-3. **Kịch bản Live Demo tương tác (Mốc D3):** Trình diễn trực quan phản ứng của mô hình qua 3 bước (Ground Truth $\rightarrow$ Ảo giác CT1 $\rightarrow$ Đối chiếu CT2 Assembly Anchor).
+### Chế độ B (Full Live LLM Re-Evaluation — yêu cầu máy chủ Ollama đang chạy):
+Chạy lại toàn bộ truy vấn LLM trực tiếp qua API Ollama (cần cài đặt `llama3.1:8b` và `qwen2.5-coder:14b`):
+```bash
+bash reproduce.sh --live-ollama
+```
+
+---
+
+## 🛡️ 7. Giấy Phép & Cảnh Báo An Toàn (Safety & Licensing)
+
+* **Mã nguồn (`code/`):** Phát hành theo giấy phép **MIT License** ([LICENSE](LICENSE)).
+* **Bộ dữ liệu (`dataset/`):** Phát hành theo giấy phép **Creative Commons Attribution 4.0 International (CC BY 4.0)**.
+* **Cảnh báo An toàn (Safety Notice):** Toàn bộ 40 cặp hàm C trong `dataset/SCHR_Bench_C_Functions/src/` là các hàm tính toán số học/logic cục bộ hoàn toàn vô hại (`int target(int a, int b, int c)`), **không chứa mã độc thực tế và không gọi bất kỳ API hệ điều hành nhạy cảm nào**. Tuy nhiên, một số trình diệt virus nhạy cảm có thể cảnh báo nhầm (false positive) đối với các file `.exe` biên dịch bằng MinGW; vui lòng chỉ biên dịch và chạy trong thư mục làm việc được cô lập. Không commit bất kỳ mẫu mã độc thực tế nào lên kho mã nguồn.

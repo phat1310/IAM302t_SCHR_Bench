@@ -20,8 +20,8 @@
         "mutant": 0
       }
     ],
-    "semantic_target": "simulated debugger flag decision",
-    "question": "Given a debugger flag, does policy return 1 (continue) or 0 (block)?"
+    "semantic_target": "debugger flag predicate evaluation",
+    "question": "For the given input parameters, what integer value (1 or 0) does FUN_140001140 return?"
   },
   {
     "id": "A02",
@@ -44,8 +44,8 @@
         "mutant": 0
       }
     ],
-    "semantic_target": "flag bit test in toy debugger policy",
-    "question": "When input flag bit 1 is set, does function allow (1) or block (0)?"
+    "semantic_target": "bitmask flag check in debugger policy",
+    "question": "When input flag bit 1 is set, what integer value (1 or 0) does FUN_140001140 return?"
   },
   {
     "id": "A03",
@@ -68,8 +68,8 @@
         "mutant": 0
       }
     ],
-    "semantic_target": "simulated elapsed-time threshold policy",
-    "question": "At the boundary a=b, does policy allow (1) or block (0)?"
+    "semantic_target": "elapsed-time threshold comparison",
+    "question": "At the boundary a=b, what integer value (1 or 0) does FUN_140001140 return?"
   },
   {
     "id": "A04",
@@ -92,8 +92,8 @@
         "mutant": 0
       }
     ],
-    "semantic_target": "combination of two simulated detector flags",
-    "question": "Do both simulated checks have to be true to block?"
+    "semantic_target": "dual detector flag conjunction check",
+    "question": "For the given detector flags, what integer value (1 or 0) does FUN_140001140 return?"
   },
   {
     "id": "A05",
@@ -116,8 +116,8 @@
         "mutant": 0
       }
     ],
-    "semantic_target": "two-of-three toy detection threshold",
-    "question": "At exactly two positive signals, allow (1) or block (0)?"
+    "semantic_target": "two-of-three detection signal threshold",
+    "question": "When two input signals are active, what integer value (1 or 0) does FUN_140001140 return?"
   },
   {
     "id": "A06",
@@ -140,8 +140,8 @@
         "mutant": 0
       }
     ],
-    "semantic_target": "missing second simulated detector check",
-    "question": "Does a positive second check block when the first is false?"
+    "semantic_target": "multi-stage detector flag evaluation",
+    "question": "When the first check is 0 and the second is 1, what integer value does FUN_140001140 return?"
   },
   {
     "id": "A07",
@@ -164,8 +164,8 @@
         "mutant": 0
       }
     ],
-    "semantic_target": "derived debugger-status flag with inverted test",
-    "question": "For an odd parity of simulated flags, allow or block?"
+    "semantic_target": "derived parity status flag evaluation",
+    "question": "For the given input flags, what integer value (1 or 0) does FUN_140001140 return?"
   },
   {
     "id": "A08",
@@ -188,8 +188,8 @@
         "mutant": 0
       }
     ],
-    "semantic_target": "nested status and timing threshold",
-    "question": "What decision occurs at exactly b=5 in state 2?"
+    "semantic_target": "nested status and timing threshold check",
+    "question": "At b=5 in state a=2, what integer value (1 or 0) does FUN_140001140 return?"
   },
   {
     "id": "S01",
@@ -212,8 +212,8 @@
         "mutant": 0
       }
     ],
-    "semantic_target": "toy XOR decode key changes token match",
-    "question": "Does the one-byte toy decode equal 0x41?"
+    "semantic_target": "single-byte XOR token decoding",
+    "question": "For the given input byte, does the decoded value equal 0x41 (returns 1) or not (returns 0)?"
   },
   {
     "id": "S02",
@@ -236,8 +236,8 @@
         "mutant": 0
       }
     ],
-    "semantic_target": "single-byte transformed token validation",
-    "question": "Is transformed byte 0x30?"
+    "semantic_target": "single-byte shift token validation",
+    "question": "For the given input byte, does the transformed value equal 0x30 (returns 1) or not (returns 0)?"
   },
   {
     "id": "S03",
@@ -260,8 +260,8 @@
         "mutant": 0
       }
     ],
-    "semantic_target": "derived XOR key offset is changed",
-    "question": "Does decoded toy token match 0x51?"
+    "semantic_target": "derived XOR key offset decoding",
+    "question": "For the given inputs, does the decoded token match 0x51 (returns 1) or not (returns 0)?"
   },
   {
     "id": "S04",
@@ -284,8 +284,8 @@
         "mutant": 0
       }
     ],
-    "semantic_target": "toy checksum where decode constant changes",
-    "question": "Does checksum equal 0x70?"
+    "semantic_target": "two-byte checksum accumulator validation",
+    "question": "For the given inputs, does the computed checksum equal 0x70 (returns 1) or not (returns 0)?"
   },
   {
     "id": "S05",
@@ -308,8 +308,8 @@
         "mutant": 1
       }
     ],
-    "semantic_target": "accept/reject condition reversed for toy decoder",
-    "question": "Does the decoded byte equal expected byte?"
+    "semantic_target": "decoded byte equality verification",
+    "question": "For the given inputs, what integer value (1 or 0) does the decoder verification return?"
   },
   {
     "id": "S06",
@@ -332,8 +332,8 @@
         "mutant": 0
       }
     ],
-    "semantic_target": "two-byte toy token validation with altered second key",
-    "question": "Do both decoded toy bytes match fixed constants?"
+    "semantic_target": "two-byte XOR token pair validation",
+    "question": "For the given inputs, do both decoded bytes match the target constants (returns 1) or not (returns 0)?"
   },
   {
     "id": "S07",
@@ -356,8 +356,8 @@
         "mutant": 0
       }
     ],
-    "semantic_target": "second-stage byte transform adds vs subtracts offset",
-    "question": "Does two-stage toy transform produce 0x5e?"
+    "semantic_target": "two-stage byte offset transformation",
+    "question": "For the given inputs, does the two-stage byte transform equal 0x5e (returns 1) or not (returns 0)?"
   },
   {
     "id": "S08",
@@ -380,8 +380,8 @@
         "mutant": 0
       }
     ],
-    "semantic_target": "toy key derivation changes XOR to addition",
-    "question": "Does derived toy key decode c to 0x4d?"
+    "semantic_target": "derived key byte decoding check",
+    "question": "For the given inputs, does the derived key decode param_3 to 0x4d (returns 1) or not (returns 0)?"
   },
   {
     "id": "P01",
@@ -404,8 +404,8 @@
         "mutant": 0
       }
     ],
-    "semantic_target": "toy autorun bit set vs cleared",
-    "question": "Does next simulated autorun state have bit 0 set?"
+    "semantic_target": "autorun state bitfield update",
+    "question": "For the given inputs, what integer state value does FUN_140001140 return?"
   },
   {
     "id": "P02",
@@ -428,8 +428,8 @@
         "mutant": 0
       }
     ],
-    "semantic_target": "toy service-registered bit set vs cleared",
-    "question": "Does next simulated service state have bit 1 set?"
+    "semantic_target": "service-registration bitfield update",
+    "question": "For the given inputs, what integer service state value does FUN_140001140 return?"
   },
   {
     "id": "P03",
@@ -452,8 +452,8 @@
         "mutant": 2
       }
     ],
-    "semantic_target": "simulated missing-state fallback value",
-    "question": "When no entry is present, what next state is returned?"
+    "semantic_target": "default fallback state selection",
+    "question": "When param_1=0, what fallback integer state value does FUN_140001140 return?"
   },
   {
     "id": "P04",
@@ -476,8 +476,8 @@
         "mutant": 0
       }
     ],
-    "semantic_target": "toy state-machine branch creates vs removes flag",
-    "question": "If command=0, is the mock autorun flag added or removed?"
+    "semantic_target": "command-driven state flag transition",
+    "question": "When param_2=0, what updated integer state value does FUN_140001140 return?"
   },
   {
     "id": "P05",
@@ -500,8 +500,8 @@
         "mutant": 4
       }
     ],
-    "semantic_target": "toy scheduled-state flag conditioned on input",
-    "question": "For b=1, is simulated schedule bit set?"
+    "semantic_target": "conditional schedule bitfield update",
+    "question": "When param_2=1, what integer state value does FUN_140001140 return?"
   },
   {
     "id": "P06",
@@ -524,8 +524,8 @@
         "mutant": 0
       }
     ],
-    "semantic_target": "mock API switch: set bit vs clear bit; no real OS API",
-    "question": "Does the selected local mock helper set or clear bit 0?"
+    "semantic_target": "helper-dispatched state bit update",
+    "question": "For the given inputs, what integer value is returned by the called helper function?"
   },
   {
     "id": "P07",
@@ -548,8 +548,8 @@
         "mutant": 8
       }
     ],
-    "semantic_target": "toy autorun flag set/clear inside conditional",
-    "question": "When b odd, does state bit 3 get set or cleared?"
+    "semantic_target": "conditional bitfield state update",
+    "question": "When param_2 is odd, what updated integer state value does FUN_140001140 return?"
   },
   {
     "id": "P08",
@@ -572,8 +572,8 @@
         "mutant": 0
       }
     ],
-    "semantic_target": "final mock autorun cleanup check omitted",
-    "question": "After b=1 and c=1, is bit 0 still set?"
+    "semantic_target": "multi-step autorun state transition",
+    "question": "When param_2=1 and param_3=1, what final integer state value does FUN_140001140 return?"
   },
   {
     "id": "E01",
@@ -596,8 +596,8 @@
         "mutant": 0
       }
     ],
-    "semantic_target": "toy environment flag predicate",
-    "question": "Does simulated environment policy return allow (1) or block (0)?"
+    "semantic_target": "environment flag predicate evaluation",
+    "question": "For the given environment flag, what integer value (1 or 0) does FUN_140001140 return?"
   },
   {
     "id": "E02",
@@ -620,8 +620,8 @@
         "mutant": 0
       }
     ],
-    "semantic_target": "synthetic score policy at two-signal boundary",
-    "question": "Does score=2 block or allow?"
+    "semantic_target": "composite environment score threshold",
+    "question": "At composite score=2, what integer value (1 or 0) does FUN_140001140 return?"
   },
   {
     "id": "E03",
@@ -644,8 +644,8 @@
         "mutant": 1
       }
     ],
-    "semantic_target": "toy memory-size policy at exact threshold",
-    "question": "Is exact threshold 2048 accepted (1) or rejected (0)?"
+    "semantic_target": "memory-size threshold boundary check",
+    "question": "At threshold value 2048, what integer value (1 or 0) does FUN_140001140 return?"
   },
   {
     "id": "E04",
@@ -668,8 +668,8 @@
         "mutant": 0
       }
     ],
-    "semantic_target": "synthetic elapsed-time difference policy",
-    "question": "At delta exactly 20, is function allow or block?"
+    "semantic_target": "elapsed-time delta boundary check",
+    "question": "At elapsed delta=20, what integer value (1 or 0) does FUN_140001140 return?"
   },
   {
     "id": "E05",
@@ -692,8 +692,8 @@
         "mutant": 0
       }
     ],
-    "semantic_target": "synthetic environment tag masked comparison",
-    "question": "Does encoded tag 0xB0 get accepted or blocked?"
+    "semantic_target": "masked environment tag comparison",
+    "question": "For input tag 0xB0, what integer value (1 or 0) does FUN_140001140 return?"
   },
   {
     "id": "E06",
@@ -716,8 +716,8 @@
         "mutant": 0
       }
     ],
-    "semantic_target": "synthetic monitored-process marker OR vs AND",
-    "question": "Does one matching marker suffice to reject?"
+    "semantic_target": "dual process-marker predicate check",
+    "question": "When one marker matches, what integer value (1 or 0) does FUN_140001140 return?"
   },
   {
     "id": "E07",
@@ -740,8 +740,8 @@
         "mutant": 1
       }
     ],
-    "semantic_target": "toy environment flag composition XOR vs OR",
-    "question": "For two identical 1-bit inputs, does policy block?"
+    "semantic_target": "two-signal environment flag composition",
+    "question": "For two identical 1-bit inputs, what integer value (1 or 0) does FUN_140001140 return?"
   },
   {
     "id": "E08",
@@ -764,8 +764,8 @@
         "mutant": 0
       }
     ],
-    "semantic_target": "synthetic environment exception condition removed",
-    "question": "Does c=1 override second simulated rejection condition?"
+    "semantic_target": "conditional environment exception check",
+    "question": "When param_3=1, what integer value (1 or 0) does FUN_140001140 return?"
   },
   {
     "id": "C01",
@@ -788,8 +788,8 @@
         "mutant": 1
       }
     ],
-    "semantic_target": "branch accepts equality after mutation",
-    "question": "At a=b, is function result true?"
+    "semantic_target": "relational boundary branch evaluation",
+    "question": "At boundary param_1=param_2, what integer value (1 or 0) does FUN_140001140 return?"
   },
   {
     "id": "C02",
@@ -812,8 +812,8 @@
         "mutant": 1
       }
     ],
-    "semantic_target": "equality branch inverted",
-    "question": "Does equality produce result 1?"
+    "semantic_target": "equality predicate branch evaluation",
+    "question": "When param_1 equals param_2, what integer value (1 or 0) does FUN_140001140 return?"
   },
   {
     "id": "C03",
@@ -836,8 +836,8 @@
         "mutant": 5
       }
     ],
-    "semantic_target": "state update missing decrement",
-    "question": "What final state is produced with both flags on?"
+    "semantic_target": "multi-branch state counter update",
+    "question": "When both input flags are 1, what final integer state does FUN_140001140 return?"
   },
   {
     "id": "C04",
@@ -860,8 +860,8 @@
         "mutant": 0
       }
     ],
-    "semantic_target": "nested branch changed from a to a-or-b",
-    "question": "When a=0 and b=1, which branch is reached?"
+    "semantic_target": "nested conditional branch selection",
+    "question": "When param_1=0 and param_2=1, what integer value does FUN_140001140 return?"
   },
   {
     "id": "C05",
@@ -884,8 +884,8 @@
         "mutant": 1
       }
     ],
-    "semantic_target": "loop termination off-by-one",
-    "question": "At a=1, how many odd index contributions are counted?"
+    "semantic_target": "bounded loop odd-index accumulation",
+    "question": "When param_1=1, what accumulated integer count does FUN_140001140 return?"
   },
   {
     "id": "C06",
@@ -908,8 +908,8 @@
         "mutant": 1
       }
     ],
-    "semantic_target": "bitfield validation mask loosened",
-    "question": "Does bitfield 0xC pass validation?"
+    "semantic_target": "bitfield mask validation predicate",
+    "question": "For input bitfield 0xC, what integer value (1 or 0) does FUN_140001140 return?"
   },
   {
     "id": "C07",
@@ -932,8 +932,8 @@
         "mutant": 1
       }
     ],
-    "semantic_target": "short-circuit precedence changes fallback",
-    "question": "Can c alone make result true when a=0?"
+    "semantic_target": "compound boolean precedence evaluation",
+    "question": "When param_1=0, param_2=0, and param_3=1, what integer value (1 or 0) does FUN_140001140 return?"
   },
   {
     "id": "C08",
@@ -956,7 +956,7 @@
         "mutant": 1
       }
     ],
-    "semantic_target": "toy state-machine transition increment vs decrement",
-    "question": "After three transitions, does state equal c?"
+    "semantic_target": "iterative state-machine transition check",
+    "question": "After three loop transitions, what integer value (1 or 0) does FUN_140001140 return?"
   }
 ]
