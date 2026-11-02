@@ -2,6 +2,8 @@
 """
 SCHR-Bench: Step 1B / Step 2 — Extract & Generate Normalized Stripped Contexts (CT1-CT4)
 and OLLVM-Style Structural Transformation Templates (Obf0 - Obf3) for all 80 variants (40 pairs).
+Also attaches real `objdump -d -M intel` disassembly from `disassembly_objdump_80.json`
+when available, so both source-derived templates and compiled PE64 disassembly are linked.
 """
 
 import json
@@ -122,7 +124,7 @@ def format_hex_annotations(expr: str) -> str:
 
 def generate_x64_assembly(sid: str, variant: str, helpers: list, target_line: str) -> str:
     """
-    Generate Register-Mapped x86-64 Disassembly / Pseudo-Assembly Context (CT2)
+    Generate Register-Mapped x86-64 Pseudo-Assembly Context (CT2)
     under the Win64 fastcall convention (ECX=param_1, EDX=param_2, R8D=param_3).
     """
     body_match = re.search(r"target\s*\([^)]*\)\s*\{\s*(.*)\s*\}", target_line)
@@ -164,7 +166,7 @@ def generate_x64_assembly(sid: str, variant: str, helpers: list, target_line: st
 def build_ct3_api_and_callee_spec(sid: str, category: str, helpers: list, target_line: str) -> str:
     """
     Build Context Tier 3 (CT3): Enriched Instruction, Constant & Callee Specifications.
-    NOTE: Strictly excludes `semantic_target` or any mutation description to prevent label leakage (P0-5).
+    Strictly excludes any pair-level target descriptor or mutation description (P0-5).
     """
     body_match = re.search(r"target\s*\([^)]*\)\s*\{\s*(.*)\s*\}", target_line)
     raw_body = body_match.group(1) if body_match else target_line
@@ -200,12 +202,15 @@ def build_ct4_neighborhood(sid: str, helpers: list) -> str:
 def main():
     manifest_path = DATASET_DIR / "ground_truth_manifest.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    objdump_path = DATASET_DIR / "disassembly_objdump_80.json"
+    objdump_map = json.loads(objdump_path.read_text(encoding="utf-8")) if objdump_path.exists() else {}
 
     records = []
     for item in manifest:
         sid = item["id"]
         for variant in ("original", "mutant"):
-            c_path = DATASET_DIR / "src" / f"{sid}_{variant}.c"
+            skey = f"{sid}_{variant}"
+            c_path = DATASET_DIR / "src" / f"{skey}.c"
             helpers, target_line = extract_c_body(c_path)
 
             ct1 = to_ghidra_stripped_pseudocode(sid, variant, helpers, target_line, obf_level=0)
@@ -217,19 +222,21 @@ def main():
             obf2 = to_ghidra_stripped_pseudocode(sid, variant, helpers, target_line, obf_level=2)
             obf3 = to_ghidra_stripped_pseudocode(sid, variant, helpers, target_line, obf_level=3)
 
+            real_objdump = objdump_map.get(skey, {}).get("objdump_intel_O2", "")
+
             records.append({
-                "sample_key": f"{sid}_{variant}",
+                "sample_key": skey,
                 "id": sid,
                 "variant": variant,
                 "category": item["category"],
                 "difficulty": item["difficulty"],
                 "mutation_operator": item["mutation_operator"],
-                "semantic_target": item["semantic_target"],
                 "question": item["question"],
                 "tests": item["tests"],
                 "contexts": {
                     "CT1": ct1,
                     "CT2": f"{ct1}\n\n{ct2_asm}",
+                    "CT2_Objdump": f"{ct1}\n\n; --- Compiled PE64 objdump -d -M intel (-O2) ---\n{real_objdump}" if real_objdump else f"{ct1}\n\n{ct2_asm}",
                     "CT3": f"{ct1}\n\n{ct2_asm}\n\n{ct3_spec}",
                     "CT4": f"{ct1}\n\n{ct2_asm}\n\n{ct3_spec}\n\n{ct4_neigh}",
                 },
@@ -243,7 +250,7 @@ def main():
 
     out_path = RESULTS_DIR / "decompiled_contexts_80.json"
     out_path.write_text(json.dumps(records, indent=2, ensure_ascii=False), encoding="utf-8")
-    print(f"[+] Built {len(records)} leak-free context records at: {out_path}")
+    print(f"[+] Built {len(records)} context records (zero target-label fields) at: {out_path}")
 
 
 if __name__ == "__main__":

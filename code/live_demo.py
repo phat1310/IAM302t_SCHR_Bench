@@ -85,7 +85,7 @@ def step2_ct1_hallucination(mcp: SCHRBenchMCPServer, model: str, sample_key: str
     test = rec["tests"][0]
     truth = int(test[rec["variant"]])
 
-    print(f"  • Mẫu thử nghiệm: {C_BOLD}{sample_key}{C_RESET} ({rec['category']} - {rec['semantic_target']})")
+    print(f"  • Mẫu thử nghiệm: {C_BOLD}{sample_key}{C_RESET} (Category: {rec['category']})")
     print(f"  • Ground Truth: Return Value = {C_BOLD}{truth}{C_RESET}")
     print(f"  • Discriminating Vector 1: param_1={test['a']}, param_2={test['b']}, param_3={test['c']}")
     print(f"\n{C_CYAN}--- [Stripped Pseudocode Representation (CT1)] ---{C_RESET}")

@@ -81,7 +81,7 @@ IAM302t_SCHR_Bench/
 Kịch bản `reproduce.sh` hỗ trợ **2 chế độ tách biệt rõ ràng**:
 
 ### Chế độ A (Mặc định — Offline Verification & Statistical Reproduction, không cần GPU/Ollama):
-Biên dịch và chạy kiểm định động E0 trên 80 biến thể C (160 assertions), tái tạo ngữ cảnh `decompiled_contexts_80.json` sạch 100% không rò rỉ nhãn, và tính toán lại toàn bộ bảng thống kê (`PAPER_TABLES_SPRINGER.md`) từ 540 log thực nghiệm có sẵn:
+Biên dịch và chạy kiểm định động E0 trên 80 biến thể C (160 assertions), tái tạo ngữ cảnh `decompiled_contexts_80.json` (không chứa trường `semantic_target` và các từ khóa rò rỉ nhãn đã kiểm), và tính toán lại toàn bộ bảng thống kê (`PAPER_TABLES_SPRINGER.md`) từ 540 log thực nghiệm có sẵn:
 ```bash
 bash reproduce.sh
 ```

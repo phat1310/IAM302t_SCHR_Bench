@@ -209,7 +209,7 @@ graph TD
 
 ### 📶 BỐN TẦNG CONTEXT ESCALATION (CT1 $\rightarrow$ CT4 PROTOCOL)
 
-* <span style="color:#2e7d32; font-weight:bold;">CT1 (Pseudocode Baseline):</span> Chỉ cung cấp duy nhất đoạn mã C giả (pseudocode) do Ghidra trích xuất. Phản ánh đúng cách thức mà các plugin AI RE hiện nay (như Gepetto, GptHidra) đang hoạt động.
+* <span style="color:#2e7d32; font-weight:bold;">CT1 (Pseudocode Baseline):</span> Chỉ cung cấp duy nhất đoạn mã C giả (pseudocode) do Ghidra trích xuất. Phản ánh đúng cách thức mà các plugin AI RE hiện nay (như các công cụ trợ lý dịch ngược LLM phổ biến) đang hoạt động.
 * <span style="color:#2e7d32; font-weight:bold;">CT2 (Assembly Anchor):</span> Cung cấp CT1 + Toàn bộ mã máy Disassembly Assembly x64 của hàm. Assembly đóng vai trò là "mỏ neo chân lý" ngăn chặn suy diễn sai lệch của decompiler.
 * <span style="color:#2e7d32; font-weight:bold;">CT3 (Context Enrichment):</span> Cung cấp CT2 + Bảng đặc tả tóm tắt hành vi và tham số của các Windows API/hàm mock xuất hiện trong hàm.
 * <span style="color:#2e7d32; font-weight:bold;">CT4 (Extended Neighborhood):</span> Cung cấp CT3 + Mã assembly của các hàm lân cận và bảng cross-references (X-refs) trong binary.

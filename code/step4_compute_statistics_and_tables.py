@@ -294,12 +294,15 @@ def main():
                 sig = f"Không có ý nghĩa thống kê ($p \\ge 0.05$, xu hướng $\\Delta = {b-c:+d}$)"
             md_lines.append(f"| `{m}` | **CT1 vs {comp_tier}** | {b} | {c} | `{b-c:+d}` | {chi2} | `{pval}` | {sig} |")
 
-    # Section 6: Deterministic CT1 Error Taxonomy (N=50)
+    # Section 6: Deterministic CT1 Error Taxonomy
+    llama_ct1 = [r for r in by_model_tier.get(("llama3.1:8b", "CT1"), {}).values() if r["is_schr_hallucination"]]
+    qwen_ct1 = [r for r in by_model_tier.get(("qwen2.5-coder:14b", "CT1"), {}).values() if r["is_schr_hallucination"]]
+    total_ct1_err = len(llama_ct1) + len(qwen_ct1)
     md_lines += [
         "",
-        "## 6. Phân loại Thực nghiệm 50 Lỗi CT1 ($N=50$: 31 LLaMA + 19 Qwen) theo Cơ chế Toán tử Đột biến",
+        f"## 6. Phân loại Thực nghiệm {total_ct1_err} Lỗi CT1 ($N={total_ct1_err}$: {len(llama_ct1)} LLaMA + {len(qwen_ct1)} Qwen) theo Cơ chế Toán tử Đột biến",
         "",
-        "| Nhóm Cơ chế Lỗi (Mutation Mechanism Group) | Các Toán tử trong Manifest | LLaMA-3.1 8B ($n=31$) | Qwen2.5-Coder 14B ($n=19$) | Tổng cộng ($N=50$) |",
+        f"| Nhóm Cơ chế Lỗi (Mutation Mechanism Group) | Các Toán tử trong Manifest | LLaMA-3.1 8B ($n={len(llama_ct1)}$) | Qwen2.5-Coder 14B ($n={len(qwen_ct1)}$) | Tổng cộng ($N={total_ct1_err}$) |",
         "| :--- | :--- | :---: | :---: | :---: |"
     ]
     tax_groups = [
@@ -308,9 +311,6 @@ def main():
         ("Relational Boundary Shift ($\\mathcal{M}_4$)", ("M4_Bound",), "`relational_boundary`"),
         ("Target Swap & Step Omission ($\\mathcal{M}_3, \\mathcal{M}_5$)", ("M3_Swap", "M5_Omit"), "`api_effect_swap`, `mock_api_swap`, `step_omission`"),
     ]
-    llama_ct1 = [r for r in by_model_tier.get(("llama3.1:8b", "CT1"), {}).values() if r["is_schr_hallucination"]]
-    qwen_ct1 = [r for r in by_model_tier.get(("qwen2.5-coder:14b", "CT1"), {}).values() if r["is_schr_hallucination"]]
-    total_ct1_err = len(llama_ct1) + len(qwen_ct1)
 
     for grp_name, fam_keys, op_desc in tax_groups:
         l_cnt = sum(1 for r in llama_ct1 if OPERATOR_TO_FAMILY_M1_M5.get(r["mutation_operator"]) in fam_keys)

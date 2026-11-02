@@ -179,7 +179,7 @@ Nhóm 7 xin báo cáo với Thầy Đinh Mai Hoàng chi tiết tình trạng th�
 | Hạng mục công việc | Thành viên phụ trách | Tiến độ (Cuối W5) | Chi tiết kết quả đạt được |
 | :--- | :---: | :---: | :--- |
 | **Ghidra Headless Automation & JSON Parser** | Nguyễn Tấn Phát & Nguyễn Trọng Duy | **100%** | Script Python/Jython đã tự động hóa decompile toàn bộ dataset, trích xuất chính xác mã C pseudocode và assembly instructions thành file JSON chuẩn. |
-| **MCP Server & Pipeline gọi LLM (Ollama + OpenAI)** | Nguyễn Tấn Phát & Nguyễn Trọng Duy | **90%** | Hoàn thành pipeline kết nối MCP Server với Ollama (LLaMA-3) và Ollama (Qwen2.5-Coder 14B). Prompt template cố định, nhiệt độ kiểm soát ở `temperature=0`, cơ chế strip symbol và giấu nhãn mutation hoạt động hoàn hảo. |
+| **MCP Server & Pipeline gọi LLM (Ollama LLaMA-3.1 & Qwen2.5-Coder)** | Nguyễn Tấn Phát & Nguyễn Trọng Duy | **90%** | Hoàn thành pipeline kết nối MCP Server với Ollama (LLaMA-3) và Ollama (Qwen2.5-Coder 14B). Prompt template cố định, nhiệt độ kiểm soát ở `temperature=0`, cơ chế strip symbol và giấu nhãn mutation hoạt động hoàn hảo. |
 | **Cơ chế Context Escalation (CT1 $\rightarrow$ CT4)** | Nguyễn Trọng Duy & Nguyễn Tấn Phát | **85%** | Đã dựng xong module cấp context tự động theo 4 cấp độ: CT1 (Chỉ C), CT2 (+ASM), CT3 (+API Description), CT4 (+Hàm lân cận & X-refs). |
 | **Chạy Thí nghiệm E1 (SCHR cơ sở CT1)** | Nguyễn Trọng Duy & Nguyễn Tấn Phát | **100% (Lượt 1)** | Đã chạy xong lượt 1 trên toàn bộ 40 hàm. Kết quả sơ bộ: LLM có SCHR rất cao ở lỗi đảo điều kiện (SCHR > 40%), chứng minh mạnh mẽ Giả thuyết H1! |
 | **Chạy Thí nghiệm E3 (Context Escalation CT1 $\rightarrow$ CT4)** | Nguyễn Tấn Phát & Nguyễn Trọng Duy | **70%** | Đang chạy batch suy luận trên LLaMA-3 và Qwen2.5-Coder 14B để thu thập toàn bộ log thực nghiệm. |
@@ -522,7 +522,7 @@ def create_docx_report():
     widths_s = [1.8, 1.4, 0.7, 1.0, 1.6]
     data_s = [
         ["Ghidra Headless Automation", "Phát & Duy", "100%", "Hoàn thành", "Script trích xuất tự động C pseudocode & ASM ra JSON chuẩn."],
-        ["MCP Server & LLM Client", "Phát & Duy", "90%", "Đang hoàn thiện", "Pipeline kết nối Ollama (LLaMA-3) & OpenAI API; T=0 cố định."],
+        ["MCP Server & LLM Client", "Phát & Duy", "90%", "Đang hoàn thiện", "Pipeline kết nối Ollama (LLaMA-3.1 8B & Qwen2.5-Coder 14B); T=0 cố định."],
         ["Context Escalation (CT1-CT4)", "Duy & Phát", "85%", "Đang chạy logs", "Dựng xong 4 tầng context; đang nạp batch data cho LLM."],
         ["Thí nghiệm E1 (SCHR cơ sở CT1)", "Duy & Phát", "100%", "Xong Lượt 1", "Chạy xong 40 hàm; phát hiện SCHR đảo điều kiện > 40% (đúng H1)."],
         ["Thí nghiệm E3 (Escalation CT1-4)", "Phát & Duy", "70%", "Đang chạy logs", "Thu thập logs thực nghiệm suy luận trên LLaMA-3 và Qwen2.5-Coder 14B."],
