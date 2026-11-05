@@ -20,9 +20,9 @@
 
 \titlerunning{SCHR-Bench: Evaluating Security-Critical Hallucinations in SRE}
 
-\author{Anonymous Authors}
-\authorrunning{Anonymous Authors}
-\institute{Paper under Double-Blind Review}
+\author{Anonymous}
+\authorrunning{Anonymous}
+\institute{Anonymous}
 
 \maketitle
 
@@ -414,7 +414,7 @@ We explicitly document the scope boundaries and limitations of our current study
 
 \textbf{Conclusion:} We presented \textbf{SCHR-Bench}, a controlled differential mutation benchmark measuring whether LLMs detect security-critical behavioral changes across 40 original/mutant C function pairs ($N=80$ execution-verified PE64 variants, 1,020 total logged evaluations across return-value and full-factorial paired Gold Set MCQ tasks). Our results show that \texttt{LLaMA-3.1 8B} and \texttt{Qwen2.5-Coder 14B} exhibit baseline CT1 error rates of 38.8\% and 23.8\% (and overall 240-item Gold Set MCQ SCHR of 40.8\% and 25.0\%), that 100.0\% syntactic recompilability and high pairwise BLEU ($\rho \in [+0.293, +0.495]$) mask semantic inversions, and that passive context escalation (CT2/CT3) provides non-significant changes under McNemar's test ($p \ge 0.2888$). All artifacts are publicly available at \url{https://anonymous.4open.science/r/SCHR-Bench-Anon}.
 
-\subsubsection*{Disclosure of AI Usage.} During the preparation of this project under the IAM302t Research-Based Learning (RBL) curriculum, the authors used local LLMs (\texttt{LLaMA-3.1 8B} and \texttt{Qwen2.5-Coder 14B} via Ollama) as the subjects of empirical evaluation, and used AI coding/writing assistance for LaTeX formatting, script refactoring, and language polishing. All experimental scripts, C source functions, and statistical tables were verified by the authors.
+\subsubsection*{Disclosure of AI Usage.} During the preparation of this work, the authors used local LLMs (\texttt{LLaMA-3.1 8B} and \texttt{Qwen2.5-Coder 14B} via Ollama) as the subjects of empirical evaluation, and used AI coding/writing assistance for LaTeX formatting, script refactoring, and language polishing. All experimental scripts, C source functions, and statistical tables were verified by the authors.
 
 \bibliographystyle{splncs04}
 \bibliography{references}
