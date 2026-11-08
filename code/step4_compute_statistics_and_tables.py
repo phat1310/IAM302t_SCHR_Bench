@@ -105,7 +105,7 @@ def wilson_ci_95(k: int, n: int):
 
 
 def mcnemar_test(b: int, c: int):
-    if b + c == 0:
+    if b + c == 0 or abs(b - c) <= 1:
         return 0.0, 1.0
     chi2 = ((abs(b - c) - 1.0) ** 2) / (b + c)
     p_val = math.erfc(math.sqrt(chi2 / 2.0))
