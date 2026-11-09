@@ -133,10 +133,14 @@ def main():
     for zpath in zip_targets:
         if zpath.parent.exists():
             with zipfile.ZipFile(zpath, "w", zipfile.ZIP_DEFLATED) as zf:
-                for fname in ("main_anonymous.tex", "paper_macros.tex", "references.bib"):
+                for fname in ("main_anonymous.tex", "paper_macros.tex", "references.bib", "llncs.cls", "splncs04.bst"):
                     fpath = ms_dir / fname
                     if fpath.exists():
                         zf.write(fpath, arcname=fname)
+                if "Anonymous" in zpath.name or "Overleaf" in zpath.name:
+                    zf.write(ms_dir / "main_anonymous.tex", arcname="main.tex")
+                else:
+                    zf.write(ms_dir / "main.tex", arcname="main.tex")
                 fig_dir = ms_dir / "figures"
                 if fig_dir.exists():
                     for fig in fig_dir.iterdir():
