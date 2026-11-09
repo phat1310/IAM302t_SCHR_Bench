@@ -127,7 +127,7 @@ def main():
     import zipfile
     paper_dir = root.parent.parent / "03_G7_IAM302t_IA2007" / "Paper"
     zip_targets = [
-        paper_dir / "Springer_SCHR_Bench_SNAPP_Anonymous_Package.zip",
+        paper_dir / "02_Ho_So_Chuan_Bi_Nop_Springer" / "Springer_SCHR_Bench_SNAPP_Anonymous_Package.zip", paper_dir / "Springer_SCHR_Bench_Paper_10_14_Pages.zip",
         ms_dir / "Overleaf_Ready_Upload.zip",
     ]
     for zpath in zip_targets:
