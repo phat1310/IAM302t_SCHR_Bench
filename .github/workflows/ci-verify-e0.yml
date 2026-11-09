@@ -1,0 +1,51 @@
+name: SCHR-Bench Verification & Statistical Pipeline
+
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: [ "main", "dev" ]
+  workflow_dispatch:
+
+jobs:
+  verify-statistical-pipeline:
+    name: Statistical & Context Pipeline (Ubuntu)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Verify Leak-Free Decompiled Context Extraction (N=80)
+        run: python3 code/extract_contexts.py
+
+      - name: Reproduce Statistical Tables (1,020 Evaluations, Wilson CI, McNemar, AUROC)
+        run: python3 code/step4_compute_statistics_and_tables.py
+
+      - name: Verify Single Source of Truth (SSOT) LaTeX Macros
+        run: python3 code/generate_paper_macros.py
+
+      - name: Verify 20-Pair Stratified Q4 vs. FP16 Baseline Control Protocol
+        run: python3 code/step5_fp16_api_subset_ablation.py --baseline-only
+
+  verify-e0-pe64-binaries:
+    name: E0 Dynamic PE64 Execution Suite (Windows x64)
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run Standalone PE64 Assertion Suite (80 Binaries, 160 Assertions)
+        run: python dataset/SCHR_Bench_C_Functions/tools/check_suite.py
+
+      - name: Run E0 Sanity Check & Table 1 Verification
+        run: python code/step0_verify_e0_windows.py

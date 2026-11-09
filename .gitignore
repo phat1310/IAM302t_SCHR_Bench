@@ -69,7 +69,7 @@ samples/malware/
 *.sublime-project
 .obsidian/workspace.json
 
-# LaTeX Auxiliary Build Files
+# LaTeX Auxiliary Build Files & Packaged Archives
 *.aux
 *.bbl
 *.blg
@@ -77,6 +77,8 @@ samples/malware/
 *.toc
 *.synctex.gz
 DescriptionTexts.txt
+manuscript/*.zip
+manuscript/**/*.zip
 
 # Nested clone
 IAM302t_SCHR_Bench/

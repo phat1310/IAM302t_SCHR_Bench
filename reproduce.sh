@@ -16,24 +16,28 @@ fi
 
 echo "========================================================================"
 echo "  SCHR-Bench: Reproducibility Pipeline (Mode: $MODE)"
-echo "  Artifact Package: template SOC-RL-v2.0"
+echo "  Artifact Package: SOC-RL-v2.0"
 echo "========================================================================"
 
 echo ""
-echo "[Step 1A/3] Running Standalone Binary Build & Assertion Suite (check_suite.py)..."
+echo "[Step 1A/4] Running Standalone Binary Build & Assertion Suite (check_suite.py)..."
 python3 dataset/SCHR_Bench_C_Functions/tools/check_suite.py
 
 echo ""
-echo "[Step 1B/3] Generating E0 Sanity Check Report & Table 1 (step0_verify_e0_windows.py)..."
+echo "[Step 1B/4] Generating E0 Sanity Check Report & Table 1 (step0_verify_e0_windows.py)..."
 python3 code/step0_verify_e0_windows.py
 
 echo ""
-echo "[Step 2/3] Generating Leak-Free Normalized Contexts (decompiled_contexts_80.json)..."
+echo "[Step 2/4] Generating Leak-Free Normalized Contexts (decompiled_contexts_80.json)..."
 python3 code/extract_contexts.py
 
 echo ""
-echo "[Step 3/3] Reproducing Statistical Tables (SCHR, 95% Wilson CI, M1-M5, Spearman rho, McNemar, N=50 Taxonomy)..."
+echo "[Step 3/4] Reproducing Statistical Tables (SCHR, 95% Wilson CI, M1-M5, Spearman rho, McNemar, AUROC)..."
 python3 code/step4_compute_statistics_and_tables.py
+
+echo ""
+echo "[Step 4/4] Verifying 20-Pair Stratified Q4 vs. FP16 Control Protocol Baseline..."
+python3 code/step5_fp16_api_subset_ablation.py --baseline-only
 
 if [ "$MODE" = "live" ]; then
     echo ""

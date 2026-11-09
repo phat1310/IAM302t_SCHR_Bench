@@ -123,12 +123,12 @@ def main():
     )
     (ms_dir / "main.tex").write_text(cam_tex, encoding="utf-8")
 
-    # Rebuild Springer_SCHR_Bench_SNAPP_Anonymous_Package.zip and Overleaf_Ready_Upload.zip (strictly double-blind)
+    # Rebuild external Overleaf/SNAPP ZIP packages if the external Paper handover folder exists
     import zipfile
     paper_dir = root.parent.parent / "03_G7_IAM302t_IA2007" / "Paper"
     zip_targets = [
-        paper_dir / "02_Ho_So_Chuan_Bi_Nop_Springer" / "Springer_SCHR_Bench_SNAPP_Anonymous_Package.zip", paper_dir / "Springer_SCHR_Bench_Paper_10_14_Pages.zip",
-        ms_dir / "Overleaf_Ready_Upload.zip",
+        paper_dir / "02_Ho_So_Chuan_Bi_Nop_Springer" / "Springer_SCHR_Bench_SNAPP_Anonymous_Package.zip",
+        paper_dir / "Springer_SCHR_Bench_Paper_10_14_Pages.zip",
     ]
     for zpath in zip_targets:
         if zpath.parent.exists():

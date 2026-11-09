@@ -1,27 +1,38 @@
 ================================================================================
-SCHR-BENCH ARTIFACT MANIFEST (template SOC-RL-v2.0 - FPT University)
+SCHR-BENCH ARTIFACT MANIFEST (SOC-RL-v2.0 - FPT University)
 Project: SCHR-Bench: Evaluating Security-Critical Hallucinations in LLM-Assisted
          Binary Reverse Engineering via Ground-Truth Mutations
-Authors: Nguyen Tan Phat, Do Thien Nhan, Nguyen Trong Duy, Vo Hong Phuc,
+Authors: Tan-Phat Nguyen, Thien-Nhan Do, Trong-Duy Nguyen, Hong-Phuc Vo,
          and Mai-Hoang Dinh (Corresponding Author)
 Repository: https://github.com/phat1310/IAM302t_SCHR_Bench
-Target Conference: EAI INISCOM 2027 (Springer LNICST Series) & IAM302t RBL
+Target Venue: Journal of Computer Virology and Hacking Techniques (Springer)
+              & EAI INISCOM 2027 (Springer LNICST) / IAM302t RBL
 ================================================================================
 
 [TOP-LEVEL DIRECTORY STRUCTURE & ARTIFACT PACKAGING]
 
-1. code/
+1. .github/workflows/
+   Continuous Integration (CI) verification pipeline:
+   - ci-verify-e0.yml: Automated Ubuntu & Windows x64 workflow verifying context
+     extraction, 1,020-run statistical reproduction, SSOT LaTeX macros, 20-pair
+     Q4/FP16 ablation baseline, and dynamic execution of all 80 PE64 binaries.
+
+2. code/
    Core scripts, compilation pipelines, and statistical evaluation utilities:
    - step0_verify_e0_windows.py: Compiles & executes all 80 C variants across 160 assertions.
    - step1_wsl_build_and_extract.sh: Cross-compilation and context extraction runner.
    - step2_ghidra_headless_postscript.py: Ghidra Headless decompiler extraction post-script.
    - step3_mcp_server_and_benchmark.py: LLM benchmark runner (`--mode return` and `--mode mcq`, `--max-pairs 40`).
-   - step4_compute_statistics_and_tables.py: Computes SCHR, 95% Wilson CI, Miss Rate, Spearman rho, McNemar, M1-M5 matrix, and N=50 CT1 error taxonomy.
+   - step4_compute_statistics_and_tables.py: Computes SCHR, 95% Wilson CI, Pair-Level Accuracy, Canonical Parroting, Spearman rho, McNemar, Bootstrap AUROC, M1-M5 matrix, and N=50 CT1 error taxonomy.
+   - step5_fp16_api_subset_ablation.py: Stratified 20-pair (N=40) Q4 vs. FP16/Cloud API control protocol runner.
+   - generate_paper_macros.py: Single Source of Truth (SSOT) LaTeX macro generator (`paper_macros.tex`).
    - extract_contexts.py: Leak-free normalized context generator (CT1-CT4, Obf0-Obf3).
+   - evaluate_gh0strat_case_study.py: Ecological packed malware static triage verifier.
+   - plot_figure3_empirical_schr.py: Publication-grade matplotlib visualizer for Figure 3.
    - eval_engine.py: Auxiliary evaluation utility.
    - live_demo.py / live_demo.sh: Interactive terminal demonstration script for Milestone D3.
 
-2. dataset/
+3. dataset/
    Ground-truth C source pairs, compiled stripped PE64 binaries, real objdump disassembly, and MCQ suite:
    - SCHR_Bench_C_Functions/src/: 40 original + 40 mutant C source files (80 variants).
    - SCHR_Bench_C_Functions/bin/pe_x64_O2/: 80 compiled & stripped 64-bit Windows PE executables (`.exe`).
@@ -30,37 +41,40 @@ Target Conference: EAI INISCOM 2027 (Springer LNICST Series) & IAM302t RBL
    - SCHR_Bench_C_Functions/tools/check_suite.py & build_pe.py & runner.c: Standalone build and execution verification harness.
    - gold_set_mcq.json: 240 full-factorial paired, balanced, leak-free, length-neutral multiple-choice items (N=80 across CT1, CT2, CT3; 60 A, 60 B, 60 C, 60 D; 25.0% length-cue baseline).
 
-3. documentation/
-   Project planning and milestone notes:
+4. documentation/
+   Project planning, response-to-reviewers audit report, and milestone notes:
+   - 00_G7_GIAI_TRINH_TIEP_THU_GOP_Y_THAY_DINH.md: Detailed point-by-point response to advisor peer review.
+   - PHASE2_GH0STRAT_EXECUTION_CHECKLIST.md: Ecological case study verification checklist.
    - SCHR_BENCH_MASTER_PLAN_OBSIDIAN.md: Project master plan and RBL notes.
 
-4. manuscript/
+5. manuscript/
    Academic research papers, LaTeX templates, figures, and bibliography:
    - 01_IEEE_Conference_Format_8_10_Pages/: IEEE conference manuscript (`main.tex`, `main_anonymous.tex`, `IEEEtran.cls`, and `IEEEtran.bst`).
-   - 02_Springer_LNICST_Format_10_14_Pages/: Springer LNICST manuscript (`main.tex`, `main_anonymous.tex`, `llncs.cls`, and `splncs04.bst`).
-   - IEEE_SCHR_Bench_Paper_8_10_Pages.zip: Packaged IEEE Overleaf archive.
-   - Springer_SCHR_Bench_Paper_10_14_Pages.zip: Packaged Springer Overleaf archive.
+   - 02_Springer_LNICST_Format_10_14_Pages/: Springer LNICST / JCVHT manuscript (`main.tex`, `main_anonymous.tex`, `paper_macros.tex`, `llncs.cls`, and `splncs04.bst`).
 
-5. prompts/
+6. prompts/
    System prompt templates:
    - mcq_system_prompt.txt: System prompt for `--mode mcq` evaluation.
    - explanation_system_prompt.txt: System prompt for structured explanation analysis.
 
-6. results/
+7. results/
    Experimental outputs, statistical tables, and raw benchmark logs:
    - benchmark_raw_logs.json: Complete return-value & explanation raw logs (540 entries: 480 core CT1-CT3 runs + 60 E4 pilot runs).
    - benchmark_mcq_logs.json: Complete Full-Factorial Gold Set MCQ raw logs (480 entries: 2 models x 240 items [N=80 per tier] with real `objdump` assembly in CT2/CT3).
    - decompiled_contexts_80.json: Leak-free normalized contexts (including real PE64 `objdump -d -M intel` disassembly) for all 80 variants.
    - PAPER_TABLES_SPRINGER.md: Auto-generated statistical tables (Sections 1-7) from `step4_compute_statistics_and_tables.py`.
    - E0_sanity_check_report.txt & E0_Table1_Springer.md: Dynamic binary execution verification report (160 assertions).
+   - GH0STRAT_EVALUATION.json: Ecological case study evaluation logs.
 
-7. Root Operational Files:
-   - CITATION.cff: Citation File Format metadata.
+8. Root Operational & Governance Files:
+   - CITATION.cff: Citation File Format metadata (all 5 authors).
+   - CONTRIBUTING.md: Guidelines for adding C mutation pairs and new LLM backends.
    - LICENSE: MIT Open-Source License (Code) & CC BY 4.0 (Dataset).
    - MANIFEST.txt: This manifest document.
-   - README.md: Project overview, reproduction modes, and safety notice.
+   - README.md: Bilingual (English International Portfolio + Vietnamese Academic Grading) overview.
+   - SECURITY.md: Artifact safety policy and static-only malware handling rules.
    - reproduce.sh: Two-mode reproducibility script (`offline` default and `--live-ollama`).
 
 ================================================================================
-Updated: 2026-11-02 | Validated for FPT University IAM302t RBL & EAI INISCOM 2027
+Updated: 2026-11-09 | Validated for International Portfolio, Springer & IAM302t
 ================================================================================
