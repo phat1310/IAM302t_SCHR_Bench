@@ -35,6 +35,10 @@ Dự án **SCHR-Bench** được thực hiện trong khuôn khổ học phần *
 
 ## 🏗️ 3. Cấu Trúc Hệ Thống Thực Nghiệm & Môi Trường Tái Lập
 
+<p align="center">
+  <img src="manuscript/02_Springer_LNICST_Format_10_14_Pages/figures/fig1.png" alt="SCHR-Bench Pipeline Architecture" width="95%">
+</p>
+
 ```text
 SCHR-Bench Architecture:
 ├── Tier 1 (Host GPU Inference Server) : Ollama Local API (llama3.1:8b, qwen2.5-coder:14b; τ=0.0, seed=42)
@@ -67,15 +71,20 @@ IAM302t_SCHR_Bench/
 
 ## 📊 5. Tóm Tắt Số Liệu Thực Nghiệm Chính ($N = 80$ Variants, 1,020 Logged Runs)
 
+<p align="center">
+  <img src="manuscript/02_Springer_LNICST_Format_10_14_Pages/figures/fig3_empirical_schr.png" alt="Empirical SCHR Results" width="95%">
+</p>
+
 * **540 lượt đánh giá trong `results/benchmark_raw_logs.json`:** Gồm **480 lượt đánh giá chính** (`2 models × 3 context tiers [CT1, CT2, CT3] × 80 variants`) và **60 lượt đánh giá Obfuscation E4** (`2 models × 3 obfuscation templates [Obf1_CFF, Obf2_Sub, Obf3_Combined] × 10 pilot variants`).
 * **Kiểm định thực thi E0 (`step0_verify_e0_windows.py`):** Biên dịch và chạy thật toàn bộ 80 biến thể qua 80 vector đầu vào (160 execution assertions), đạt **40/40 cặp hàm (100%) phân biệt hành vi trên Vector 1 (discriminating input)** và **50/80 tổng số vector phân biệt** (30 vector thứ 2 kiểm tra bảo toàn nhánh biên).
-* **Tỷ lệ SCHR & Kiểm định McNemar ($N = 80$):**
-  * `llama3.1:8b`: **38.8%** (CT1, 31/80 lỗi) $\rightarrow$ **36.2%** (CT2, 29/80 lỗi) $\rightarrow$ **35.0%** (CT3, 28/80 lỗi); Mutant Miss Rate: `32.5% -> 27.5% -> 27.5%`; McNemar $p \in [0.5791, 0.7518]$ (không có ý nghĩa thống kê ở $\alpha = 0.05$).
-  * `qwen2.5-coder:14b`: **23.8%** (CT1, 19/80 lỗi) $\rightarrow$ **20.0%** (CT2, 16/80 lỗi) $\rightarrow$ **18.8%** (CT3, 15/80 lỗi); Mutant Miss Rate: `27.5% -> 25.0% -> 25.0%`; McNemar $p \in [0.2888, 0.4497]$ (không có ý nghĩa thống kê ở $\alpha = 0.05$).
-  * **Tương quan hạng Spearman & Recompilability (RQ2):** 100.0% (80/80) hàm CT1 biên dịch lại thành công (`gcc -fsyntax-only`), và độ tương đồng từ vựng BLEU giữa giải thích gốc và đột biến của các cặp bị lỗi SCHR cao hơn nhóm cặp trả lời đúng ($\rho \in [+0.293, +0.495]$).
+* **Tỷ lệ SCHR, Pair-Level Accuracy & Canonical Parroting (Layer 1 Return-Value, $N = 80$):**
+  * `llama3.1:8b`: **38.8%** (CT1, 31/80 lỗi) $\rightarrow$ **36.2%** (CT2, 29/80 lỗi) $\rightarrow$ **37.5%** (CT3, 30/80 lỗi); **Pair-Level Accuracy chỉ đạt 25.0%** (10/40 cặp đúng cả hai). Khi sai trên mutant, **100% (13/13 trường hợp) sao chép nguyên xi giá trị của bản gốc (Canonical Parroting)**. McNemar $p \in [0.7518, 1.0000]$.
+  * `qwen2.5-coder:14b`: **23.8%** (CT1, 19/80 lỗi) $\rightarrow$ **20.0%** (CT2, 16/80 lỗi) $\rightarrow$ **23.8%** (CT3, 19/80 lỗi); **Pair-Level Accuracy đạt 57.5%** (23/40 cặp đúng cả hai). Khi sai trên mutant, **100% (9/9 trường hợp) mắc lỗi Canonical Parroting**. McNemar $p \in [0.4497, 1.0000]$.
+  * **Pairwise BLEU như bộ sàng lọc hồi quy (RQ2):** Cặp hàm có lỗi SCHR có độ tương đồng lời giải thích BLEU cao hơn rõ rệt so với cặp trả lời đúng ($0.423 - 0.584$ vs. $0.191 - 0.334$, $\rho \in [+0.124, +0.495]$), đạt **AUROC lên tới 0.811** (Qwen CT2) và **0.800** (LLaMA CT3).
 * **480 lượt đánh giá Trắc nghiệm Full-Factorial Gold Set MCQ trong `results/benchmark_mcq_logs.json` (240 mục/model, $N = 80$ mỗi tầng CT1/CT2/CT3, tích hợp `objdump -d -M intel` thật ở CT2/CT3):**
-  * `llama3.1:8b`: **40.8% MCQ SCHR** trên toàn bộ 240 mục (142/240 đúng; CT1: **38.8%**, CT2 + `objdump`: **45.0%** [$p = 0.4042$], CT3: **38.8%** [$p = 0.8312$]).
+  * `llama3.1:8b`: **40.8% MCQ SCHR** trên toàn bộ 240 mục (142/240 đúng; CT1: **38.8%**, CT2 + `objdump`: **45.0%** [$p = 0.4042$], CT3: **38.8%** [$p = 1.0000$]).
   * `qwen2.5-coder:14b`: **25.0% MCQ SCHR** trên toàn bộ 240 mục (180/240 đúng; CT1: **21.2%**, CT2 + `objdump`: **26.2%** [$p = 0.4533$], CT3: **27.5%** [$p = 0.3588$]).
+  * So với **Random Guessing Baseline (75.0% lỗi / 25.0% chính xác)**, cả 2 mô hình vượt trội hơn đoán mò nhưng vẫn liên tục vấp phải ảo giác ngữ nghĩa cục bộ.
 
 ---
 
