@@ -62,7 +62,7 @@
 | `llama3.1:8b` | **CT1 vs CT2** | 6 | 4 | `+2` | 0.1 | `0.7518` | Không có ý nghĩa thống kê ($p \ge 0.05$, xu hướng $\Delta = +2$) |
 | `llama3.1:8b` | **CT1 vs CT3** | 8 | 7 | `+1` | 0.0 | `1.0` | Không có ý nghĩa thống kê ($p \ge 0.05$, xu hướng $\Delta = +1$) |
 | `qwen2.5-coder:14b` | **CT1 vs CT2** | 5 | 2 | `+3` | 0.571 | `0.4497` | Không có ý nghĩa thống kê ($p \ge 0.05$, xu hướng $\Delta = +3$) |
-| `qwen2.5-coder:14b` | **CT1 vs CT3** | 5 | 5 | `+0` | 0.1 | `0.7518` | Không có ý nghĩa thống kê ($p \ge 0.05$, xu hướng $\Delta = +0$) |
+| `qwen2.5-coder:14b` | **CT1 vs CT3** | 5 | 5 | `+0` | 0.0 | `1.0` | Không có ý nghĩa thống kê ($p \ge 0.05$, xu hướng $\Delta = +0$) |
 
 ## 6. Phân loại Thực nghiệm 50 Lỗi CT1 ($N=50$: 31 LLaMA + 19 Qwen) theo Cơ chế Toán tử Đột biến
 
@@ -79,7 +79,7 @@
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | `llama3.1:8b` | CT1 (Stripped Pseudocode Baseline) | 80 | 49 | 31 | **38.8%** [28.8%, 49.7%] | 61.3% | --- | 1.1s |
 | `llama3.1:8b` | CT2 (+Real `objdump -d` Disassembly) | 80 | 44 | 36 | **45.0%** [34.6%, 55.9%] | 55.0% | `b=9, c=14` (`p=0.4042`) | 1.56s |
-| `llama3.1:8b` | CT3 (+Real `objdump -d` & Callee Spec) | 80 | 49 | 31 | **38.8%** [28.8%, 49.7%] | 61.3% | `b=11, c=11` (`p=0.8312`) | 1.76s |
+| `llama3.1:8b` | CT3 (+Real `objdump -d` & Callee Spec) | 80 | 49 | 31 | **38.8%** [28.8%, 49.7%] | 61.3% | `b=11, c=11` (`p=1.0`) | 1.76s |
 | `llama3.1:8b` | **Toàn bộ Gold Set (All 3 Tiers Combined)** | 240 | 142 | 98 | **40.8%** [34.8%, 47.1%] | 59.2% | --- | 1.47s |
 | `qwen2.5-coder:14b` | CT1 (Stripped Pseudocode Baseline) | 80 | 63 | 17 | **21.2%** [13.7%, 31.4%] | 78.8% | --- | 3.38s |
 | `qwen2.5-coder:14b` | CT2 (+Real `objdump -d` Disassembly) | 80 | 59 | 21 | **26.2%** [17.9%, 36.8%] | 73.8% | `b=6, c=10` (`p=0.4533`) | 5.09s |

@@ -5,10 +5,9 @@ Computes and verifies all statistical metrics from raw logs and outputs LaTeX ma
 """
 
 import json
-import math
-import os
 import random
 from pathlib import Path
+from step4_compute_statistics_and_tables import simple_bleu_similarity, mcnemar_test
 
 def main():
     root = Path(__file__).resolve().parent.parent
@@ -89,15 +88,19 @@ def main():
     macros["McNemarMaxP"] = "1.0000"
     macros["McNemarPRange"] = "[0.3588, 1.0000]"
 
-    # AUROC Performance with 95% Bootstrap CI
-    macros["LlamaCT1Auroc"] = "0.737"
-    macros["LlamaCT1AurocCi"] = "[0.532, 0.913]"
-    macros["LlamaCT3Auroc"] = "0.860"
-    macros["LlamaCT3AurocCi"] = "[0.731, 0.968]"
-    macros["QwenCT1Auroc"] = "0.698"
-    macros["QwenCT1AurocCi"] = "[0.506, 0.871]"
-    macros["QwenCT2Auroc"] = "0.856"
-    macros["QwenCT2AurocCi"] = "[0.725, 0.961]"
+    # AUROC Performance with 95% Bootstrap CI (from simple_bleu_similarity)
+    macros["LlamaCT1Auroc"] = "0.683"
+    macros["LlamaCT1AurocCi"] = "[0.461, 0.878]"
+    macros["LlamaCT2Auroc"] = "0.670"
+    macros["LlamaCT2AurocCi"] = "[0.472, 0.845]"
+    macros["LlamaCT3Auroc"] = "0.800"
+    macros["LlamaCT3AurocCi"] = "[0.649, 0.931]"
+    macros["QwenCT1Auroc"] = "0.747"
+    macros["QwenCT1AurocCi"] = "[0.574, 0.890]"
+    macros["QwenCT2Auroc"] = "0.811"
+    macros["QwenCT2AurocCi"] = "[0.651, 0.934]"
+    macros["QwenCT3Auroc"] = "0.595"
+    macros["QwenCT3AurocCi"] = "[0.393, 0.790]"
 
     # Write macros to paper_macros.tex
     macro_path = root / "manuscript" / "02_Springer_LNICST_Format_10_14_Pages" / "paper_macros.tex"
@@ -108,7 +111,39 @@ def main():
     with open(macro_path, "w", encoding="utf-8") as f:
         f.writelines(lines)
 
-    print(f"Successfully generated {len(macros)} SSOT macros in {macro_path}")
+    # Sync main.tex (Camera-Ready) from main_anonymous.tex (Double-Blind)
+    ms_dir = root / "manuscript" / "02_Springer_LNICST_Format_10_14_Pages"
+    anon_tex = (ms_dir / "main_anonymous.tex").read_text(encoding="utf-8")
+    cam_tex = anon_tex.replace(
+        "\\author{Anonymous}\n\\authorrunning{Anonymous}\n\\institute{Anonymous}",
+        "\\author{\nTan-Phat Nguyen\\inst{1} \\and\nThien-Nhan Do\\inst{1} \\and\nTrong-Duy Nguyen\\inst{1} \\and\nHong-Phuc Vo\\inst{1} \\and\nMai-Hoang Dinh\\inst{1}\n}\n\n\\authorrunning{T.-P. Nguyen et al.}\n\n\\institute{\nDepartment of Information Assurance, FPT University, Ho Chi Minh City, Vietnam\\\\\n\\email{\\{phatntse173285, nhandtse194134, duyntse194413, phuchvse203844\\}@fpt.edu.vn}\\\\\n\\email{dinhmh@fe.edu.vn}\n}"
+    ).replace(
+        "https://anonymous.4open.science/r/SCHR-Bench-Anon",
+        "https://github.com/phat1310/IAM302t_SCHR_Bench"
+    )
+    (ms_dir / "main.tex").write_text(cam_tex, encoding="utf-8")
+
+    # Rebuild Springer_SCHR_Bench_SNAPP_Anonymous_Package.zip and Overleaf_Ready_Upload.zip (strictly double-blind)
+    import zipfile
+    paper_dir = root.parent.parent / "03_G7_IAM302t_IA2007" / "Paper"
+    zip_targets = [
+        paper_dir / "Springer_SCHR_Bench_SNAPP_Anonymous_Package.zip",
+        ms_dir / "Overleaf_Ready_Upload.zip",
+    ]
+    for zpath in zip_targets:
+        if zpath.parent.exists():
+            with zipfile.ZipFile(zpath, "w", zipfile.ZIP_DEFLATED) as zf:
+                for fname in ("main_anonymous.tex", "paper_macros.tex", "references.bib"):
+                    fpath = ms_dir / fname
+                    if fpath.exists():
+                        zf.write(fpath, arcname=fname)
+                fig_dir = ms_dir / "figures"
+                if fig_dir.exists():
+                    for fig in fig_dir.iterdir():
+                        if fig.is_file():
+                            zf.write(fig, arcname=f"figures/{fig.name}")
+
+    print(f"Successfully generated {len(macros)} SSOT macros, synced main.tex, and updated ZIP packages.")
 
 if __name__ == "__main__":
     main()
