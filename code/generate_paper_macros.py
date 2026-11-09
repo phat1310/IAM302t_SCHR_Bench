@@ -118,7 +118,7 @@ def main():
         "\\author{Anonymous}\n\\authorrunning{Anonymous}\n\\institute{Anonymous}",
         "\\author{\nTan-Phat Nguyen\\inst{1} \\and\nThien-Nhan Do\\inst{1} \\and\nTrong-Duy Nguyen\\inst{1} \\and\nHong-Phuc Vo\\inst{1} \\and\nMai-Hoang Dinh\\inst{1}\n}\n\n\\authorrunning{T.-P. Nguyen et al.}\n\n\\institute{\nDepartment of Information Assurance, FPT University, Ho Chi Minh City, Vietnam\\\\\n\\email{\\{phatntse173285, nhandtse194134, duyntse194413, phuchvse203844\\}@fpt.edu.vn}\\\\\n\\email{dinhmh@fe.edu.vn}\n}"
     ).replace(
-        "https://anonymous.4open.science/r/SCHR-Bench-Anon",
+        "https://anonymous.4open.science/r/SCHR-Bench-Anon-827B",
         "https://github.com/phat1310/IAM302t_SCHR_Bench"
     )
     (ms_dir / "main.tex").write_text(cam_tex, encoding="utf-8")

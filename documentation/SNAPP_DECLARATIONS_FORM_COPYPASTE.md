@@ -17,7 +17,7 @@ The authors declare that they have no competing financial or non-financial inter
 > **Dán đoạn sau vào ô Data Availability:**
 ```text
 All experimental code, C source pairs, compiled stripped PE64 binaries, disassembly files, the 240-item paired multiple-choice question gold set, and complete raw evaluation logs generated during this study are openly available in the anonymized research repository at:
-https://anonymous.4open.science/r/SCHR-Bench-Anon
+https://anonymous.4open.science/r/SCHR-Bench-Anon-827B
 
 To maintain strict operational safety and prevent the proliferation of live malware, the real-world Gh0stRAT PE32 executable is not distributed in the repository; only its public cryptographic identifier (SHA-256: ea7cd59c402128b0beffba34a6fb7b3f6f9fc5be62cb4aa51e605d3bcaee98be) and extracted static decompiler snippets are provided.
 ```
