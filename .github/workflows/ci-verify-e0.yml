@@ -26,6 +26,9 @@ jobs:
       - name: Reproduce Statistical Tables (1,020 Evaluations, Wilson CI, McNemar, AUROC)
         run: python3 code/step4_compute_statistics_and_tables.py
 
+      - name: Verify Dual-Annotator Free-Form Explanation Audit (Cohen's Kappa, N=80)
+        run: python3 code/step6_compute_cohens_kappa.py
+
       - name: Verify Single Source of Truth (SSOT) LaTeX Macros
         run: python3 code/generate_paper_macros.py
 
@@ -49,3 +52,6 @@ jobs:
 
       - name: Run E0 Sanity Check & Table 1 Verification
         run: python code/step0_verify_e0_windows.py
+
+      - name: Build & Verify 30 Obfuscated PE64 Binaries (Obf1-Obf3, 60 Assertions)
+        run: python code/build_and_verify_obfuscated_pe64.py

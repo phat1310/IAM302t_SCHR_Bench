@@ -1,21 +1,23 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 step5_fp16_api_subset_ablation.py
-Stratified 20-Pair (N=40 Variants) FP16 / Cloud API Control Experiment for SCHR-Bench.
+Stratified 20-Pair (N=40 Variants) FP16 / Cloud Router API Control Experiment for SCHR-Bench.
 
 Purpose (Addressing Reviewer / Advisor Feedback on 4-Bit Quantization Confounder):
 Evaluates a stratified 20-pair subset (4 pairs per functional category A, S, P, E, C:
 1 easy, 2 medium, 1 tricky per category = 20 pairs / 40 variants) under unquantized FP16
-weights (via Ollama) or full-precision Cloud API models (OpenAI / DeepSeek / OpenRouter / Groq)
+weights (via Ollama) or full-precision Cloud / Router API models (OpenAI-compatible endpoint)
 at temperature=0.0, and compares against the logged 4-bit (Q4_0 / Q4_K_M) baseline on the
 exact same 20 pairs.
 """
 
 import argparse
 import json
+import os
 import re
 import time
 import urllib.request
-import os
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -42,8 +44,9 @@ SYSTEM_PROMPT = (
 
 
 def parse_json_response(text: str):
+    cleaned = re.sub(r"^```(?:json)?\s*|\s*```$", "", text.strip(), flags=re.MULTILINE)
     try:
-        obj = json.loads(text)
+        obj = json.loads(cleaned)
         return int(obj.get("predicted_return")), str(obj.get("explanation", ""))
     except Exception:
         m = re.search(r'"predicted_return"\s*:\s*(-?\d+)', text)
@@ -72,7 +75,7 @@ def query_ollama(url: str, model: str, user_prompt: str):
     return pred, expl, latency
 
 
-def query_openai_compatible(base_url: str, api_key: str, model: str, user_prompt: str):
+def query_openai_compatible(base_url: str, api_key: str, model: str, user_prompt: str, max_retries: int = 3):
     payload = {
         "model": model,
         "messages": [
@@ -81,24 +84,31 @@ def query_openai_compatible(base_url: str, api_key: str, model: str, user_prompt
         ],
         "temperature": 0.0,
         "seed": 42,
-        "max_tokens": 180,
-        "response_format": {"type": "json_object"},
+        "max_tokens": 200,
     }
-    req = urllib.request.Request(
-        f"{base_url.rstrip('/')}/chat/completions",
-        data=json.dumps(payload).encode("utf-8"),
-        headers={
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {api_key}",
-        },
-    )
-    t0 = time.time()
-    with urllib.request.urlopen(req, timeout=180) as resp:
-        data = json.loads(resp.read().decode("utf-8"))
-    latency = round(time.time() - t0, 2)
-    content = data["choices"][0]["message"]["content"]
-    pred, expl = parse_json_response(content)
-    return pred, expl, latency
+    endpoint = f"{base_url.rstrip('/')}/chat/completions"
+    for attempt in range(1, max_retries + 1):
+        try:
+            req = urllib.request.Request(
+                endpoint,
+                data=json.dumps(payload).encode("utf-8"),
+                headers={
+                    "Content-Type": "application/json",
+                    "Authorization": f"Bearer {api_key}",
+                    "User-Agent": "SCHR-Bench-Evaluator/2.0",
+                },
+            )
+            t0 = time.time()
+            with urllib.request.urlopen(req, timeout=180) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+            latency = round(time.time() - t0, 2)
+            content = data["choices"][0]["message"]["content"]
+            pred, expl = parse_json_response(content)
+            return pred, expl, latency
+        except Exception as err:
+            if attempt == max_retries:
+                raise
+            time.sleep(2.0 * attempt)
 
 
 def summarize_20_pairs(records_by_key: dict, label: str):
@@ -129,13 +139,22 @@ def summarize_20_pairs(records_by_key: dict, label: str):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Run 20-pair FP16/API subset ablation on CT1.")
+    parser = argparse.ArgumentParser(description="Run 20-pair FP16 / Router API subset ablation on CT1.")
     parser.add_argument("--baseline-only", action="store_true", help="Print Q4 baseline stats on the 20-pair subset without live inference")
-    parser.add_argument("--provider", choices=["ollama", "openai"], default="ollama")
-    parser.add_argument("--model", default="llama3.1:8b-instruct-fp16", help="FP16 Ollama tag or API model name")
-    parser.add_argument("--ollama-url", default="http://127.0.0.1:11434")
-    parser.add_argument("--api-base", default=os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1"))
-    parser.add_argument("--api-key", default=os.environ.get("OPENAI_API_KEY", ""))
+    parser.add_argument("--provider", choices=["ollama", "openai", "router"], default="router")
+    parser.add_argument("--model", default=os.environ.get("ROUTER_MODEL", "qwen/qwen-2.5-coder-14b-instruct"), help="FP16 Ollama tag or Router/OpenAI API model ID")
+    parser.add_argument("--ollama-url", default=os.environ.get("OLLAMA_URL", "http://127.0.0.1:11434"))
+    parser.add_argument(
+        "--api-base",
+        default=os.environ.get("ROUTER_API_BASE", os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1")),
+        help="OpenAI-compatible base URL (e.g. Router API https://<your-router-domain>/v1)",
+    )
+    parser.add_argument(
+        "--api-key",
+        default=os.environ.get("ROUTER_API_KEY", os.environ.get("OPENAI_API_KEY", "")),
+        help="API key for Router API or OpenAI-compatible gateway",
+    )
+    parser.add_argument("--output", default=str(OUT_PATH), help="Output JSON file path")
     args = parser.parse_args()
 
     raw_logs = json.loads(RAW_LOGS_PATH.read_text(encoding="utf-8"))
@@ -151,23 +170,31 @@ def main():
     if args.baseline_only:
         return
 
-    manifest = {item["id"]: item for item in json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))["functions"]}
-    contexts = json.loads(CONTEXTS_PATH.read_text(encoding="utf-8"))
+    if args.provider in ("openai", "router") and not args.api_key:
+        raise SystemExit(
+            "ERROR: Missing API Key. Set ROUTER_API_KEY=... or pass --api-key <key>."
+        )
+
+    manifest_list = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+    manifest = {item["id"]: item for item in manifest_list}
+
+    contexts_list = json.loads(CONTEXTS_PATH.read_text(encoding="utf-8"))
+    contexts = {rec["sample_key"]: rec["contexts"] for rec in contexts_list}
 
     new_records = {}
     for pid in STRATIFIED_20_PAIRS:
         fmeta = manifest[pid]
-        vec = fmeta["test_vectors"][0]
-        inp = vec["input"]
+        vec = fmeta["tests"][0]
+        a_val, b_val, c_val = vec["a"], vec["b"], vec["c"]
         for variant in ("original", "mutant"):
             skey = f"{pid}_{variant}"
-            gt = vec["expected_orig"] if variant == "original" else vec["expected_mut"]
-            opp = vec["expected_mut"] if variant == "original" else vec["expected_orig"]
+            gt = int(vec["original"]) if variant == "original" else int(vec["mutant"])
+            opp = int(vec["mutant"]) if variant == "original" else int(vec["original"])
             code_ctx = contexts[skey]["CT1"]
             user_prompt = (
                 f"Function Variant under test:\n```c\n{code_ctx}\n```\n"
-                f"Input vector: param_1={inp[0]}, param_2={inp[1]}, param_3={inp[2]}.\n"
-                f"Question: {fmeta['question']}"
+                f"Input vector: param_1={a_val}, param_2={b_val}, param_3={c_val}.\n"
+                f"What is the exact integer return value of `FUN_140001140({a_val}, {b_val}, {c_val})`?"
             )
             if args.provider == "ollama":
                 pred, expl, lat = query_ollama(args.ollama_url, args.model, user_prompt)
@@ -189,8 +216,9 @@ def main():
             }
 
     summarize_20_pairs(new_records, f"{args.model} (FP16/API)")
-    OUT_PATH.write_text(json.dumps(new_records, indent=2), encoding="utf-8")
-    print(f"[+] Saved 40 FP16/API subset evaluations to {OUT_PATH}")
+    out_file = Path(args.output)
+    out_file.write_text(json.dumps(new_records, indent=2, ensure_ascii=False), encoding="utf-8")
+    print(f"[+] Saved 40 FP16/API subset evaluations to {out_file}")
 
 
 if __name__ == "__main__":
